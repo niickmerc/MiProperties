@@ -7,9 +7,9 @@ portfolio of properties
 
 ### Who Could Use This App?
 My application could be utilized by a variety of different user groups
-- Professional Landlords
-- Property Management Companies / Managers
-- Residential Real Estate Brokers (Stretch Goal)
+1. Professional Landlords 
+2. Property Management Companies / Managers 
+3. Residential Real Estate Brokers (Stretch Goal)
 
 
 ### User Stories for Phase #1
