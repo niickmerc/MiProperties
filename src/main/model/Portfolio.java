@@ -4,10 +4,27 @@ import java.util.ArrayList;
 
 public class Portfolio {
 
-    private ArrayList<Property> properties;
+    public void addProperty(){
 
-    // EFFECTS: Creates a new instance of type Portfolio
-    public Portfolio() {
+    }
+
+    public void removeProperty() {
+
+    }
+
+    public int getPortfolioValue() {
+        return 0;
+    }
+
+    public int getTotalNumTenants() {
+        return 0;
+    }
+
+    public int getTotalRentalIncomeGenerated() {
+        return 0;
+    }
+
+    public void getVacancyRate(){
 
     }
 }

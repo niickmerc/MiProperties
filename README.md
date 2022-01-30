@@ -1,4 +1,4 @@
-# Property Management Application (CPSC210 Project)
+# Property Management Application (CPSC 210 Project)
 
 My project is focused around the world of residential 
 property management. This application will help individuals 
