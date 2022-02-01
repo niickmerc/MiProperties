@@ -7,11 +7,13 @@ import java.util.ArrayList;
 
 public class Property {
 
-    private String civicAddress;
-    private int propertyValue;
-    private int monthlyRent;
-    private ArrayList<Tenant> tenantList;
-    private boolean isRented = false;
+
+    private String civicAddress;                // a property's street address
+    private int propertyValue;                  // a property's market value in Canadian dollars
+    private int monthlyRent;                    // desired monthly rental income in Canadian dollars
+    private ArrayList<Tenant> tenantList;       // a list of tenants that currently occupy the property (if any)
+    private boolean isRented = false;           // current rental status (false = vacant, true = occupied)
+
 
     // REQUIRES: civilAddress has a non-zero length;
     //           propertyValue must be a non-zero positive integer;
