@@ -11,44 +11,52 @@ public class Property {
     private int propertyValue;
     private int monthlyRent;
     private ArrayList<Tenant> tenantList;
-    private boolean rentalStatus = false;
+    private boolean isRented = false;
 
-    // REQUIRES: civilAddress must be of valid form, propertyValue and monthlyRent
-    //           must be non-zero positive integers
+    // REQUIRES: civilAddress has a non-zero length;
+    //           propertyValue must be a non-zero positive integer;
+    //           monthlyRent must be a non-zero positive integer
     // EFFECTS:  Creates a new instance of type Property
     public Property(String civicAddress, int propertyValue, int monthlyRent) {
         // stub
     }
 
+    // REQUIRES: tenantName has a non-zero length
     // MODIFIES: this
-    // EFFECTS: Adds a new tenant to a property's list of tenants
+    // EFFECTS: Adds a new tenant to a property's list of tenants.
+    //          If tenantList was empty before insertion, switch isRented to true
     public void addNewTenant(String tenantName) {
         // stub
     }
 
-    // REQUIRES: tenantList is not empty
+    // REQUIRES: tenantList has length > 0
     // MODIFIES: this
-    // EFFECTS: Removes a tenant with the given name from a property's list of tenants
+    // EFFECTS: Removes a tenant with the given name from a property's list of tenants.
+    //          If tenantList is empty after removal, switch isRented to false.
     public void removeTenant(String tenantName) {
         // stub
     }
 
+    // MODIFIES: this
+    // EFFECTS: charges tenants one month's rent and increases total income generated
+    public void chargeRent() {
 
+    }
 
-
-
-
-
-
-
-
-
-  /*
     // getters
-    public String getCivicAddress() { return civicAddress; }
-    public int getPropertyValue() { return propertyValue; }
-    public int getMonthlyRent() { return monthlyRent; }
-    public ArrayList getTenantList() {
+    public String getCivicAddress() {
+        return civicAddress;
+    }
+
+    public int getPropertyValue() {
+        return propertyValue;
+    }
+
+    public int getMonthlyRent() {
+        return monthlyRent;
+    }
+
+    public ArrayList<Tenant> getTenantList() {
         return tenantList;
     }
 
@@ -56,18 +64,13 @@ public class Property {
     public void setCivicAddress(String newAddress) {
         this.civicAddress = newAddress;
     }
-    public void setPropertyValue(int newValue) {
+
+    public void updatePropertyValue(int newValue) {
         this.propertyValue = newValue;
     }
-    public void setMonthlyRent(int newRent) {
+
+    public void updateMonthlyRent(int newRent) {
         this.monthlyRent = newRent;
     }
-    public void assignTenant(Tenant t) {
-        this.tenantList.add(t);
-    }
-    public boolean removeTenant(String tenantName) {
-        return false;
-    }
 
-   */
 }
