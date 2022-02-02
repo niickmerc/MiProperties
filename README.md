@@ -25,6 +25,6 @@ Stretch Stories (Implement if time constraints allow)
 - **User Story #7** - As a user, I want to be able to see how many properties in my portfolio are rented / vacant.
 
 ### To-Do List
-1. Build JUnit test suite for Property / Tenant / Portfolio 
+1. Build JUnit test suite for Tenant / Portfolio 
 2. Implement all methods for Property / Tenant / Portfolio
 3. Work on UI design and implementation 

@@ -12,7 +12,7 @@ public class Property {
     private int propertyValue;                  // a property's market value in Canadian dollars
     private int monthlyRent;                    // desired monthly rental income in Canadian dollars
     private ArrayList<Tenant> tenantList;       // a list of tenants that currently occupy the property (if any)
-    private boolean isRented = false;           // current rental status (false = vacant, true = occupied)
+    private boolean isRented;                   // current rental status (false = vacant, true = occupied)
 
 
     // REQUIRES: civilAddress has a non-zero length;
@@ -20,30 +20,58 @@ public class Property {
     //           monthlyRent must be a non-zero positive integer
     // EFFECTS:  Creates a new instance of type Property
     public Property(String civicAddress, int propertyValue, int monthlyRent) {
-        // stub
+        this.civicAddress = civicAddress;
+        this.propertyValue = propertyValue;
+        this.monthlyRent = monthlyRent;
+
+        tenantList = new ArrayList<Tenant>();
+        isRented = false;
     }
 
-    // REQUIRES: tenantName has a non-zero length
+    // REQUIRES: tenantName has a non-zero length, AND must be unique (no duplicates in tenantList)
     // MODIFIES: this
-    // EFFECTS: Adds a new tenant to a property's list of tenants.
-    //          If tenantList was empty before insertion, switch isRented to true
-    public void addNewTenant(String tenantName) {
-        // stub
+    // EFFECTS: Adds a unique new tenant with the given name to this. If addition is successful, return true - else
+    //          return false.
+    //          Also, if addition is successful and tenantList was empty at method call, switch isRented to true
+    public boolean addNewTenant(String tenantName) {
+
+        boolean isListEmpty = tenantList.isEmpty();
+
+        for (Tenant t : tenantList) {
+            if (t.getTenantName().equals(tenantName)) {
+                return false;
+            }
+        }
+
+        Tenant newTenant = new Tenant(tenantName);
+        tenantList.add(newTenant);
+
+        if (isListEmpty) {
+            isRented = true;
+        }
+
+        return true;
     }
 
     // REQUIRES: tenantList has length > 0
     // MODIFIES: this
-    // EFFECTS: Removes a tenant with the given name from a property's list of tenants.
-    //          If tenantList is empty after removal, switch isRented to false.
-    public void removeTenant(String tenantName) {
-        // stub
+    // EFFECTS:  Removes a tenant with the given name from this. If removal is successful, return true - else
+    //           return false
+    //           If removal is successful and tenantList is now empty, switch isRented to false.
+    public boolean removeTenant(String tenantName) {
+
+        for (Tenant t : tenantList) {
+            if (tenantName.equals(t.getTenantName())) {
+                tenantList.remove(t);
+                if (tenantList.isEmpty()) {
+                    this.isRented = false;
+                }
+                return true;
+            }
+        }
+        return false;
     }
 
-    // MODIFIES: this
-    // EFFECTS: charges tenants one month's rent and increases total income generated
-    public void chargeRent() {
-
-    }
 
     // getters
     public String getCivicAddress() {
@@ -60,6 +88,10 @@ public class Property {
 
     public ArrayList<Tenant> getTenantList() {
         return tenantList;
+    }
+
+    public boolean getIsRented() {
+        return isRented;
     }
 
     // setters
