@@ -18,6 +18,7 @@ My application could be utilized by a variety of different user groups
 - **User Story #3** - As a user, I want to be able to view all properties in my portfolio.
 - **User Story #4** - As a user, I want to be able to assign one or more tenants to a specific property.
 
+
 Stretch Stories (Implement if time constraints allow)
 
 - **User Story #5** - As a user, I want to be able to select a specific property and view it in more detail

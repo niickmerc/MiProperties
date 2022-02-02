@@ -22,20 +22,22 @@ public class PropertyTest {
 
     @Test
     public void testConstructor() {
-       assertEquals("2133 University Avenue", p1.getCivicAddress());
-       assertEquals(1250000, p1.getPropertyValue());
-       assertEquals(3600, p1.getMonthlyRent());
-       assertFalse(p1.getIsRented());
-       assertTrue(p1.getTenantList().isEmpty());
+        assertEquals("2133 University Avenue", p1.getCivicAddress());
+        assertEquals(1250000, p1.getPropertyValue());
+        assertEquals(3600, p1.getMonthlyRent());
+        assertFalse(p1.getIsRented());
+        assertTrue(p1.getTenantList().isEmpty());
     }
 
     @Test
     public void testAddTenantOnlyOne() {
+
         addFirstTenant("Jon Doe");
     }
 
     @Test
     public void testAddMultipleTenants() {
+
         addFirstTenant("Jon Doe");
 
         p1.addNewTenant("Jane Doe");
@@ -43,7 +45,7 @@ public class PropertyTest {
     }
 
     @Test
-    public void testAddTenantNoDuplicates(){
+    public void testAddTenantNoDuplicates() {
         addFirstTenant("John Doe");
         p1.addNewTenant("John Doe");
         assertEquals(1, p1.getTenantList().size());
@@ -60,12 +62,16 @@ public class PropertyTest {
     }
 
     @Test
-    public void testRemoveTenantMultiple() {
+    public void testRemoveTenantMultipleTenants() {
 
         addFirstTenant("John Doe");
         p1.addNewTenant("Jane Doe");
         p1.addNewTenant("John Smith");
 
+        p1.removeTenant("John Doe");
+        p1.removeTenant("John Smith");
+
+        assertEquals(1, p1.getTenantList().size());
     }
 
     private void addFirstTenant(String name) {
