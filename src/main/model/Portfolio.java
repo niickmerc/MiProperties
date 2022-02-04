@@ -52,6 +52,10 @@ public class Portfolio {
         }
     }
 
+    public void manageSpecificProperty() {
+
+    }
+
     // getters
     public ArrayList<Property> getPropertyList() {
         return propertyList;
