@@ -10,10 +10,10 @@ public class Portfolio {
 
     // EFFECTS: Constructs a new portfolio of properties
     public Portfolio() {
-        propertyList = new ArrayList<Property>();
+        propertyList = new ArrayList<>();
     }
 
-    // REQUIRES: civicAddress must be in a valid form, propertyValue & monthlyRent must be non-zero positive integers
+    // REQUIRES: civicAddress must be unique, propertyValue & monthlyRent must be non-zero positive integers
     // MODIFIES: this
     // EFFECTS: Adds a new property with the given address, value, and desired monthly rent into the portfolio.
     //          if successful, return true, else return false
@@ -47,15 +47,12 @@ public class Portfolio {
     // REQUIRES: propertyList is an ArrayList with length > 0
     // EFFECTS: prints all civic addresses within propertyList out on the console
     public void viewAllProperties() {
+        int count = 1;
+
         for (Property p : propertyList) {
-            System.out.println(p.getCivicAddress());
+            System.out.println("\tProperty #" + count++ + ": " + p.getCivicAddress());
         }
     }
-
-    public void manageSpecificProperty() {
-
-    }
-
     // getters
     public ArrayList<Property> getPropertyList() {
         return propertyList;

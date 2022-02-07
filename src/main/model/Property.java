@@ -23,7 +23,6 @@ public class Property {
         this.civicAddress = civicAddress;
         this.propertyValue = propertyValue;
         this.monthlyRent = monthlyRent;
-
         tenantList = new ArrayList<Tenant>();
         isRented = false;
     }
@@ -34,22 +33,17 @@ public class Property {
     //          return false.
     //          Also, if addition is successful and tenantList was empty at method call, switch isRented to true
     public boolean addNewTenant(String tenantName) {
-
         boolean isListEmpty = tenantList.isEmpty();
-
         for (Tenant t : tenantList) {
             if (t.getTenantName().equals(tenantName)) {
                 return false;
             }
         }
-
         Tenant newTenant = new Tenant(tenantName);
         tenantList.add(newTenant);
-
         if (isListEmpty) {
             isRented = true;
         }
-
         return true;
     }
 
@@ -70,6 +64,13 @@ public class Property {
             }
         }
         return false;
+    }
+
+    public void viewAllTenants() {
+        int count = 1;
+        for (Tenant t : tenantList) {
+            System.out.println("\tTenant #" + count++ + ": " + t.getTenantName());
+        }
     }
 
 
@@ -99,11 +100,11 @@ public class Property {
         this.civicAddress = newAddress;
     }
 
-    public void updatePropertyValue(int newValue) {
+    public void setPropertyValue(int newValue) {
         this.propertyValue = newValue;
     }
 
-    public void updateMonthlyRent(int newRent) {
+    public void setMonthlyRent(int newRent) {
         this.monthlyRent = newRent;
     }
 
