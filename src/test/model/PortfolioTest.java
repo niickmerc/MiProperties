@@ -71,10 +71,8 @@ public class PortfolioTest {
         testPortfolio.addNewProperty(p3.getCivicAddress(), p3.getPropertyValue(), p3.getMonthlyRent());
 
         assertEquals(3, testPortfolio.getPropertyList().size());
-
         assertTrue(testPortfolio.removeExistingProperty(p3.getCivicAddress()));
         assertTrue(testPortfolio.removeExistingProperty(p1.getCivicAddress()));
-
         assertEquals(1, testPortfolio.getPropertyList().size());
     }
 

@@ -71,7 +71,7 @@ public class PropertyManagementApp {
             System.out.println("Your portfolio is currently empty.");
             return false;
         } else {
-            portfolio.viewAllProperties();
+            viewAllProperties();
             return true;
         }
     }

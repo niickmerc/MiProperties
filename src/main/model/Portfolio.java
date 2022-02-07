@@ -41,15 +41,15 @@ public class Portfolio {
         return false;
     }
 
-    // REQUIRES: propertyList is an ArrayList with length > 0
-    // EFFECTS: prints all civic addresses within propertyList out on the console
-    public void viewAllProperties() {
-        int count = 1;
-
-        for (Property p : propertyList) {
-            System.out.println("\tProperty #" + count++ + ": " + p.getCivicAddress());
-        }
-    }
+//    // REQUIRES: propertyList is an ArrayList with length > 0
+//    // EFFECTS: prints all civic addresses within propertyList out on the console
+//    public void viewAllProperties() {
+//        int count = 1;
+//
+//        for (Property p : propertyList) {
+//            System.out.println("\tProperty #" + count++ + ": " + p.getCivicAddress());
+//        }
+//    }
 
     // getters
     public ArrayList<Property> getPropertyList() {

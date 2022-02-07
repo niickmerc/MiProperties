@@ -2,7 +2,9 @@ package ui;
 
 import model.Portfolio;
 import model.Property;
+import model.Tenant;
 
+import java.util.Locale;
 import java.util.Scanner;
 
 
@@ -26,8 +28,7 @@ public class PotentialNewUserInterface {
         while (runProgram) {
             System.out.println();
             applicationMenu();
-            userCommand = input.next();
-            userCommand = userCommand.toLowerCase();
+            userCommand = input.next().toLowerCase();
 
             if (userCommand.equals("quit")) {
                 runProgram = false;
@@ -99,12 +100,19 @@ public class PotentialNewUserInterface {
     // EFFECTS: returns true and prints contents of propertyList if not empty - else returns false and prints error
     private boolean viewAllProperties() {
         if (portfolio.getPropertyList().isEmpty()) {
-            System.out.println("Your portfolio is currently empty.");
+            System.out.println("Your portfolio is currently empty. Please add a property below.");
             return false;
         } else {
             System.out.println("Your Portfolio:");
-            portfolio.viewAllProperties();
+            printAllProperties();
             return true;
+        }
+    }
+
+    public void printAllProperties() {
+        int count = 1;
+        for (Property p : portfolio.getPropertyList()) {
+            System.out.println("\tProperty #" + count++ + ": " + p.getCivicAddress());
         }
     }
 
@@ -157,6 +165,8 @@ public class PotentialNewUserInterface {
         if (viewAllProperties()) {
             System.out.println();
             findProperty();
+        } else {
+            System.out.println("Please add a property and try again.");
         }
     }
 
@@ -187,11 +197,11 @@ public class PotentialNewUserInterface {
         System.out.println("\tMarket Value: $" + selectedProperty.getPropertyValue());
         System.out.println("\tDesired Monthly Rental Rate: $" + selectedProperty.getMonthlyRent());
         if (selectedProperty.getIsRented()) {
-            occupancyStatus = "Occupied";
+            viewAllTenants(selectedProperty);
         } else {
-            occupancyStatus = "Vacant";
+            System.out.println("\tOccupancy Status: Vacant");
         }
-        System.out.println("\tOccupancy Status: " + occupancyStatus);
+
 
         managePropertyMenu(selectedProperty);
     }
@@ -254,16 +264,33 @@ public class PotentialNewUserInterface {
             System.out.println(selectedProperty.getCivicAddress() + " is currently vacant.");
         } else {
             System.out.println("Tenants for " + selectedProperty.getCivicAddress());
-            selectedProperty.viewAllTenants();
+            viewAllTenants(selectedProperty);
         }
         System.out.println();
         // !!! add a loop here for multiple tenant additions / removals
-        System.out.println("To add a new tenant, type 'add'");
-        System.out.println("To remove an existing tenant, type 'remove'");
-        System.out.println("To return to the main menu, type 'main'");
-        System.out.print("Type your answer here: ");
-        String userInput = input.next();
-        processCommand(userInput, selectedProperty);
+
+        boolean keepRunning = true;
+        String userInput = "";
+
+        while (keepRunning) {
+            System.out.println("To add a new tenant, type 'add'");
+            System.out.println("To remove an existing tenant, type 'remove'");
+            System.out.println("To return to the main menu, type 'main'");
+            System.out.print("Type your answer here: ");
+            userInput = input.next().toLowerCase(Locale.ROOT);
+            if (userInput.equals("main")) {
+                return;
+            } else {
+                processCommand(userInput, selectedProperty);
+            }
+        }
+    }
+
+    public void viewAllTenants(Property selectedProperty) {
+        int count = 1;
+        for (Tenant t : selectedProperty.getTenantList()) {
+            System.out.println("\tTenant #" + count++ + ": " + t.getTenantName());
+        }
     }
 
     // REQUIRES:
@@ -283,6 +310,4 @@ public class PotentialNewUserInterface {
         String tenantToRemove = input.next();
         selectedProperty.removeTenant(tenantToRemove);
     }
-
-
 }

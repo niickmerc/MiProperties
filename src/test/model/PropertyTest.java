@@ -12,12 +12,7 @@ public class PropertyTest {
 
     @BeforeEach
     public void setup(){
-
         p1 = new Property("2133 University Avenue", 1250000, 3600);
-        //        p2 = new Property("1703-1088 Richards St", 650000, 2200);
-        //        p3 = new Property("213-2130 West Broadway St", 885000, 2950);
-        //        p4 = new Property("1027 Cornwall Avenue", 4500000, 5000);
-
     }
 
     @Test
@@ -30,16 +25,24 @@ public class PropertyTest {
     }
 
     @Test
-    public void testAddTenantOnlyOne() {
+    public void testSetters() {
+        p1.setCivicAddress("1234 Happy Drive");
+        p1.setPropertyValue(1000000);
+        p1.setMonthlyRent(3000);
 
+        assertEquals("1234 Happy Drive", p1.getCivicAddress());
+        assertEquals(1000000, p1.getPropertyValue());
+        assertEquals(3000, p1.getMonthlyRent());
+    }
+
+    @Test
+    public void testAddTenantOnlyOne() {
         addFirstTenant("Jon Doe");
     }
 
     @Test
     public void testAddMultipleTenants() {
-
         addFirstTenant("Jon Doe");
-
         p1.addNewTenant("Jane Doe");
         assertEquals(2, p1.getTenantList().size());
     }
@@ -54,11 +57,17 @@ public class PropertyTest {
     @Test
     public void testRemoveTenantOnlyOne() {
         addFirstTenant("John Doe");
-
         p1.removeTenant("John Doe");
         assertTrue(p1.getTenantList().isEmpty());
         assertFalse(p1.getIsRented());
 
+    }
+
+    @Test
+    public void testRemoveTenantNotPresent() {
+        addFirstTenant("John Doe");
+        assertFalse(p1.removeTenant("Jane Doe"));
+        assertEquals(1, p1.getTenantList().size());
     }
 
     @Test
