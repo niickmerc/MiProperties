@@ -18,13 +18,11 @@ public class Portfolio {
     // EFFECTS: Adds a new property with the given address, value, and desired monthly rent into the portfolio.
     //          if successful, return true, else return false
     public boolean addNewProperty(String civicAddress, int propertyValue, int monthlyRent) {
-
         for (Property p : propertyList) {
             if (p.getCivicAddress().equals(civicAddress)) {
                 return false;
             }
         }
-
         Property newProp = new Property(civicAddress, propertyValue, monthlyRent);
         propertyList.add(newProp);
         return true;
@@ -34,7 +32,6 @@ public class Portfolio {
     // MODIFIES: this
     // EFFECTS: Removes the property with the given name from the portfolio. if successful, return true, else false
     public boolean removeExistingProperty(String civilAddress) {
-
         for (Property p : propertyList) {
             if (p.getCivicAddress().equals(civilAddress)) {
                 propertyList.remove(p);
@@ -53,6 +50,7 @@ public class Portfolio {
             System.out.println("\tProperty #" + count++ + ": " + p.getCivicAddress());
         }
     }
+
     // getters
     public ArrayList<Property> getPropertyList() {
         return propertyList;

@@ -72,6 +72,30 @@ public class PotentialNewUserInterface {
         }
     }
 
+    // REQUIRES:
+    // MODIFIES:
+    // EFFECTS:
+    private void processCommand(String userInput, Property selectedProperty) {
+        if (userInput.equals("civic")) {
+            updateCivicAddress(selectedProperty);
+        } else if (userInput.equals("value")) {
+            updateMarketValue(selectedProperty);
+        } else if (userInput.equals("income")) {
+            updateMonthlyRentalIncome(selectedProperty);
+        } else if (userInput.equals("tenants")) {
+            manageTenantsMenu(selectedProperty);
+        } else if (userInput.equals("add")) {
+            addTenants(selectedProperty);
+        } else if (userInput.equals("remove")) {
+            removeTenants(selectedProperty);
+        } else if (userInput.equals("main")) {
+            return;
+        } else {
+            System.out.println("\nInvalid selection. Returning to the main menu.");
+            System.out.println("-----------------------------------------------------------------");
+        }
+    }
+
     // EFFECTS: returns true and prints contents of propertyList if not empty - else returns false and prints error
     private boolean viewAllProperties() {
         if (portfolio.getPropertyList().isEmpty()) {
@@ -186,30 +210,6 @@ public class PotentialNewUserInterface {
         String userInput = input.next();
 
         processCommand(userInput, selectedProperty);
-    }
-
-    // REQUIRES:
-    // MODIFIES:
-    // EFFECTS:
-    private void processCommand(String userInput, Property selectedProperty) {
-        if (userInput.equals("civic")) {
-            updateCivicAddress(selectedProperty);
-        } else if (userInput.equals("value")) {
-            updateMarketValue(selectedProperty);
-        } else if (userInput.equals("income")) {
-            updateMonthlyRentalIncome(selectedProperty);
-        } else if (userInput.equals("tenants")) {
-            manageTenantsMenu(selectedProperty);
-        } else if (userInput.equals("add")) {
-            addTenants(selectedProperty);
-        } else if (userInput.equals("remove")) {
-            removeTenants(selectedProperty);
-        } else if (userInput.equals("main")) {
-            return;
-        } else {
-            System.out.println("\nInvalid selection. Returning to the main menu.");
-            System.out.println("-----------------------------------------------------------------");
-        }
     }
 
     // REQUIRES:
