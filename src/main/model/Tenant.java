@@ -1,8 +1,9 @@
 package model;
 
-// !!! Complete class-level comment
+
 // future idea: implement two subclasses: ResidentialTenant and CommercialTenant
 
+// This class represents a rental tenant with a full name
 public class Tenant {
 
     private String tenantName;

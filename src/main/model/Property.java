@@ -3,8 +3,8 @@ package model;
 import java.util.ArrayList;
 
 
-// !!! Complete class-level comment
-
+// This class represents a property with an address, current market value, desired monthly income, a list of current
+//      tenants, and a boolean value which represents the property's occupancy status
 public class Property {
 
     private String civicAddress;                // a property's street address
@@ -51,7 +51,6 @@ public class Property {
     //           return false
     //           If removal is successful and tenantList is now empty, switch isRented to false.
     public boolean removeTenant(String tenantName) {
-
         for (Tenant t : tenantList) {
             if (tenantName.equals(t.getTenantName())) {
                 tenantList.remove(t);
@@ -63,13 +62,6 @@ public class Property {
         }
         return false;
     }
-
-//    public void viewAllTenants() {
-//        int count = 1;
-//        for (Tenant t : tenantList) {
-//            System.out.println("\tTenant #" + count++ + ": " + t.getTenantName());
-//        }
-//    }
 
     // getters
     public String getCivicAddress() {

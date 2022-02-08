@@ -60,7 +60,6 @@ public class PropertyTest {
         p1.removeTenant("John Doe");
         assertTrue(p1.getTenantList().isEmpty());
         assertFalse(p1.getIsRented());
-
     }
 
     @Test
@@ -72,14 +71,11 @@ public class PropertyTest {
 
     @Test
     public void testRemoveTenantMultipleTenants() {
-
         addFirstTenant("John Doe");
         p1.addNewTenant("Jane Doe");
         p1.addNewTenant("John Smith");
-
         p1.removeTenant("John Doe");
         p1.removeTenant("John Smith");
-
         assertEquals(1, p1.getTenantList().size());
     }
 

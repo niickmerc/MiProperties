@@ -1,12 +1,13 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.List;
 
-// !!! Complete class-level comment
 
+// This class represents a digital portfolio of rental properties
 public class Portfolio {
 
-    private ArrayList<Property> propertyList;
+    private List<Property> propertyList;
 
     // EFFECTS: Constructs a new portfolio of properties
     public Portfolio() {
@@ -41,18 +42,8 @@ public class Portfolio {
         return false;
     }
 
-//    // REQUIRES: propertyList is an ArrayList with length > 0
-//    // EFFECTS: prints all civic addresses within propertyList out on the console
-//    public void viewAllProperties() {
-//        int count = 1;
-//
-//        for (Property p : propertyList) {
-//            System.out.println("\tProperty #" + count++ + ": " + p.getCivicAddress());
-//        }
-//    }
-
     // getters
-    public ArrayList<Property> getPropertyList() {
+    public List<Property> getPropertyList() {
         return propertyList;
     }
 
