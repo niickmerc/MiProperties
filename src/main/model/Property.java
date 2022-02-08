@@ -37,8 +37,7 @@ public class Property {
                 return false;
             }
         }
-        Tenant newTenant = new Tenant(tenantName);
-        tenantList.add(newTenant);
+        tenantList.add(new Tenant(tenantName));
         if (isListEmpty) {
             isRented = true;
         }
