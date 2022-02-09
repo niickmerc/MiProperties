@@ -71,7 +71,7 @@ public class PropertyManagementApp {
         } else if (userInput.equals("manage")) {
             manageExistingProperty();
         } else if (userInput.equals("summary")) {
-            System.out.println("Coming soon :)");
+            printSummaryStatistics();
         } else {
             System.out.println("\nUhhhh I dunno what to do with this. Please try again.");
         }
@@ -161,7 +161,7 @@ public class PropertyManagementApp {
     private void removeExistingProperty() {
         if (viewAllPropertiesSubMenu()) {
             System.out.print("\nEnter the address of the property you wish to remove: ");
-            String userInput = input.next();
+            String userInput = input.next().trim();
             if (portfolio.removeExistingProperty(userInput)) {
                 System.out.println("\n" + userInput + " has been removed from your portfolio!");
                 System.out.println("-----------------------------------------------------------------");
@@ -175,7 +175,6 @@ public class PropertyManagementApp {
     // MODIFIES: ??????
     // EFFECTS: calls findProperty() or prints an error message if viewAllProperties() returns false
     private void manageExistingProperty() {
-        //System.out.println();
         if (viewAllPropertiesSubMenu()) {
             System.out.println();
             findProperty();
@@ -187,7 +186,7 @@ public class PropertyManagementApp {
     // EFFECTS: calls displayPropertyInfo() on a specific property if its address matches a user-inputted civic address
     private void findProperty() {
         System.out.print("Enter the address of the property you want to manage: ");
-        String propName = input.next();
+        String propName = input.next().trim();
 
         for (Property p : portfolio.getPropertyList()) {
             if (propName.equals(p.getCivicAddress())) {
@@ -237,8 +236,8 @@ public class PropertyManagementApp {
     // MODIFIES:
     // EFFECTS: updates the address of a specific property
     private void updateCivicAddress(Property selectedProperty) {
-        System.out.println("Enter the new civic address for this property: ");
-        String newAddress = input.next();
+        System.out.print("Enter the new civic address for this property: ");
+        String newAddress = input.next().trim();
         selectedProperty.setCivicAddress(newAddress);
         System.out.println("\nAddress for " + selectedProperty.getCivicAddress() +  " updated!");
         System.out.println("-----------------------------------------------------------------");
@@ -309,7 +308,7 @@ public class PropertyManagementApp {
     // EFFECTS:  asks user to enter the name of a new tenant and passes it to the addNewTenant function
     private void addTenants(Property selectedProperty) {
         System.out.print("Enter your tenant's name: ");
-        String tenantToAdd = input.next();
+        String tenantToAdd = input.next().trim();
         System.out.println();
         if (selectedProperty.addNewTenant(tenantToAdd)) {
             System.out.println(tenantToAdd + " has been added to " + selectedProperty.getCivicAddress() + "!");
@@ -323,7 +322,7 @@ public class PropertyManagementApp {
     // EFFECTS: asks user to enter the name of an existing tenant and passes it to the removeTenant function
     private void removeTenants(Property selectedProperty) {
         System.out.print("Enter your tenant's name: ");
-        String tenantToRemove = input.next();
+        String tenantToRemove = input.next().trim();
         System.out.println();
         if (selectedProperty.removeTenant(tenantToRemove)) {
             System.out.println(tenantToRemove + " has been removed from " + selectedProperty.getCivicAddress());
@@ -331,6 +330,16 @@ public class PropertyManagementApp {
             System.out.println(tenantToRemove + " does not exist in " + selectedProperty.getCivicAddress());
         }
         System.out.println("-----------------------------------------------------------------");
+    }
+
+    private void printSummaryStatistics() {
+        if (!portfolio.getPropertyList().isEmpty()) {
+            System.out.println();
+            System.out.println("Your portfolio summary or something");
+            System.out.println("Total value: $" + portfolio.getTotalPortfolioValue());
+            System.out.println("Total monthly rent: $" + portfolio.getTotalMonthlyRent());
+            System.out.println("Total vacancy rate: " + portfolio.getVacancyRate() + "%");
+        }
     }
 
     // EFFECTS: returns user inut formatted in all lowercase and without any leading or trailing whitespace

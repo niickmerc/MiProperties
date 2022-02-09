@@ -7,14 +7,14 @@ import java.util.ArrayList;
 //      tenants, and a boolean value which represents the property's occupancy status
 public class Property {
 
-    private String civicAddress;                // a property's street address
+    private String civicAddress;                // a property's civic address
     private int propertyValue;                  // a property's market value in Canadian dollars
-    private int monthlyRent;                    // desired monthly rental income in Canadian dollars
+    private int monthlyRent;                    // a property's desired monthly rental income in Canadian dollars
     private ArrayList<Tenant> tenantList;       // a list of tenants that currently occupy the property (if any)
     private boolean isRented;                   // current rental status (false = vacant, true = occupied)
 
     // REQUIRES: civilAddress has a non-zero length;
-    //           propertyValue must be a non-zero positive integer;
+    //           propertyValue must be a non-zero positive integer,
     //           monthlyRent must be a non-zero positive integer
     // EFFECTS:  Creates a new instance of type Property
     public Property(String civicAddress, int propertyValue, int monthlyRent) {
@@ -31,14 +31,13 @@ public class Property {
     //          return false.
     //          Also, if addition is successful and tenantList was empty at method call, switch isRented to true
     public boolean addNewTenant(String tenantName) {
-        boolean isListEmpty = tenantList.isEmpty();
         for (Tenant t : tenantList) {
             if (t.getTenantName().equals(tenantName)) {
                 return false;
             }
         }
         tenantList.add(new Tenant(tenantName));
-        if (isListEmpty) {
+        if (!this.getIsRented()) {
             isRented = true;
         }
         return true;

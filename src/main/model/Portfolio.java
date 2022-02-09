@@ -42,6 +42,41 @@ public class Portfolio {
         return false;
     }
 
+    // EFFECTS: Returns the sum of all market values from properties in a user's portfolio
+    public long getTotalPortfolioValue() {
+        long totalValue = 0;
+        for (Property p : propertyList) {
+            totalValue += p.getPropertyValue();
+        }
+        return totalValue;
+    }
+
+    // EFFECTS: Returns the sum of all rental cash flows from occupied properties
+    public long getTotalMonthlyRent() {
+        long totalMonthlyRent = 0;
+        for (Property p : propertyList) {
+            if (p.getIsRented()) {
+                totalMonthlyRent += p.getMonthlyRent();
+            }
+        }
+        return totalMonthlyRent;
+    }
+
+    // EFFECTS: Returns the percentage (out of 100) of properties within a user's portfolio that are vacant
+    public double getVacancyRate() {
+        double vacantProperties = 0.0;
+        if (propertyList.isEmpty()) {
+            return vacantProperties;
+        } else {
+            for (Property p : propertyList) {
+                if (!p.getIsRented()) {
+                    vacantProperties++;
+                }
+            }
+        }
+        return (vacantProperties / propertyList.size()) * 100;
+    }
+
     // getters
     public List<Property> getPropertyList() {
         return propertyList;
