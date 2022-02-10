@@ -7,7 +7,7 @@ import java.util.List;
 // This class represents a digital portfolio of rental properties
 public class Portfolio {
 
-    private List<Property> propertyList;
+    private List<Property> propertyList;  // a list of properties that have been created by a user
 
     // EFFECTS: Constructs a new portfolio of properties
     public Portfolio() {
@@ -29,7 +29,7 @@ public class Portfolio {
         return true;
     }
 
-    // REQUIRES: propertyList has a size > 0 AND property with given civic address exists in propertyList
+    // REQUIRES: propertyList has a size > 0
     // MODIFIES: this
     // EFFECTS: Removes the property with the given name from the portfolio. if successful, return true, else false
     public boolean removeExistingProperty(String civilAddress) {

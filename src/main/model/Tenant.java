@@ -6,7 +6,7 @@ package model;
 // This class represents a rental tenant with a full name
 public class Tenant {
 
-    private String tenantName;
+    private String tenantName;  // a tenant's full legal name
 
     public Tenant(String name) {
         tenantName = name;

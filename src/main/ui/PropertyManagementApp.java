@@ -7,14 +7,14 @@ import model.Tenant;
 import java.util.Locale;
 import java.util.Scanner;
 
-
+// This class represents the user interface for my property management application
 public class PropertyManagementApp {
     private Portfolio portfolio;
     private Scanner input;
 
     // EFFECTS: runs the property management application
     public PropertyManagementApp() {
-        System.out.println("Ayo g thanks for pulling up.");
+        System.out.println("Hello, and welcome to MyPropertyManagement App v1.");
         runApp();
     }
 
@@ -38,7 +38,7 @@ public class PropertyManagementApp {
                 processCommand(userInput);
             }
         }
-        System.out.println("\nThanks for stopping by!");
+        System.out.println("\nTerminating Application");
     }
 
     // MODIFIES: this
@@ -52,11 +52,11 @@ public class PropertyManagementApp {
     // EFFECTS: displays current portfolio and main menu on the console
     private void applicationMenu() {
         viewAllPropertiesMainMenu();
-        System.out.println(); // Line Break
+        System.out.println();
         System.out.println("To add a new property, type 'add'");
         System.out.println("To remove an existing property, type 'remove'");
         System.out.println("To manage a specific property, type 'manage'");
-        System.out.println("For summary statistics on your portfolio, type 'summary' (TODO)");
+        System.out.println("For summary statistics on your portfolio, type 'summary'");
         System.out.println("To close the application, type 'quit'");
         System.out.print("Type your answer here: ");
     }
@@ -73,7 +73,7 @@ public class PropertyManagementApp {
         } else if (userInput.equals("summary")) {
             printSummaryStatistics();
         } else {
-            System.out.println("\nUhhhh I dunno what to do with this. Please try again.");
+            System.out.println("\nYou have entered an invalid input. Returning to the main menu");
         }
     }
 
@@ -95,11 +95,13 @@ public class PropertyManagementApp {
         } else if (userInput.equals("main")) {
             return;
         } else {
-            System.out.println("\nUhhhh I dunno what to do with this. Please try again.");
+            System.out.println("\nYou have entered an invalid input. Please try again.");
             System.out.println("-----------------------------------------------------------------");
         }
     }
 
+    // EFFECTS: returns true and calls printAllProperties() if propertyList isn't empty
+    //          else returns false
     private boolean viewAllPropertiesSubMenu() {
         if (portfolio.getPropertyList().isEmpty()) {
             return false;
@@ -110,7 +112,6 @@ public class PropertyManagementApp {
             return true;
         }
     }
-
 
     // EFFECTS: returns true and calls printAllProperties() if propertyList isn't empty
     //          else returns false and prints error message on console
@@ -125,7 +126,7 @@ public class PropertyManagementApp {
         }
     }
 
-    // EFFECTS: prints the civic address for all properties in the portfolio on the console
+    // EFFECTS: prints the civic address for all properties inside the portfolio out on the console
     public void printAllProperties() {
         int count = 1;
         for (Property p : portfolio.getPropertyList()) {
@@ -133,7 +134,7 @@ public class PropertyManagementApp {
         }
     }
 
-    // MODIFIES: ?????????
+    // MODIFIES: this
     // EFFECTS: Gets new property info from user and passes it to the portfolio.addNewProperty() method.
     private void addNewProperty() {
         System.out.println("\nNew Property Information:");
@@ -155,8 +156,8 @@ public class PropertyManagementApp {
         }
     }
 
-    // REQUIRES: ???
-    // MODIFIES: Do I write "this" here?
+    // REQUIRES: propertyList.size() > 0
+    // MODIFIES: this
     // EFFECTS: gathers user input and removes the property with the given address if it exists in the portfolio
     private void removeExistingProperty() {
         if (viewAllPropertiesSubMenu()) {
@@ -172,7 +173,7 @@ public class PropertyManagementApp {
         }
     }
 
-    // MODIFIES: ??????
+    // MODIFIES: this
     // EFFECTS: calls findProperty() or prints an error message if viewAllProperties() returns false
     private void manageExistingProperty() {
         if (viewAllPropertiesSubMenu()) {
@@ -181,8 +182,7 @@ public class PropertyManagementApp {
         }
     }
 
-    // REQUIRES:
-    // MODIFIES: ????
+    // MODIFIES: this
     // EFFECTS: calls displayPropertyInfo() on a specific property if its address matches a user-inputted civic address
     private void findProperty() {
         System.out.print("Enter the address of the property you want to manage: ");
@@ -198,12 +198,10 @@ public class PropertyManagementApp {
         System.out.println("-----------------------------------------------------------------");
     }
 
-    // REQUIRES:
-    // MODIFIES:
+    // MODIFIES: this
     // EFFECTS: prints out the current fields of the specific property requested by user out on the console and
     //          calls managePropertyMenu()
     private void displayPropertyInfo(Property selectedProperty) {
-        String occupancyStatus = "";
         System.out.println();
         System.out.println("Details for " + selectedProperty.getCivicAddress() +  ": ");
         System.out.println("\tMarket Value: $" + selectedProperty.getPropertyValue());
@@ -216,11 +214,9 @@ public class PropertyManagementApp {
         managePropertyMenu(selectedProperty);
     }
 
-    // REQUIRES:
-    // MODIFIES:
+    // MODIFIES: this
     // EFFECTS: displays menu of specific property actions to the user
     private void managePropertyMenu(Property selectedProperty) {
-
         System.out.println("\nTo update this property's address, type 'civic'");
         System.out.println("To update this property's market value, type 'value'");
         System.out.println("To update this property's desired rental income, type 'income'");
@@ -232,8 +228,7 @@ public class PropertyManagementApp {
         processCommand(userInput, selectedProperty);
     }
 
-    // REQUIRES:
-    // MODIFIES:
+    // MODIFIES: this
     // EFFECTS: updates the address of a specific property
     private void updateCivicAddress(Property selectedProperty) {
         System.out.print("Enter the new civic address for this property: ");
@@ -243,8 +238,7 @@ public class PropertyManagementApp {
         System.out.println("-----------------------------------------------------------------");
     }
 
-    // REQUIRES:
-    // MODIFIES:
+    // MODIFIES: this
     // EFFECTS: updates the market value of a specific property
     private void updateMarketValue(Property selectedProperty) {
         System.out.println("Enter the new market value for this property: ");
@@ -254,8 +248,7 @@ public class PropertyManagementApp {
         System.out.println("-----------------------------------------------------------------");
     }
 
-    // REQUIRES:
-    // MODIFIES:
+    // MODIFIES: this
     // EFFECTS: updates the desired monthly rental income of a specific property
     private void updateMonthlyRentalIncome(Property selectedProperty) {
         System.out.println("Enter your desired rental income for this property: ");
@@ -265,17 +258,11 @@ public class PropertyManagementApp {
         System.out.println("-----------------------------------------------------------------");
     }
 
-    // REQUIRES:
-    // MODIFIES:
+    // MODIFIES: this
     // EFFECTS: displays menu of tenant options for user
     private void manageTenantsMenu(Property selectedProperty) {
         System.out.println();
-        if (selectedProperty.getTenantList().isEmpty()) {
-            System.out.println(selectedProperty.getCivicAddress() + " is currently vacant.");
-        } else {
-            System.out.println("Tenants for " + selectedProperty.getCivicAddress());
-            viewAllTenants(selectedProperty);
-        }
+        displayTenantList(selectedProperty);
 
         boolean keepRunning = true;
         String userInput;
@@ -295,6 +282,16 @@ public class PropertyManagementApp {
         }
     }
 
+    // EFFECTS: displays menu of tenant options for user
+    private void displayTenantList(Property selectedProperty) {
+        if (selectedProperty.getTenantList().isEmpty()) {
+            System.out.println(selectedProperty.getCivicAddress() + " is currently vacant.");
+        } else {
+            System.out.println("Tenants for " + selectedProperty.getCivicAddress());
+            viewAllTenants(selectedProperty);
+        }
+    }
+
     // REQUIRES: selectedProperty.tenantList.size() > 0
     // EFFECTS: prints the names of all tenants corresponding to a specific property out
     public void viewAllTenants(Property selectedProperty) {
@@ -304,7 +301,7 @@ public class PropertyManagementApp {
         }
     }
 
-    // MODIFIES: like do I put property or selectedProperty here
+    // MODIFIES: this
     // EFFECTS:  asks user to enter the name of a new tenant and passes it to the addNewTenant function
     private void addTenants(Property selectedProperty) {
         System.out.print("Enter your tenant's name: ");
@@ -318,8 +315,8 @@ public class PropertyManagementApp {
         System.out.println("-----------------------------------------------------------------");
     }
 
-    // MODIFIES: same as addTenants function
-    // EFFECTS: asks user to enter the name of an existing tenant and passes it to the removeTenant function
+    // MODIFIES: this
+    // EFFECTS:  asks user to enter the name of an existing tenant and passes it to the removeTenant function
     private void removeTenants(Property selectedProperty) {
         System.out.print("Enter your tenant's name: ");
         String tenantToRemove = input.next().trim();
@@ -332,17 +329,21 @@ public class PropertyManagementApp {
         System.out.println("-----------------------------------------------------------------");
     }
 
+    // EFFECTS: prints out summary statistics for a user's portfolio of properties out on the console
     private void printSummaryStatistics() {
         if (!portfolio.getPropertyList().isEmpty()) {
             System.out.println();
-            System.out.println("Your portfolio summary or something");
+            System.out.println("Summary statistics for your portfolio:");
             System.out.println("Total value: $" + portfolio.getTotalPortfolioValue());
             System.out.println("Total monthly rent: $" + portfolio.getTotalMonthlyRent());
             System.out.println("Total vacancy rate: " + portfolio.getVacancyRate() + "%");
+            System.out.println();
+            System.out.print("Press enter to return to the main menu.");
+            String userInput = input.next();
         }
     }
 
-    // EFFECTS: returns user inut formatted in all lowercase and without any leading or trailing whitespace
+    // EFFECTS: returns user input formatted in all lowercase and without any leading or trailing whitespace
     private String formatUserInput(String userInput) {
         return userInput.toLowerCase(Locale.ROOT).trim();
     }
