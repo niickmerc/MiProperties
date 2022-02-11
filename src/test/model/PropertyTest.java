@@ -6,9 +6,6 @@ import static org.junit.jupiter.api.Assertions.*;
 public class PropertyTest {
 
     Property p1;
-//    Property p2;
-//    Property p3;
-//    Property p4;
 
     @BeforeEach
     public void setup(){

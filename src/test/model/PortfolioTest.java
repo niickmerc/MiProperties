@@ -80,19 +80,98 @@ public class PortfolioTest {
         assertEquals(1, testPortfolio.getPropertyList().size());
     }
 
-    @Test
-    public void testSummaryStatsMethods() {
-        assertEquals(0, testPortfolio.getTotalPortfolioValue());
-        assertEquals(0, testPortfolio.getTotalMonthlyRent());
-        assertEquals(0, testPortfolio.getVacancyRate());
+//    @Test
+//    public void testSummaryStatsMethods() {
+//        assertEquals(0, testPortfolio.getTotalPortfolioValue());
+//        assertEquals(0, testPortfolio.getTotalMonthlyRent());
+//        assertEquals(0, testPortfolio.getVacancyRate());
+//
+//        testPortfolio.addNewProperty(p1.getCivicAddress(), p1.getPropertyValue(), p1.getMonthlyRent());
+//        testPortfolio.addNewProperty(p2.getCivicAddress(), p2.getPropertyValue(), p2.getMonthlyRent());
+//        testPortfolio.addNewProperty(p3.getCivicAddress(), p3.getPropertyValue(), p3.getMonthlyRent());
+//
+//        assertEquals(p1.getPropertyValue() + p2.getPropertyValue() + p3.getPropertyValue(),
+//                testPortfolio.getTotalPortfolioValue());
+//        assertEquals(0, testPortfolio.getTotalMonthlyRent());
+//        assertEquals(100.0, testPortfolio.getVacancyRate());
+//
+//        testPortfolio.getPropertyList().get(0).addNewTenant("John Doe");
+//        assertEquals(((2.0/3.0) * 100), testPortfolio.getVacancyRate());
+//
+//        testPortfolio.getPropertyList().get(1).addNewTenant("Jane Doe");
+//        assertEquals(1.0/3.0 * 100, testPortfolio.getVacancyRate());
+//
+//        testPortfolio.getPropertyList().get(2).addNewTenant("Jane Doe");
+//        assertEquals(0, testPortfolio.getVacancyRate());
+//
+//        assertEquals(p1.getMonthlyRent() + p2.getMonthlyRent() + p3.getMonthlyRent(),
+//                testPortfolio.getTotalMonthlyRent());
+//    }
 
+    @Test
+    public void testGetTotalPortFolioValueEmptyPortfolio() {
+        assertEquals(0, testPortfolio.getTotalPortfolioValue());
+    }
+
+    @Test
+    public void testGetTotalPortfolioValueMultipleProperties() {
+        testPortfolio.addNewProperty(p1.getCivicAddress(), p1.getPropertyValue(), p1.getMonthlyRent());
+        testPortfolio.addNewProperty(p2.getCivicAddress(), p2.getPropertyValue(), p2.getMonthlyRent());
+        testPortfolio.addNewProperty(p3.getCivicAddress(), p3.getPropertyValue(), p3.getMonthlyRent());
+        assertEquals(p1.getPropertyValue() + p2.getPropertyValue() + p3.getPropertyValue(),
+                testPortfolio.getTotalPortfolioValue());
+    }
+
+    @Test
+    public void testGetTotalMonthlyRentEmptyPortfolio() {
+        assertEquals(0, testPortfolio.getTotalMonthlyRent());
+    }
+
+    @Test
+    public void testGetTotalMonthlyRentMultipleVacantProperties() {
         testPortfolio.addNewProperty(p1.getCivicAddress(), p1.getPropertyValue(), p1.getMonthlyRent());
         testPortfolio.addNewProperty(p2.getCivicAddress(), p2.getPropertyValue(), p2.getMonthlyRent());
         testPortfolio.addNewProperty(p3.getCivicAddress(), p3.getPropertyValue(), p3.getMonthlyRent());
 
-        assertEquals(p1.getPropertyValue() + p2.getPropertyValue() + p3.getPropertyValue(),
-                testPortfolio.getTotalPortfolioValue());
         assertEquals(0, testPortfolio.getTotalMonthlyRent());
+    }
+
+    @Test
+    public void testGetTotalMonthlyRentMultipleOccupiedProperties() {
+        testPortfolio.addNewProperty(p1.getCivicAddress(), p1.getPropertyValue(), p1.getMonthlyRent());
+        testPortfolio.addNewProperty(p2.getCivicAddress(), p2.getPropertyValue(), p2.getMonthlyRent());
+        testPortfolio.addNewProperty(p3.getCivicAddress(), p3.getPropertyValue(), p3.getMonthlyRent());
+
+        assertEquals(0, testPortfolio.getTotalMonthlyRent());
+
+        testPortfolio.getPropertyList().get(0).addNewTenant("John Doe");
+        testPortfolio.getPropertyList().get(1).addNewTenant("Jane Doe");
+        testPortfolio.getPropertyList().get(2).addNewTenant("Jane Doe");
+
+        assertEquals(p1.getMonthlyRent() + p2.getMonthlyRent() + p3.getMonthlyRent(),
+                testPortfolio.getTotalMonthlyRent());
+    }
+
+    @Test
+    public void testGetVacancyRatesEmptyPortfolio() {
+        assertEquals(0, testPortfolio.getVacancyRate());
+    }
+
+    @Test
+    public void testGetVacancyRatesMultipleVacantProperties() {
+        testPortfolio.addNewProperty(p1.getCivicAddress(), p1.getPropertyValue(), p1.getMonthlyRent());
+        testPortfolio.addNewProperty(p2.getCivicAddress(), p2.getPropertyValue(), p2.getMonthlyRent());
+        testPortfolio.addNewProperty(p3.getCivicAddress(), p3.getPropertyValue(), p3.getMonthlyRent());
+
+        assertEquals(100.0, testPortfolio.getVacancyRate());
+    }
+
+    @Test
+    public void testGetVacancyRatesMultipleProperties() {
+        testPortfolio.addNewProperty(p1.getCivicAddress(), p1.getPropertyValue(), p1.getMonthlyRent());
+        testPortfolio.addNewProperty(p2.getCivicAddress(), p2.getPropertyValue(), p2.getMonthlyRent());
+        testPortfolio.addNewProperty(p3.getCivicAddress(), p3.getPropertyValue(), p3.getMonthlyRent());
+
         assertEquals(100.0, testPortfolio.getVacancyRate());
 
         testPortfolio.getPropertyList().get(0).addNewTenant("John Doe");
@@ -103,9 +182,5 @@ public class PortfolioTest {
 
         testPortfolio.getPropertyList().get(2).addNewTenant("Jane Doe");
         assertEquals(0, testPortfolio.getVacancyRate());
-
-        assertEquals(p1.getMonthlyRent() + p2.getMonthlyRent() + p3.getMonthlyRent(),
-                testPortfolio.getTotalMonthlyRent());
     }
-
 }
