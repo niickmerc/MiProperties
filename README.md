@@ -5,7 +5,7 @@ management. I designed this project to help a variety of different user groups m
 that often accompany real estate investment and management.
 
 ## Who Could Use This App?
-There are two main user groups that may benefit from using my application
+There are two main user groups that may benefit from using my application:
 
 1. Professional Landlords 
 2. Property Management Companies / Managers
@@ -16,10 +16,10 @@ There are two main user groups that may benefit from using my application
 - **User Story #1** - As a user, I want to be able to add a new property to my portfolio.
 - **User Story #2** - As a user, I want to be able to remove an existing property from my portfolio.
 - **User Story #3** - As a user, I want to be able to view all properties in my portfolio.
-- **User Story #4** - As a user, I want to be able to select a specific property and view it in more detail.
+- **User Story #4** - As a user, I want to be able to select a specific property and view / edit it.
 - **User Story #5** - As a user, I want to be able to assign one or more tenants to a specific property.
 - **User Story #6** - As a user, I want to be able to remove one or more tenants from a specific property.
-- **User Story #7** - As a user, I want to be able to see some summary statistics on my portfolio.
+- **User Story #7** - As a user, I want to be able to review some summary statistics on my portfolio as a whole.
 
 ### Things to Implement in the Future
 - Ability to add more detailed tenant information (Employment Info, Annual Salary, Etc)

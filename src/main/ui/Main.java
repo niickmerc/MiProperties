@@ -6,4 +6,5 @@ public class Main {
     }
 }
 
-// REFERENCE: This code was created with some references to the CPSC210 TellerApp project
+// REFERENCE: This code was developed with some references to the CPSC 210 TellerApp project
+// Source Repo: https://github.students.cs.ubc.ca/CPSC210/TellerApp

@@ -14,7 +14,7 @@ public class PropertyManagementApp {
 
     // EFFECTS: runs the property management application
     public PropertyManagementApp() {
-        System.out.println("Hello, and welcome to MyPropertyManagement App v1.");
+        System.out.println("Welcome to the MyPropertyManagement Application! (v 1.0)");
         runApp();
     }
 
@@ -38,7 +38,8 @@ public class PropertyManagementApp {
                 processCommand(userInput);
             }
         }
-        System.out.println("\nTerminating Application");
+        System.out.println("\nTerminating current session. Thanks for using my app! ");
+        System.out.println("Made with love in Vancouver - 2022");
     }
 
     // MODIFIES: this
@@ -64,39 +65,40 @@ public class PropertyManagementApp {
     // MODIFIES: this
     // EFFECTS: processes user input according to the four possible options, otherwise returns an error message
     private void processCommand(String userInput) {
-        if (userInput.equals("add")) {
-            addNewProperty();
-        } else if (userInput.equals("remove")) {
-            removeExistingProperty();
-        } else if (userInput.equals("manage")) {
-            manageExistingProperty();
-        } else if (userInput.equals("summary")) {
-            printSummaryStatistics();
-        } else {
-            System.out.println("\nYou have entered an invalid input. Returning to the main menu");
+        switch (userInput) {
+            case ("add"): addNewProperty();
+                break;
+            case ("remove"): removeExistingProperty();
+                break;
+            case ("manage"): manageExistingProperty();
+                break;
+            case ("summary"): printSummaryStatistics();
+                break;
+            default: System.out.println("\nYou have entered an invalid input. Returning to the main menu");
         }
     }
 
     // MODIFIES: this
     // EFFECTS: processes user input according to the seven possible options, otherwise returns an error message
     private void processCommand(String userInput, Property selectedProperty) {
-        if (userInput.equals("civic")) {
-            updateCivicAddress(selectedProperty);
-        } else if (userInput.equals("value")) {
-            updateMarketValue(selectedProperty);
-        } else if (userInput.equals("income")) {
-            updateMonthlyRentalIncome(selectedProperty);
-        } else if (userInput.equals("tenants")) {
-            manageTenantsMenu(selectedProperty);
-        } else if (userInput.equals("add")) {
-            addTenants(selectedProperty);
-        } else if (userInput.equals("remove")) {
-            removeTenants(selectedProperty);
-        } else if (userInput.equals("main")) {
-            return;
-        } else {
-            System.out.println("\nYou have entered an invalid input. Please try again.");
-            System.out.println("-----------------------------------------------------------------");
+        switch (userInput) {
+            case ("civic"): updateCivicAddress(selectedProperty);
+                break;
+            case ("value"): updateMarketValue(selectedProperty);
+                break;
+            case ("income"): updateMonthlyRentalIncome(selectedProperty);
+                break;
+            case ("tenants"): manageTenantsMenu(selectedProperty);
+                break;
+            case ("add"): addTenants(selectedProperty);
+                break;
+            case ("remove"): removeTenants(selectedProperty);
+                break;
+            case ("main"): return;
+            default:
+                System.out.println("\nYou have entered an invalid input. Please try again.");
+                System.out.println("=======================================================");
+                break;
         }
     }
 
@@ -138,21 +140,21 @@ public class PropertyManagementApp {
     // EFFECTS: Gets new property info from user and passes it to the portfolio.addNewProperty() method.
     private void addNewProperty() {
         System.out.println("\nNew Property Information:");
-        System.out.print("\tCivic Address: ");
+        System.out.print("Enter this property's civic address: ");
         String civicAddress = input.next();
 
-        System.out.print("\tPurchase Price: $");
+        System.out.print("Enter the purchase price for this property: $");
         int purchasePrice = input.nextInt();
 
-        System.out.print("\tDesired Monthly Rent: $");
+        System.out.print("Enter your desired monthly rental income: $");
         int monthlyRent = input.nextInt();
 
         if (portfolio.addNewProperty(civicAddress, purchasePrice, monthlyRent)) {
             System.out.println("\n" + civicAddress + " has been added to your portfolio!");
-            System.out.println("-----------------------------------------------------------------");
+            System.out.println("=======================================================");
         } else {
             System.out.println("\n" + civicAddress + " already exists in your portfolio and is unable to be added.");
-            System.out.println("-----------------------------------------------------------------");
+            System.out.println("=======================================================");
         }
     }
 
@@ -165,10 +167,10 @@ public class PropertyManagementApp {
             String userInput = input.next().trim();
             if (portfolio.removeExistingProperty(userInput)) {
                 System.out.println("\n" + userInput + " has been removed from your portfolio!");
-                System.out.println("-----------------------------------------------------------------");
+                System.out.println("=======================================================");
             } else {
                 System.out.println("\n" + userInput + " does not exist in your portfolio. Please try again.");
-                System.out.println("-----------------------------------------------------------------");
+                System.out.println("=======================================================");
             }
         }
     }
@@ -195,7 +197,7 @@ public class PropertyManagementApp {
             }
         }
         System.out.println(propName + " does not exist in your portfolio.");
-        System.out.println("-----------------------------------------------------------------");
+        System.out.println("=======================================================");
     }
 
     // MODIFIES: this
@@ -235,7 +237,7 @@ public class PropertyManagementApp {
         String newAddress = input.next().trim();
         selectedProperty.setCivicAddress(newAddress);
         System.out.println("\nAddress for " + selectedProperty.getCivicAddress() +  " updated!");
-        System.out.println("-----------------------------------------------------------------");
+        System.out.println("=======================================================");
     }
 
     // MODIFIES: this
@@ -245,7 +247,7 @@ public class PropertyManagementApp {
         int newMarketValue = input.nextInt();
         selectedProperty.setPropertyValue(newMarketValue);
         System.out.println("\nMarket value for " + selectedProperty.getCivicAddress() + " updated!");
-        System.out.println("-----------------------------------------------------------------");
+        System.out.println("=======================================================");
     }
 
     // MODIFIES: this
@@ -255,7 +257,7 @@ public class PropertyManagementApp {
         int newRentalIncome = input.nextInt();
         selectedProperty.setMonthlyRent(newRentalIncome);
         System.out.println("\nDesired rental income for " + selectedProperty.getCivicAddress() + " updated!");
-        System.out.println("-----------------------------------------------------------------");
+        System.out.println("=======================================================");
     }
 
     // MODIFIES: this
@@ -275,7 +277,7 @@ public class PropertyManagementApp {
             System.out.print("Type your answer here: ");
             userInput = formatUserInput(input.next());
             if (userInput.equals("main")) {
-                return;
+                keepRunning = false;
             } else {
                 processCommand(userInput, selectedProperty);
             }
@@ -312,7 +314,7 @@ public class PropertyManagementApp {
         } else {
             System.out.println(tenantToAdd + " is already assigned to " + selectedProperty.getCivicAddress() + "!");
         }
-        System.out.println("-----------------------------------------------------------------");
+        System.out.println("=======================================================");
     }
 
     // MODIFIES: this
@@ -326,7 +328,7 @@ public class PropertyManagementApp {
         } else {
             System.out.println(tenantToRemove + " does not exist in " + selectedProperty.getCivicAddress());
         }
-        System.out.println("-----------------------------------------------------------------");
+        System.out.println("=======================================================");
     }
 
     // EFFECTS: prints out summary statistics for a user's portfolio of properties out on the console
@@ -339,7 +341,7 @@ public class PropertyManagementApp {
             System.out.println("Total vacancy rate: " + portfolio.getVacancyRate() + "%");
             System.out.println();
             System.out.print("Press enter to return to the main menu.");
-            String userInput = input.next();
+            String dummyInput = input.next();
         }
     }
 
@@ -348,3 +350,6 @@ public class PropertyManagementApp {
         return userInput.toLowerCase(Locale.ROOT).trim();
     }
 }
+
+// REFERENCE: This code was developed with some references to the CPSC 210 TellerApp project
+// Source Repo: https://github.students.cs.ubc.ca/CPSC210/TellerApp
