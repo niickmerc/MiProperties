@@ -19,27 +19,37 @@ public class Portfolio {
     // EFFECTS: Adds a new property with the given address, value, and desired monthly rent into the portfolio.
     //          if successful, return true, else return false
     public boolean addNewProperty(String civicAddress, int propertyValue, int monthlyRent) {
-        for (Property p : propertyList) {
-            if (p.getCivicAddress().equals(civicAddress)) {
-                return false;
-            }
+        Property propertyToAdd = loopAndReturnProperty(civicAddress);
+
+        if (propertyToAdd == null) {
+            Property newProp = new Property(civicAddress, propertyValue, monthlyRent);
+            propertyList.add(newProp);
+            return true;
+        } else {
+            return false;
         }
-        Property newProp = new Property(civicAddress, propertyValue, monthlyRent);
-        propertyList.add(newProp);
-        return true;
+//        for (Property p : propertyList) {
+//            if (p.getCivicAddress().equals(civicAddress)) {
+//                return false;
+//            }
+//        }
+//        Property newProp = new Property(civicAddress, propertyValue, monthlyRent);
+//        propertyList.add(newProp);
+//        return true;
     }
 
     // REQUIRES: propertyList has a size > 0
     // MODIFIES: this
     // EFFECTS: Removes the property with the given name from the portfolio. if successful, return true, else false
     public boolean removeExistingProperty(String civilAddress) {
-        for (Property p : propertyList) {
-            if (p.getCivicAddress().equals(civilAddress)) {
-                propertyList.remove(p);
-                return true;
-            }
+        Property propertyToRemove = loopAndReturnProperty(civilAddress);
+
+        if (propertyToRemove != null) {
+            propertyList.remove(propertyToRemove);
+            return true;
+        } else {
+            return false;
         }
-        return false;
     }
 
     // EFFECTS: Returns the sum of all market values from properties in a user's portfolio
@@ -75,6 +85,15 @@ public class Portfolio {
             }
         }
         return (vacantProperties / propertyList.size()) * 100;
+    }
+
+    public Property loopAndReturnProperty(String civicAddress) {
+        for (Property p : propertyList) {
+            if (p.getCivicAddress().equals(civicAddress)) {
+                return p;
+            }
+        }
+        return null;
     }
 
     // getters

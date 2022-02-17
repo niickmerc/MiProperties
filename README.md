@@ -20,6 +20,8 @@ There are two main user groups that may benefit from using my application:
 - **User Story #5** - As a user, I want to be able to assign one or more tenants to a specific property.
 - **User Story #6** - As a user, I want to be able to remove one or more tenants from a specific property.
 - **User Story #7** - As a user, I want to be able to review some summary statistics on my portfolio as a whole.
+- **User Story #8** - As a user, I want to be able to save my portfolio to file prior to exiting the application.
+- **User Story #9** - As a user, I want to be able to load my current portfolio from the application main menu.
 
 ### Things to Implement in the Future
 - Ability to add more detailed tenant information (Employment Info, Annual Salary, Etc)

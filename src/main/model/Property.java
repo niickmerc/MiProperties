@@ -25,6 +25,19 @@ public class Property {
         isRented = false;
     }
 
+    public Property(String civicAddress, int propertyValue, int monthlyRent, ArrayList<Tenant> tenantList) {
+        this.civicAddress = civicAddress;
+        this.propertyValue = propertyValue;
+        this.monthlyRent = monthlyRent;
+        this.tenantList = tenantList;
+
+        if (!tenantList.isEmpty()) {
+            isRented = true;
+        } else {
+            isRented = false;
+        }
+    }
+
     // REQUIRES: tenantName has a non-zero length, AND must be unique (no duplicates in tenantList)
     // MODIFIES: this
     // EFFECTS: Adds a unique new tenant with the given name to this. If addition is successful, return true - else
@@ -84,6 +97,7 @@ public class Property {
 
     // setters
     public void setCivicAddress(String newAddress) {
+
         this.civicAddress = newAddress;
     }
 
