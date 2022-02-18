@@ -1,11 +1,15 @@
 package model;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+import persistence.Writable;
+
 import java.util.ArrayList;
 
 
 // This class represents a property with an address, current market value, desired monthly income, a list of current
 //      tenants, and a boolean value which represents the property's occupancy status
-public class Property {
+public class Property implements Writable {
 
     private String civicAddress;                // a property's civic address
     private int propertyValue;                  // a property's market value in Canadian dollars
@@ -25,6 +29,11 @@ public class Property {
         isRented = false;
     }
 
+    // REQUIRES: civilAddress has a non-zero length;
+    //           propertyValue must be a non-zero positive integer,
+    //           monthlyRent must be a non-zero positive integer
+    //           tenantList.size() > 0
+    // EFFECTS:  Creates a new instance of type Property
     public Property(String civicAddress, int propertyValue, int monthlyRent, ArrayList<Tenant> tenantList) {
         this.civicAddress = civicAddress;
         this.propertyValue = propertyValue;
@@ -72,6 +81,26 @@ public class Property {
             }
         }
         return false;
+    }
+
+    @Override
+    public JSONObject toJson() {
+        JSONObject json = new JSONObject();
+        json.put("civic address", civicAddress);
+        json.put("market value", propertyValue);
+        json.put("desired rent", monthlyRent);
+        json.put("tenants", tenantsToJson());
+        return json;
+    }
+
+    private JSONArray tenantsToJson() {
+        JSONArray jsonArray = new JSONArray();
+
+        for (Tenant t : tenantList) {
+            jsonArray.put(t.toJson());
+        }
+
+        return jsonArray;
     }
 
     // getters

@@ -1,17 +1,24 @@
 package model;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+import persistence.Writable;
+
 import java.util.ArrayList;
 import java.util.List;
 
 
 // This class represents a digital portfolio of rental properties
-public class Portfolio {
+public class Portfolio implements Writable {
 
     private List<Property> propertyList;  // a list of properties that have been created by a user
+    private String name;
 
     // EFFECTS: Constructs a new portfolio of properties
     public Portfolio() {
+
         propertyList = new ArrayList<>();
+        name = "My Portfolio";
     }
 
     // REQUIRES: civicAddress must be unique, propertyValue & monthlyRent must be non-zero positive integers
@@ -36,6 +43,18 @@ public class Portfolio {
 //        Property newProp = new Property(civicAddress, propertyValue, monthlyRent);
 //        propertyList.add(newProp);
 //        return true;
+    }
+
+    public boolean addNewProperty(String civAddress, int propertyValue, int monthlyRent, ArrayList<Tenant> tenantList) {
+        Property propertyToAdd = loopAndReturnProperty(civAddress);
+
+        if (propertyToAdd == null) {
+            Property newProp = new Property(civAddress, propertyValue, monthlyRent, tenantList);
+            propertyList.add(newProp);
+            return true;
+        } else {
+            return false;
+        }
     }
 
     // REQUIRES: propertyList has a size > 0
@@ -99,6 +118,29 @@ public class Portfolio {
     // getters
     public List<Property> getPropertyList() {
         return propertyList;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    @Override
+    public JSONObject toJson() {
+        JSONObject json = new JSONObject();
+        json.put("name", name);
+        json.put("properties", propertiesToJson());
+        return json;
+    }
+
+    // EFFECTS: returns properties in this portfolio as a JSON array
+    private JSONArray propertiesToJson() {
+        JSONArray jsonArray = new JSONArray();
+
+        for (Property p : propertyList) {
+            jsonArray.put(p.toJson());
+        }
+
+        return jsonArray;
     }
 
 

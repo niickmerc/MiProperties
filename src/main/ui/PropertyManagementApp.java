@@ -3,14 +3,21 @@ package ui;
 import model.Portfolio;
 import model.Property;
 import model.Tenant;
+import persistence.JsonReader;
+import persistence.JsonWriter;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.Locale;
 import java.util.Scanner;
 
 // This class represents the user interface for my property management application
 public class PropertyManagementApp {
+    private static final String JSON_STORE = "./data/workroom.json";
     private Portfolio portfolio;
     private Scanner input;
+    private JsonWriter jsonWriter;
+    private JsonReader jsonReader;
 
     // EFFECTS: runs the property management application
     public PropertyManagementApp() {
@@ -46,6 +53,8 @@ public class PropertyManagementApp {
     // EFFECTS: Instantiates required objects and utilities
     private void initializeFields() {
         portfolio = new Portfolio();
+        jsonWriter = new JsonWriter(JSON_STORE);
+        jsonReader = new JsonReader(JSON_STORE);
         input = new Scanner(System.in);
         input.useDelimiter("\n");
     }
@@ -58,6 +67,8 @@ public class PropertyManagementApp {
         System.out.println("To remove an existing property, type 'remove'");
         System.out.println("To manage a specific property, type 'manage'");
         System.out.println("For summary statistics on your portfolio, type 'summary'");
+        System.out.println("To save this portfolio to file, type 'save'");
+        System.out.println("To load your portfolio from file, type 'load'");
         System.out.println("To close the application, type 'quit'");
         System.out.print("Type your answer here: ");
     }
@@ -73,6 +84,10 @@ public class PropertyManagementApp {
             case ("manage"): manageExistingProperty();
                 break;
             case ("summary"): printSummaryStatistics();
+                break;
+            case ("save"): savePortfolio();
+                break;
+            case ("load"): loadPortfolio();
                 break;
             default: System.out.println("\nYou have entered an invalid input. Returning to the main menu");
         }
@@ -345,11 +360,34 @@ public class PropertyManagementApp {
         }
     }
 
+    // EFFECTS: saves the workroom to file
+    private void savePortfolio() {
+        try {
+            jsonWriter.open();
+            jsonWriter.write(portfolio);
+            jsonWriter.close();
+            System.out.println("Saved " + portfolio.getName() + " to " + JSON_STORE);
+        } catch (FileNotFoundException e) {
+            System.out.println("Unable to write to file: " + JSON_STORE);
+        }
+    }
+
+    // MODIFIES: this
+    // EFFECTS: loads workroom from file
+    private void loadPortfolio() {
+        try {
+            portfolio = jsonReader.read();
+            System.out.println("Loaded " + portfolio.getName() + " from " + JSON_STORE);
+        } catch (IOException e) {
+            System.out.println("Unable to read from file: " + JSON_STORE);
+        }
+    }
+
     // EFFECTS: returns user input formatted in all lowercase and without any leading or trailing whitespace
     private String formatUserInput(String userInput) {
         return userInput.toLowerCase(Locale.ROOT).trim();
     }
 }
 
-// REFERENCE: This code was developed with some references to the CPSC 210 TellerApp project
+// REFERENCE: This code was developed with some references to the CPSC 210 TellerApp / WOrkroom projects.
 // Source Repo: https://github.students.cs.ubc.ca/CPSC210/TellerApp

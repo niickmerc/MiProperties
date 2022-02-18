@@ -23,7 +23,9 @@ public class PortfolioTest {
 
     @Test
     public void testConstructor() {
+
         assertTrue(testPortfolio.getPropertyList().isEmpty());
+        assertEquals(testPortfolio.getName(), "My Portfolio");
     }
 
     @Test
