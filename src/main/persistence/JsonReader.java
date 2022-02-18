@@ -57,15 +57,21 @@ public class JsonReader {
         String civicAddress = jsonObject.getString("civic address");
         int marketValue = jsonObject.getInt("desired rent");
         int purchasePrice = jsonObject.getInt("market value");
-        ArrayList<Tenant> tenantList = addTenants(jsonObject); // What the hell is happening here
+        ArrayList<Tenant> tenantList = addTenants(jsonObject); // What is happening here
 
-        portfolio.addNewProperty(civicAddress, purchasePrice, marketValue);
+        portfolio.addNewProperty(civicAddress, purchasePrice, marketValue, tenantList);
     }
 
-    private void addTenants(JSONObject jsonObject) {
+    private ArrayList<Tenant> addTenants(JSONObject jsonObject) {
+        ArrayList<Tenant> tenantList = new ArrayList<>();
         JSONArray jsonArray = jsonObject.getJSONArray("tenants");
         for (Object json : jsonArray) {
+            JSONObject nextTenant = (JSONObject) json;
+            String name = nextTenant.getString("tenant name");
+            Tenant newTenant = new Tenant(name);
+            tenantList.add(newTenant);
         }
+        return tenantList;
     }
 
 
