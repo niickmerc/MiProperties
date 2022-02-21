@@ -13,7 +13,7 @@ import java.util.Scanner;
 
 // This class represents the user interface for my property management application
 public class PropertyManagementApp {
-    private static final String JSON_STORE = "./data/workroom.json";
+    private static String JSON_STORE = "./data/portfolio.json";
     private Portfolio portfolio;
     private Scanner input;
     private JsonWriter jsonWriter;
@@ -21,7 +21,7 @@ public class PropertyManagementApp {
 
     // EFFECTS: runs the property management application
     public PropertyManagementApp() {
-        System.out.println("Welcome to the MyPropertyManagement Application! (v 1.0)");
+        System.out.println("Welcome to the MyPropertyManagement Application! (v 1.1)");
         runApp();
     }
 
@@ -67,9 +67,10 @@ public class PropertyManagementApp {
         System.out.println("To remove an existing property, type 'remove'");
         System.out.println("To manage a specific property, type 'manage'");
         System.out.println("For summary statistics on your portfolio, type 'summary'");
+        System.out.println("To close the application, type 'quit'");
+        System.out.println();
         System.out.println("To save this portfolio to file, type 'save'");
         System.out.println("To load your portfolio from file, type 'load'");
-        System.out.println("To close the application, type 'quit'");
         System.out.print("Type your answer here: ");
     }
 

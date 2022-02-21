@@ -35,14 +35,6 @@ public class Portfolio implements Writable {
         } else {
             return false;
         }
-//        for (Property p : propertyList) {
-//            if (p.getCivicAddress().equals(civicAddress)) {
-//                return false;
-//            }
-//        }
-//        Property newProp = new Property(civicAddress, propertyValue, monthlyRent);
-//        propertyList.add(newProp);
-//        return true;
     }
 
     public boolean addNewProperty(String civAddress, int propertyValue, int monthlyRent, ArrayList<Tenant> tenantList) {
