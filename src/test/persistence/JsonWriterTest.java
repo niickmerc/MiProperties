@@ -42,7 +42,7 @@ class JsonWriterTest extends JsonTest {
             JsonReader reader = new JsonReader("./data/testWriterEmptyPortfolio.json");
             portfolio = reader.read();
             assertEquals("My Portfolio", portfolio.getName());
-            assertEquals(0, portfolio.getPropertyList());
+            assertEquals(0, portfolio.getPropertyList().size());
         } catch (IOException e) {
             fail("Exception should not have been thrown");
         }
@@ -59,7 +59,7 @@ class JsonWriterTest extends JsonTest {
             writer.write(portfolio);
             writer.close();
 
-            JsonReader reader = new JsonReader("./data/testWriterGeneralWorkroom.json");
+            JsonReader reader = new JsonReader("./data/testWriterGeneralPortfolio.json");
             portfolio = reader.read();
             assertEquals("My Portfolio", portfolio.getName());
             List<Property> properties = portfolio.getPropertyList();
@@ -72,7 +72,7 @@ class JsonWriterTest extends JsonTest {
                     tenantsForTestProperties, properties.get(1));
 
         } catch (IOException e) {
-            fail("Exception should not have been thrown");
+            fail("Exception should not have been thrown!");
         }
     }
 }

@@ -1,6 +1,9 @@
 package model;
 
 import org.junit.jupiter.api.*;
+
+import java.util.ArrayList;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 public class PortfolioTest {
@@ -10,6 +13,7 @@ public class PortfolioTest {
     Property p2;
     Property p3;
     Property p4;
+    ArrayList<Tenant> tenants;
 
     @BeforeEach
     public void setup(){
@@ -19,6 +23,7 @@ public class PortfolioTest {
         p2 = new Property("1703-1088 Richards St", 650000, 2200);
         p3 = new Property("213-2130 West Broadway St", 885000, 2950);
         p4 = new Property("1027 Cornwall Avenue", 4500000, 5000);
+        tenants = new ArrayList<>();
     }
 
     @Test
@@ -53,6 +58,31 @@ public class PortfolioTest {
     }
 
     @Test
+    public void testAddNewPropertySingleEntryJsonVersion() {
+        assertTrue(testPortfolio.getPropertyList().isEmpty());
+        testPortfolio.addNewProperty(p1.getCivicAddress(), p1.getPropertyValue(), p1.getMonthlyRent(), tenants);
+        assertEquals(1, testPortfolio.getPropertyList().size());
+    }
+
+    @Test
+    public void testAddNewPropertyMultipleEntriesJsonVersion() {
+        assertTrue(testPortfolio.getPropertyList().isEmpty());
+        testPortfolio.addNewProperty(p1.getCivicAddress(), p1.getPropertyValue(), p1.getMonthlyRent(), tenants);
+        testPortfolio.addNewProperty(p2.getCivicAddress(), p2.getPropertyValue(), p2.getMonthlyRent(), tenants);
+        assertEquals(2, testPortfolio.getPropertyList().size());
+    }
+
+    @Test
+    public void testAddNewPropertyDuplicatePropertiesJsonVersion() {
+        assertTrue(testPortfolio.getPropertyList().isEmpty());
+        testPortfolio.addNewProperty(p1.getCivicAddress(), p1.getPropertyValue(), p1.getMonthlyRent(), tenants);
+        testPortfolio.addNewProperty(p2.getCivicAddress(), p2.getPropertyValue(), p2.getMonthlyRent(), tenants);
+        testPortfolio.addNewProperty(p1.getCivicAddress(), p1.getPropertyValue(), p1.getMonthlyRent(), tenants);
+        assertEquals(2, testPortfolio.getPropertyList().size());
+    }
+
+
+    @Test
     public void testRemoveExistingPropertyOnEmptyList(){
         assertTrue(testPortfolio.getPropertyList().isEmpty());
         assertFalse(testPortfolio.removeExistingProperty(p1.getCivicAddress()));
@@ -81,34 +111,6 @@ public class PortfolioTest {
         assertTrue(testPortfolio.removeExistingProperty(p1.getCivicAddress()));
         assertEquals(1, testPortfolio.getPropertyList().size());
     }
-
-//    @Test
-//    public void testSummaryStatsMethods() {
-//        assertEquals(0, testPortfolio.getTotalPortfolioValue());
-//        assertEquals(0, testPortfolio.getTotalMonthlyRent());
-//        assertEquals(0, testPortfolio.getVacancyRate());
-//
-//        testPortfolio.addNewProperty(p1.getCivicAddress(), p1.getPropertyValue(), p1.getMonthlyRent());
-//        testPortfolio.addNewProperty(p2.getCivicAddress(), p2.getPropertyValue(), p2.getMonthlyRent());
-//        testPortfolio.addNewProperty(p3.getCivicAddress(), p3.getPropertyValue(), p3.getMonthlyRent());
-//
-//        assertEquals(p1.getPropertyValue() + p2.getPropertyValue() + p3.getPropertyValue(),
-//                testPortfolio.getTotalPortfolioValue());
-//        assertEquals(0, testPortfolio.getTotalMonthlyRent());
-//        assertEquals(100.0, testPortfolio.getVacancyRate());
-//
-//        testPortfolio.getPropertyList().get(0).addNewTenant("John Doe");
-//        assertEquals(((2.0/3.0) * 100), testPortfolio.getVacancyRate());
-//
-//        testPortfolio.getPropertyList().get(1).addNewTenant("Jane Doe");
-//        assertEquals(1.0/3.0 * 100, testPortfolio.getVacancyRate());
-//
-//        testPortfolio.getPropertyList().get(2).addNewTenant("Jane Doe");
-//        assertEquals(0, testPortfolio.getVacancyRate());
-//
-//        assertEquals(p1.getMonthlyRent() + p2.getMonthlyRent() + p3.getMonthlyRent(),
-//                testPortfolio.getTotalMonthlyRent());
-//    }
 
     @Test
     public void testGetTotalPortFolioValueEmptyPortfolio() {

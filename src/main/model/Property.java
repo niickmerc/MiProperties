@@ -20,6 +20,7 @@ public class Property implements Writable {
     // REQUIRES: civilAddress has a non-zero length;
     //           propertyValue must be a non-zero positive integer,
     //           monthlyRent must be a non-zero positive integer
+    // throws DuplicateCivicAddressException, NegativeValueException
     // EFFECTS:  Creates a new instance of type Property
     public Property(String civicAddress, int propertyValue, int monthlyRent) {
         this.civicAddress = civicAddress;
@@ -32,7 +33,7 @@ public class Property implements Writable {
     // REQUIRES: civilAddress has a non-zero length;
     //           propertyValue must be a non-zero positive integer,
     //           monthlyRent must be a non-zero positive integer
-    //           tenantList.size() > 0
+    // throws DuplicateCivicAddressException, NegativeValueException
     // EFFECTS:  Creates a new instance of type Property
     public Property(String civicAddress, int propertyValue, int monthlyRent, ArrayList<Tenant> tenantList) {
         this.civicAddress = civicAddress;

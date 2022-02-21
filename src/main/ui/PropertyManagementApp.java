@@ -13,7 +13,7 @@ import java.util.Scanner;
 
 // This class represents the user interface for my property management application
 public class PropertyManagementApp {
-    private static String JSON_STORE = "./data/portfolio.json";
+    private static final String JSON_STORE = "./data/portfolio.json";
     private Portfolio portfolio;
     private Scanner input;
     private JsonWriter jsonWriter;
@@ -367,9 +367,13 @@ public class PropertyManagementApp {
             jsonWriter.open();
             jsonWriter.write(portfolio);
             jsonWriter.close();
-            System.out.println("Saved " + portfolio.getName() + " to " + JSON_STORE);
+            System.out.println();
+            System.out.println("Saved " + portfolio.getName() + " to " + JSON_STORE + " !");
+            System.out.println("=======================================================");
         } catch (FileNotFoundException e) {
+            System.out.println();
             System.out.println("Unable to write to file: " + JSON_STORE);
+            System.out.println("=======================================================");
         }
     }
 
@@ -378,9 +382,13 @@ public class PropertyManagementApp {
     private void loadPortfolio() {
         try {
             portfolio = jsonReader.read();
-            System.out.println("Loaded " + portfolio.getName() + " from " + JSON_STORE);
+            System.out.println();
+            System.out.println("Loaded " + portfolio.getName() + " from " + JSON_STORE + " !");
+            System.out.println("=======================================================");
         } catch (IOException e) {
+            System.out.println();
             System.out.println("Unable to read from file: " + JSON_STORE);
+            System.out.println("=======================================================");
         }
     }
 

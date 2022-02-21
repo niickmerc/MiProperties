@@ -22,6 +22,7 @@ public class Portfolio implements Writable {
     }
 
     // REQUIRES: civicAddress must be unique, propertyValue & monthlyRent must be non-zero positive integers
+    //           throws DuplicateCivicAddressException, NegativeValueException
     // MODIFIES: this
     // EFFECTS: Adds a new property with the given address, value, and desired monthly rent into the portfolio.
     //          if successful, return true, else return false
@@ -37,6 +38,11 @@ public class Portfolio implements Writable {
         }
     }
 
+    // REQUIRES: civicAddress must be unique, propertyValue & monthlyRent must be non-zero positive integers
+    //           throws DuplicateCivicAddressException, NegativeValueException
+    // MODIFIES: this
+    // EFFECTS: Adds a new property with the given address, value, desired monthly rent, and list of tenants
+    //          into the portfolio. if successful, return true, else return false
     public boolean addNewProperty(String civAddress, int propertyValue, int monthlyRent, ArrayList<Tenant> tenantList) {
         Property propertyToAdd = loopAndReturnProperty(civAddress);
 
@@ -50,6 +56,7 @@ public class Portfolio implements Writable {
     }
 
     // REQUIRES: propertyList has a size > 0
+    //           throws EmptyPropertyListException
     // MODIFIES: this
     // EFFECTS: Removes the property with the given name from the portfolio. if successful, return true, else false
     public boolean removeExistingProperty(String civilAddress) {
@@ -98,6 +105,7 @@ public class Portfolio implements Writable {
         return (vacantProperties / propertyList.size()) * 100;
     }
 
+    // EFFECTS: Returns the property with a specific address if it exists in the portfolio, otherwise returns null
     public Property loopAndReturnProperty(String civicAddress) {
         for (Property p : propertyList) {
             if (p.getCivicAddress().equals(civicAddress)) {
