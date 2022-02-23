@@ -5,7 +5,7 @@ import model.Tenant;
 
 import java.util.ArrayList;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class JsonTest {
 
@@ -13,6 +13,15 @@ public class JsonTest {
         assertEquals(civic, newProp.getCivicAddress());
         assertEquals(propValue, newProp.getPropertyValue());
         assertEquals(rent, newProp.getMonthlyRent());
-        assertEquals(tenants, newProp.getTenantList());
+        assertTrue(checkTenantList(tenants, newProp.getTenantList()));
+    }
+
+    protected boolean checkTenantList(ArrayList<Tenant> list1, ArrayList<Tenant> list2) {
+        for(int i = 0; i < list2.size(); i++) {
+            if(!list1.get(i).getTenantName().equals(list2.get(i).getTenantName())) {
+                return false;
+            }
+        }
+        return true;
     }
 }

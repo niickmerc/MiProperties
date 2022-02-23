@@ -54,6 +54,9 @@ class JsonWriterTest extends JsonTest {
             Portfolio portfolio = new Portfolio();
             portfolio.addNewProperty("1234 Happy Drive", 2000000, 3000);
             portfolio.addNewProperty("1 University Avenue", 1500000, 2500);
+            portfolio.getPropertyList().get(0).addNewTenant("Nick Mercuri");
+            portfolio.getPropertyList().get(1).addNewTenant("Nick Mercuri");
+
             JsonWriter writer = new JsonWriter("./data/testWriterGeneralPortfolio.json");
             writer.open();
             writer.write(portfolio);
@@ -64,7 +67,8 @@ class JsonWriterTest extends JsonTest {
             assertEquals("My Portfolio", portfolio.getName());
             List<Property> properties = portfolio.getPropertyList();
             assertEquals(2, properties.size());
-            ArrayList<Tenant> tenantsForTestProperties = new ArrayList<>(); // !!!
+            ArrayList<Tenant> tenantsForTestProperties = new ArrayList<>();
+            tenantsForTestProperties.add(new Tenant("Nick Mercuri"));
 
             checkProperty("1234 Happy Drive", 2000000, 3000,
                     tenantsForTestProperties, properties.get(0)); // !!!
