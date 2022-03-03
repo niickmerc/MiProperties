@@ -81,15 +81,7 @@ public class JsonReader {
         }
         return tenantList;
     }
-
-
-
-
-
-
-
-
-
-
-
 }
+
+// REFERENCE: This code was developed with some references to the CPSC 210 JsonSerializationDemo project
+// Source Repo: https://github.students.cs.ubc.ca/CPSC210/JsonSerializationDemo
