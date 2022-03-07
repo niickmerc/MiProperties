@@ -1,0 +1,27 @@
+{
+    "name": "My Portfolio",
+    "properties": [
+        {
+            "tenants": [
+                {"tenant name": "Nick Mercuri"},
+            ],
+            "market value": 2000000,
+            "civic address": "1234 Happy Drive",
+            "desired rent": 3000
+        },
+        {
+            "tenants": [
+                {"tenant name": "Nick Mercuri"},
+            ],
+            "market value": 1500000,
+            "civic address": "1 University Avenue",
+            "desired rent": 2500
+        },
+        {
+            "tenants": [],
+            "market value": 800000,
+            "civic address": "2311 McDonald Street",
+            "desired rent": 2200
+        }
+    ]
+}
