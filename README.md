@@ -8,7 +8,9 @@ that often accompany real estate investment and management.
 There are two main user groups that may benefit from using my application:
 
 1. Professional Landlords 
-2. Property Management Companies / Managers
+2. Property Management Companies
+3. Professional Property Managers
+4. Potentially Real Estate Agents
 
 ## User Stories for Project Phase #1
 
@@ -27,5 +29,7 @@ There are two main user groups that may benefit from using my application:
 - Ability to add more detailed tenant information (Employment Info, Annual Salary, Etc)
 - Some kind of rental portal for landlords and tenants to request / receive funds
 - More detailed property fields (Insurance reminders, maintenance fee tracker, etc)
+- Convert menu to an enumeration - Java Best Practice (https://docs.oracle.com/javase/tutorial/java/javaOO/enum.html)
+
 
 
