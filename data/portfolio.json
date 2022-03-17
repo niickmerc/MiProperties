@@ -1,23 +1,4 @@
 {
     "name": "My Portfolio",
-    "properties": [
-        {
-            "tenants": [],
-            "market value": 100,
-            "civic address": "2292 Fairmont Avenue, Kelowna BC, V1V 2V6",
-            "desired rent": 100
-        },
-        {
-            "tenants": [],
-            "market value": 100,
-            "civic address": "2293 Fairmont Avenue, Kelowna BC, V1V 2V6",
-            "desired rent": 100
-        },
-        {
-            "tenants": [],
-            "market value": 100,
-            "civic address": "2294 Fairmont Avenue, Kelowna BC, V1V 2V6",
-            "desired rent": 100
-        }
-    ]
+    "properties": []
 }

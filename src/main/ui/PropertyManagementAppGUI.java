@@ -27,6 +27,8 @@ public class PropertyManagementAppGUI extends JFrame {
     private JButton viewCommand;
     private JButton manageCommand;
 
+    private Object selectedProperty;
+
     private JPanel optionPanel;
     private JPanel summaryPanel;
 
@@ -102,7 +104,7 @@ public class PropertyManagementAppGUI extends JFrame {
 
         // Create Properties List
         listOfPropertyObjects = new DefaultListModel();
-        listOfPropertyAddresses = new DefaultListModel<>();
+        listOfPropertyAddresses = new DefaultListModel();
 
         loadProperties();
 
@@ -110,6 +112,7 @@ public class PropertyManagementAppGUI extends JFrame {
         list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         list.setFixedCellWidth(780);
         list.setSelectedIndex(0);
+        list.addListSelectionListener(e -> selectedProperty = list.getSelectedValue());
         list.setBackground(BACKGROUND_COLOR);
         list.setFont(new Font("Avenir", 1, 18));
         list.setForeground(Color.white);
@@ -125,6 +128,10 @@ public class PropertyManagementAppGUI extends JFrame {
 
         frame.setVisible(true);
     }
+
+//    private void prepareSelection(Object selectedValue) {
+//        System.out.println(selectedValue.toString());
+//    }
 
     private void createSummaryTable() {
 
@@ -237,6 +244,7 @@ public class PropertyManagementAppGUI extends JFrame {
         optionPanel.add(addCommand);
 
         deleteCommand = new AppButton("delete");
+        deleteCommand.addActionListener(e -> removeExistingProperty());
         deleteCommand.setFont(BUTTON_FONT);
         deleteCommand.setForeground(Color.white);
         deleteCommand.setVerticalAlignment(SwingConstants.CENTER);
@@ -255,11 +263,16 @@ public class PropertyManagementAppGUI extends JFrame {
         optionPanel.add(viewCommand);
     }
 
+    private void removeExistingProperty() {
+        String propertyToRemove = selectedProperty.toString();
+        portfolio.removeExistingProperty(propertyToRemove);
+        refreshProperties();
+    }
+
     private void addNewProperty() {
         JTextField civicAddressField = new JTextField(20);
         JTextField propertyValueField = new JTextField(20);
         JTextField monthlyRentalIncomeField = new JTextField(20);
-
         JPanel myPanel = new JPanel();
         Box columnOne = new Box(BoxLayout.Y_AXIS);
         Box columnTwo = new Box(BoxLayout.Y_AXIS);
@@ -273,8 +286,6 @@ public class PropertyManagementAppGUI extends JFrame {
         columnTwo.add(monthlyRentalIncomeField);
         myPanel.add(columnOne);
         myPanel.add(columnTwo);
-
-
         int result = JOptionPane.showConfirmDialog(null, myPanel,
                 "Enter New Property Information:", JOptionPane.OK_CANCEL_OPTION);
         if (result == JOptionPane.OK_OPTION) {
