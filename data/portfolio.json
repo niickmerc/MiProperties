@@ -1,4 +1,23 @@
 {
     "name": "My Portfolio",
-    "properties": []
+    "properties": [
+        {
+            "tenants": [],
+            "market value": 1500000,
+            "civic address": "2292 Fairmont Avenue, Kelowna BC, V1V 2V6",
+            "desired rent": 5000
+        },
+        {
+            "tenants": [],
+            "market value": 1000000,
+            "civic address": "1234 Happy Drive, Akron OH, 333241",
+            "desired rent": 2200
+        },
+        {
+            "tenants": [],
+            "market value": 1100000,
+            "civic address": "608-2655 Cranberry Drive, Vancouver BC, V6K 4V5",
+            "desired rent": 2950
+        }
+    ]
 }

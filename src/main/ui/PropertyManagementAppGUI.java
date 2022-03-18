@@ -6,9 +6,11 @@ import persistence.JsonReader;
 import persistence.JsonWriter;
 
 import javax.swing.*;
+import javax.swing.table.TableColumn;
 import java.awt.*;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.text.NumberFormat;
 import java.util.List;
 
 public class PropertyManagementAppGUI extends JFrame {
@@ -27,7 +29,12 @@ public class PropertyManagementAppGUI extends JFrame {
     private JButton viewCommand;
     private JButton manageCommand;
 
-    private Object selectedProperty;
+    private JList list;
+    private JTable testTableNeedToDelete;
+
+    private Object selectedPropertyObject;
+    private Property selectedProperty;
+    private int selectedIndex;
 
     private JPanel optionPanel;
     private JPanel summaryPanel;
@@ -86,7 +93,7 @@ public class PropertyManagementAppGUI extends JFrame {
         mainPanelNorthBorder.setBackground(BACKGROUND_COLOR);
 
         //  Code to add application logo TBD - Need to resize it
-        ImageIcon appLogoImage = new ImageIcon("./data/App Logo.png");
+        ImageIcon appLogoImage = new ImageIcon("./data/appLogo.png");
         JLabel appLogoLabel = new JLabel(appLogoImage);
         mainPanelNorthBorder.add(appLogoLabel, BorderLayout.WEST);
         mainPanel.add(mainPanelNorthBorder, BorderLayout.NORTH);
@@ -108,11 +115,11 @@ public class PropertyManagementAppGUI extends JFrame {
 
         loadProperties();
 
-        JList list = new JList(listOfPropertyAddresses);
+        list = new JList(listOfPropertyAddresses);
         list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         list.setFixedCellWidth(780);
-        list.setSelectedIndex(0);
-        list.addListSelectionListener(e -> selectedProperty = list.getSelectedValue());
+//        list.addListSelectionListener(e -> selectedPropertyObject = list.getSelectedValue());
+        list.addListSelectionListener(e -> testMethodLmao());
         list.setBackground(BACKGROUND_COLOR);
         list.setFont(new Font("Avenir", 1, 18));
         list.setForeground(Color.white);
@@ -129,9 +136,11 @@ public class PropertyManagementAppGUI extends JFrame {
         frame.setVisible(true);
     }
 
-//    private void prepareSelection(Object selectedValue) {
-//        System.out.println(selectedValue.toString());
-//    }
+    private void testMethodLmao() {
+        selectedPropertyObject = list.getSelectedValue();
+        selectedIndex = list.getSelectedIndex();
+
+    }
 
     private void createSummaryTable() {
 
@@ -190,6 +199,7 @@ public class PropertyManagementAppGUI extends JFrame {
         load.addActionListener(e -> loadPortfolio());
 
         JMenuItem exit = new JMenuItem("Exit");
+        exit.addActionListener(e -> System.exit(1));
 
         fileMenu.add(save);
         fileMenu.add(load);
@@ -251,20 +261,75 @@ public class PropertyManagementAppGUI extends JFrame {
         optionPanel.add(deleteCommand);
 
         manageCommand = new AppButton("manage");
+        manageCommand.addActionListener(e -> manageExistingProperty());
         manageCommand.setFont(BUTTON_FONT);
         manageCommand.setForeground(Color.white);
         manageCommand.setVerticalAlignment(SwingConstants.CENTER);
         optionPanel.add(manageCommand);
 
         viewCommand = new AppButton("view");
+        viewCommand.addActionListener(e -> viewCurrentProperty());
         viewCommand.setFont(BUTTON_FONT);
         viewCommand.setForeground(Color.white);
         viewCommand.setVerticalAlignment(SwingConstants.CENTER);
         optionPanel.add(viewCommand);
     }
 
+    private void manageExistingProperty() {
+        selectedProperty = (Property) listOfPropertyObjects.get(list.getSelectedIndex());
+
+        JTextField civicAddressField = new JTextField(20);
+        JTextField propertyValueField = new JTextField(20);
+        JTextField monthlyRentalIncomeField = new JTextField(20);
+        JPanel managePropertyPanel = new JPanel();
+        Box columnOne = new Box(BoxLayout.Y_AXIS);
+        Box columnTwo = new Box(BoxLayout.Y_AXIS);
+        columnOne.add(new JLabel("Civic Address:"));
+        columnOne.add(Box.createVerticalStrut(10));
+        columnOne.add(new JLabel("Property Value:"));
+        columnOne.add(Box.createVerticalStrut(10));
+        columnOne.add(new JLabel("Desired Monthly Rent:"));
+        columnTwo.add(civicAddressField);
+        columnTwo.add(propertyValueField);
+        columnTwo.add(monthlyRentalIncomeField);
+        managePropertyPanel.add(columnOne);
+        managePropertyPanel.add(columnTwo);
+
+
+    }
+
+    private void viewCurrentProperty() {
+        selectedProperty = (Property) listOfPropertyObjects.get(list.getSelectedIndex());
+
+        JPanel viewPropertyPanel = new JPanel();
+        viewPropertyPanel.setLayout(new GridBagLayout());
+        Box columnOne = new Box(BoxLayout.Y_AXIS);
+        Box columnTwo = new Box(BoxLayout.Y_AXIS);
+        columnOne.add(new JLabel("Civic Address:"));
+        columnOne.add(Box.createVerticalStrut(10));
+        columnOne.add(new JLabel("Property Value:"));
+        columnOne.add(Box.createVerticalStrut(10));
+        columnOne.add(new JLabel("Desired Monthly Rent:"));
+        columnTwo.add(new JLabel(" " + selectedProperty.getCivicAddress()));
+        columnTwo.add(Box.createVerticalStrut(10));
+        columnTwo.add(new JLabel(" " + currencyConverter(selectedProperty.getPropertyValue())));
+        columnTwo.add(Box.createVerticalStrut(10));
+        columnTwo.add(new JLabel(" " + currencyConverter(selectedProperty.getMonthlyRent())));
+        viewPropertyPanel.add(columnOne);
+        viewPropertyPanel.add(columnTwo);
+
+        JOptionPane viewPropertyPane = new JOptionPane();
+        viewPropertyPane.setIcon(new ImageIcon("./data/appIcon.png"));
+        viewPropertyPane.showConfirmDialog(null, viewPropertyPanel,
+                "Selected Property Details:", JOptionPane.OK_CANCEL_OPTION);
+    }
+
+    private String currencyConverter(int num) {
+        return NumberFormat.getCurrencyInstance().format(num);
+    }
+
     private void removeExistingProperty() {
-        String propertyToRemove = selectedProperty.toString();
+        String propertyToRemove = selectedPropertyObject.toString();
         portfolio.removeExistingProperty(propertyToRemove);
         refreshProperties();
     }
@@ -273,20 +338,22 @@ public class PropertyManagementAppGUI extends JFrame {
         JTextField civicAddressField = new JTextField(20);
         JTextField propertyValueField = new JTextField(20);
         JTextField monthlyRentalIncomeField = new JTextField(20);
-        JPanel myPanel = new JPanel();
+        JPanel newPropertyPanel = new JPanel();
         Box columnOne = new Box(BoxLayout.Y_AXIS);
         Box columnTwo = new Box(BoxLayout.Y_AXIS);
         columnOne.add(new JLabel("Civic Address:"));
         columnOne.add(Box.createVerticalStrut(10));
         columnOne.add(new JLabel("Property Value:"));
         columnOne.add(Box.createVerticalStrut(10));
-        columnOne.add(new JLabel("Monthly Rental:"));
+        columnOne.add(new JLabel("Desired Monthly Rent:"));
         columnTwo.add(civicAddressField);
         columnTwo.add(propertyValueField);
         columnTwo.add(monthlyRentalIncomeField);
-        myPanel.add(columnOne);
-        myPanel.add(columnTwo);
-        int result = JOptionPane.showConfirmDialog(null, myPanel,
+        newPropertyPanel.add(columnOne);
+        newPropertyPanel.add(columnTwo);
+
+
+        int result = JOptionPane.showConfirmDialog(null, newPropertyPanel,
                 "Enter New Property Information:", JOptionPane.OK_CANCEL_OPTION);
         if (result == JOptionPane.OK_OPTION) {
             String civicAddress = civicAddressField.getText();
