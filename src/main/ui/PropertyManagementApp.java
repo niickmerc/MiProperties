@@ -354,7 +354,7 @@ public class PropertyManagementApp {
             System.out.println("Summary statistics for your portfolio:");
             System.out.println("Total value: $" + portfolio.getTotalPortfolioValue());
             System.out.println("Total monthly rent: $" + portfolio.getTotalMonthlyRent());
-            System.out.println("Total vacancy rate: " + portfolio.getVacancyRate() + "%");
+            System.out.println("Total vacancy rate: " + portfolio.getOccupanyRate() + "%");
             System.out.println();
             System.out.print("Press enter to return to the main menu.");
             String dummyInput = input.next();

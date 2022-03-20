@@ -2,15 +2,16 @@ package ui;
 
 import model.Portfolio;
 import model.Property;
+import model.Tenant;
 import persistence.JsonReader;
 import persistence.JsonWriter;
 
 import javax.swing.*;
-import javax.swing.table.TableColumn;
 import java.awt.*;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.text.NumberFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 public class PropertyManagementAppGUI extends JFrame {
@@ -32,12 +33,18 @@ public class PropertyManagementAppGUI extends JFrame {
     private JList list;
     private JTable testTableNeedToDelete;
 
-    private Object selectedPropertyObject;
+    private Object selectedPropertyFromList;
     private Property selectedProperty;
     private int selectedIndex;
 
+    private JLabel totalPortfolioSize;
+    private JLabel totalPortfolioValue;
+    private JLabel totalVacancyRate;
+    private JLabel monthlyRentalIncome;
+
     private JPanel optionPanel;
     private JPanel summaryPanel;
+    private JPanel summaryTable;
 
     private Portfolio portfolio;
     private DefaultListModel listOfPropertyObjects;
@@ -78,14 +85,10 @@ public class PropertyManagementAppGUI extends JFrame {
         summaryPanel = new JPanel();
         summaryPanel.setPreferredSize(new Dimension((WIDTH * 1 / 3), HEIGHT));
         summaryPanel.setBackground(Color.GRAY);
-        JLabel summaryPanelLabel = new JLabel("Your Portfolio Summary:");
-        summaryPanelLabel.setForeground(Color.WHITE);
-        summaryPanelLabel.setFont(new Font("Avenir", 10, 20));
-        summaryPanel.add(summaryPanelLabel);
-
-        createSummaryTable();
-
-        frame.add(summaryPanel, BorderLayout.EAST);
+//        JLabel summaryPanelLabel = new JLabel("Your Portfolio Summary:");
+//        summaryPanelLabel.setForeground(Color.WHITE);
+//        summaryPanelLabel.setFont(new Font("Avenir", 10, 20));
+//        summaryPanel.add(summaryPanelLabel);
 
         // Create Main Panel Borders
         JPanel mainPanelNorthBorder = new JPanel();
@@ -118,8 +121,7 @@ public class PropertyManagementAppGUI extends JFrame {
         list = new JList(listOfPropertyAddresses);
         list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         list.setFixedCellWidth(780);
-//        list.addListSelectionListener(e -> selectedPropertyObject = list.getSelectedValue());
-        list.addListSelectionListener(e -> testMethodLmao());
+        list.addListSelectionListener(e -> selectProperty());
         list.setBackground(BACKGROUND_COLOR);
         list.setFont(new Font("Avenir", 1, 18));
         list.setForeground(Color.white);
@@ -133,33 +135,48 @@ public class PropertyManagementAppGUI extends JFrame {
         // Create Option Panel
         buildOptionPanel();
 
+        createSummaryPanel();
+
+        frame.add(summaryPanel, BorderLayout.EAST);
+
         frame.setVisible(true);
     }
 
-    private void testMethodLmao() {
-        selectedPropertyObject = list.getSelectedValue();
+    private void selectProperty() {
+        selectedPropertyFromList = list.getSelectedValue();
         selectedIndex = list.getSelectedIndex();
-
     }
 
-    private void createSummaryTable() {
+    private void createSummaryPanel() {
 
-        String[] rows = {"Total Properties",
-                "Total Portfolio Value",
-                "Rental Income",
-                "Monthly Expenses",
-                "NOI"};
+        summaryTable = new JPanel();
+        Box columnOne = new Box(BoxLayout.Y_AXIS);
+        columnOne.add(new JLabel("Total Properties: "));
+        columnOne.add(Box.createVerticalStrut(10));
+        columnOne.add(new JLabel("Total Portfolio Value: "));
+        columnOne.add(Box.createVerticalStrut(10));
+        columnOne.add(new JLabel("Occupancy Rate: "));
+        columnOne.add(Box.createVerticalStrut(10));
+        columnOne.add(new JLabel("Total Rental Income: "));
+        summaryTable.add(columnOne);
 
-        JTable summaryTable = new JTable();
-        summaryTable.setBackground(Color.GREEN);
-        JScrollPane sp = new JScrollPane(summaryTable);
+        Box columnTwo = new Box(BoxLayout.Y_AXIS);
+        columnTwo.add(totalPortfolioSize = new JLabel(String.valueOf(portfolio.getPropertyList().size())));
+        columnTwo.add(Box.createVerticalStrut(10));
+        columnTwo.add(totalPortfolioValue = new JLabel(currencyConverter(portfolio.getTotalPortfolioValue())));
+        columnTwo.add(Box.createVerticalStrut(10));
+        columnTwo.add(totalVacancyRate = new JLabel((portfolio.getOccupanyRate()) + "%"));
+        columnTwo.add(Box.createVerticalStrut(10));
+        columnTwo.add(monthlyRentalIncome =  new JLabel(currencyConverter(portfolio.getTotalMonthlyRent())));
+        summaryTable.add(columnTwo);
+        summaryPanel.add(summaryTable);
 
-        summaryPanel.add(sp);
     }
 
     private void loadProperties() {
         loadPropertyList();
         refreshProperties();
+
     }
 
     // MODIFIES: this
@@ -278,31 +295,105 @@ public class PropertyManagementAppGUI extends JFrame {
     private void manageExistingProperty() {
         selectedProperty = (Property) listOfPropertyObjects.get(list.getSelectedIndex());
 
+        JPanel managePropertyPanel = new JPanel();
         JTextField civicAddressField = new JTextField(20);
         JTextField propertyValueField = new JTextField(20);
         JTextField monthlyRentalIncomeField = new JTextField(20);
-        JPanel managePropertyPanel = new JPanel();
+        JTextField currentTenantsField = new JTextField(20);
+        JCheckBox clearTenantsCheckBox = new JCheckBox("Yes");
+
         Box columnOne = new Box(BoxLayout.Y_AXIS);
         Box columnTwo = new Box(BoxLayout.Y_AXIS);
-        columnOne.add(new JLabel("Civic Address:"));
+
+        columnOne.add(new JLabel("Update Civic Address:"));
         columnOne.add(Box.createVerticalStrut(10));
-        columnOne.add(new JLabel("Property Value:"));
+        columnOne.add(new JLabel("Update Property Value:"));
         columnOne.add(Box.createVerticalStrut(10));
-        columnOne.add(new JLabel("Desired Monthly Rent:"));
+        columnOne.add(new JLabel("Update Desired Monthly Rent:"));
+        columnOne.add(Box.createVerticalStrut(10));
+        columnOne.add(new JLabel("Update Tenant List:"));
+        columnOne.add(Box.createVerticalStrut(10));
+        columnOne.add(new JLabel("Clear Tenant List?"));
+
         columnTwo.add(civicAddressField);
         columnTwo.add(propertyValueField);
         columnTwo.add(monthlyRentalIncomeField);
+        columnTwo.add(currentTenantsField);
+        columnTwo.add(clearTenantsCheckBox);
+
         managePropertyPanel.add(columnOne);
         managePropertyPanel.add(columnTwo);
 
+        int result = JOptionPane.showConfirmDialog(null, managePropertyPanel,
+                "Manage Selected Property:", JOptionPane.OK_CANCEL_OPTION);
 
+        if (result == JOptionPane.OK_OPTION) {
+            updatePropertyDetails(selectedProperty,
+                    civicAddressField,
+                    propertyValueField,
+                    monthlyRentalIncomeField,
+                    currentTenantsField,
+                    clearTenantsCheckBox);
+        }
+    }
+
+    private void updatePropertyDetails(Property selectedProperty, JTextField civicAddressField,
+                                       JTextField propertyValueField, JTextField monthlyRentalIncomeField,
+                                       JTextField currentTenantsField, JCheckBox clearTenantsCheckBox) {
+
+        if (isTextFieldFilled(civicAddressField.getText())) {
+            selectedProperty.setCivicAddress(civicAddressField.getText());
+        }
+        if (isTextFieldFilled(propertyValueField.getText())) {
+            int newPropertyValue = Integer.parseInt(propertyValueField.getText());
+            selectedProperty.setPropertyValue(newPropertyValue);
+        }
+        if (isTextFieldFilled(monthlyRentalIncomeField.getText())) {
+            int newMonthlyRentalIncome = Integer.parseInt(monthlyRentalIncomeField.getText());
+            selectedProperty.setMonthlyRent(newMonthlyRentalIncome);
+        }
+        if (isTextFieldFilled(currentTenantsField.getText())) {
+            updateTenantList(selectedProperty, initializeTenantList(currentTenantsField.getText()));
+        } else if (clearTenantsCheckBox.isSelected()) {
+            clearTenantList(selectedProperty);
+        }
+
+
+        refreshProperties();
+        refreshSummaryStatistics();
+
+    }
+
+    private void clearTenantList(Property selectedProperty) {
+
+        int tenantListLength = selectedProperty.getTenantList().size();
+
+        for (int i = 0; i < tenantListLength; i++) {
+            String tenantName = selectedProperty.getTenantList().get(0).getTenantName();
+            selectedProperty.removeTenant(tenantName);
+        }
+
+    }
+
+    private void updateTenantList(Property selectedProperty, ArrayList<Tenant> updatedTenantList) {
+        for (Tenant t : updatedTenantList) {
+            selectedProperty.addNewTenant(t.getTenantName());
+        }
+    }
+
+
+    private boolean isTextFieldFilled(String textField) {
+        if (textField.equals("")) {
+            return false;
+        } else {
+            return true;
+        }
     }
 
     private void viewCurrentProperty() {
         selectedProperty = (Property) listOfPropertyObjects.get(list.getSelectedIndex());
 
         JPanel viewPropertyPanel = new JPanel();
-        viewPropertyPanel.setLayout(new GridBagLayout());
         Box columnOne = new Box(BoxLayout.Y_AXIS);
         Box columnTwo = new Box(BoxLayout.Y_AXIS);
         columnOne.add(new JLabel("Civic Address:"));
@@ -310,11 +401,15 @@ public class PropertyManagementAppGUI extends JFrame {
         columnOne.add(new JLabel("Property Value:"));
         columnOne.add(Box.createVerticalStrut(10));
         columnOne.add(new JLabel("Desired Monthly Rent:"));
+        columnOne.add(Box.createVerticalStrut(10));
+        columnOne.add(new JLabel("Current Tenants:"));
         columnTwo.add(new JLabel(" " + selectedProperty.getCivicAddress()));
         columnTwo.add(Box.createVerticalStrut(10));
         columnTwo.add(new JLabel(" " + currencyConverter(selectedProperty.getPropertyValue())));
         columnTwo.add(Box.createVerticalStrut(10));
         columnTwo.add(new JLabel(" " + currencyConverter(selectedProperty.getMonthlyRent())));
+        columnTwo.add(Box.createVerticalStrut(10));
+        columnTwo.add(new JLabel(" " + getTenantString(selectedProperty)));
         viewPropertyPanel.add(columnOne);
         viewPropertyPanel.add(columnTwo);
 
@@ -324,20 +419,44 @@ public class PropertyManagementAppGUI extends JFrame {
                 "Selected Property Details:", JOptionPane.OK_CANCEL_OPTION);
     }
 
-    private String currencyConverter(int num) {
+    private String getTenantString(Property selectedProperty) {
+
+        if (selectedProperty.getTenantList().isEmpty()) {
+            return "Vacant Property";
+        }
+
+        String tenantString = "";
+
+        for (Tenant t : selectedProperty.getTenantList()) {
+            tenantString += t.getTenantName() + ", ";
+        }
+
+        return tenantString.substring(0, tenantString.length() - 2);
+    }
+
+    private String currencyConverter(long num) {
         return NumberFormat.getCurrencyInstance().format(num);
     }
 
     private void removeExistingProperty() {
-        String propertyToRemove = selectedPropertyObject.toString();
+        String propertyToRemove = selectedPropertyFromList.toString();
         portfolio.removeExistingProperty(propertyToRemove);
         refreshProperties();
+        refreshSummaryStatistics();
+    }
+
+    private void refreshSummaryStatistics() {
+        totalPortfolioSize.setText(String.valueOf(portfolio.getPropertyList().size()));
+        totalPortfolioValue.setText(currencyConverter(portfolio.getTotalPortfolioValue()));
+        totalVacancyRate.setText(portfolio.getOccupanyRate() + "%");
+        monthlyRentalIncome.setText(currencyConverter(portfolio.getTotalMonthlyRent()));
     }
 
     private void addNewProperty() {
         JTextField civicAddressField = new JTextField(20);
         JTextField propertyValueField = new JTextField(20);
         JTextField monthlyRentalIncomeField = new JTextField(20);
+        JTextField currentTenantsField = new JTextField(20);
         JPanel newPropertyPanel = new JPanel();
         Box columnOne = new Box(BoxLayout.Y_AXIS);
         Box columnTwo = new Box(BoxLayout.Y_AXIS);
@@ -346,12 +465,15 @@ public class PropertyManagementAppGUI extends JFrame {
         columnOne.add(new JLabel("Property Value:"));
         columnOne.add(Box.createVerticalStrut(10));
         columnOne.add(new JLabel("Desired Monthly Rent:"));
+        columnOne.add(Box.createVerticalStrut(10));
+        columnOne.add(new JLabel("Current Tenants:"));
         columnTwo.add(civicAddressField);
         columnTwo.add(propertyValueField);
         columnTwo.add(monthlyRentalIncomeField);
+        columnTwo.add(currentTenantsField);
         newPropertyPanel.add(columnOne);
         newPropertyPanel.add(columnTwo);
-
+        newPropertyPanel.add(new JLabel("Note: Tenant Names must be followed by a comma"));
 
         int result = JOptionPane.showConfirmDialog(null, newPropertyPanel,
                 "Enter New Property Information:", JOptionPane.OK_CANCEL_OPTION);
@@ -359,8 +481,25 @@ public class PropertyManagementAppGUI extends JFrame {
             String civicAddress = civicAddressField.getText();
             int propertyValue = Integer.parseInt(propertyValueField.getText());
             int monthyRentalIncome = Integer.parseInt(monthlyRentalIncomeField.getText());
-            portfolio.addNewProperty(civicAddress, propertyValue, monthyRentalIncome);
+
+            portfolio.addNewProperty(civicAddress, propertyValue, monthyRentalIncome,
+                    initializeTenantList(currentTenantsField.getText()));
             refreshProperties();
+            refreshSummaryStatistics();
         }
+    }
+
+    private ArrayList<Tenant> initializeTenantList(String tenantString) {
+
+        String [] tenantNames = tenantString.split(", ");
+        ArrayList<Tenant> tenantList = new ArrayList<>();
+
+        if (tenantNames[0].equals("")) {
+            return tenantList;
+        }
+        for (String name : tenantNames) {
+            tenantList.add(new Tenant(name));
+        }
+        return tenantList;
     }
 }

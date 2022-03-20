@@ -90,8 +90,8 @@ public class Portfolio implements Writable {
         return totalMonthlyRent;
     }
 
-    // EFFECTS: Returns the percentage (out of 100) of properties within a user's portfolio that are vacant
-    public double getVacancyRate() {
+    // EFFECTS: Returns the percentage (out of 100) of properties within a user's portfolio that are occupied
+    public double getOccupanyRate() {
         double vacantProperties = 0.0;
         if (propertyList.isEmpty()) {
             return vacantProperties;
@@ -102,7 +102,7 @@ public class Portfolio implements Writable {
                 }
             }
         }
-        return (vacantProperties / propertyList.size()) * 100;
+        return 100 - Math.round((vacantProperties / propertyList.size()) * 100);
     }
 
     // EFFECTS: Returns the property with a specific address if it exists in the portfolio, otherwise returns null
