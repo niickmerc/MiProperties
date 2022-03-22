@@ -5,6 +5,8 @@ import model.Property;
 import model.Tenant;
 import persistence.JsonReader;
 import persistence.JsonWriter;
+import ui.OptionButton;
+import ui.OptionPanel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -21,17 +23,17 @@ public class PropertyManagementAppGUI extends JFrame {
     private static final int HEIGHT = 600;
     private static final Color BACKGROUND_COLOR = new Color(45, 47, 48);
     private static final Font BUTTON_FONT = new Font("Avenir", 1, 15);
+    private static final Font LABEL_FONT = new Font("Avenir", 1, 20);
 
     // Swing components needed
     private JFrame frame;
     private JMenuBar menuBar;
-    private JButton addCommand;
-    private JButton deleteCommand;
-    private JButton viewCommand;
-    private JButton manageCommand;
+    private OptionButton addCommand;
+    private OptionButton deleteCommand;
+    private OptionButton viewCommand;
+    private OptionButton manageCommand;
 
     private JList list;
-    private JTable testTableNeedToDelete;
 
     private Object selectedPropertyFromList;
     private Property selectedProperty;
@@ -39,12 +41,19 @@ public class PropertyManagementAppGUI extends JFrame {
 
     private JLabel totalPortfolioSize;
     private JLabel totalPortfolioValue;
-    private JLabel totalVacancyRate;
+    private JLabel totalOccupancyRate;
     private JLabel monthlyRentalIncome;
+
+    private JLabel portfolioSizeHeader;
+    private JLabel portfolioValueHeader;
+    private JLabel occupancyRateHeader;
+    private JLabel totalRentalIncomeHeader;
 
     private JPanel optionPanel;
     private JPanel summaryPanel;
     private JPanel summaryTable;
+    private JPanel mainPanel;
+    private JPanel propertiesPanel;
 
     private Portfolio portfolio;
     private DefaultListModel listOfPropertyObjects;
@@ -61,61 +70,9 @@ public class PropertyManagementAppGUI extends JFrame {
         jsonReader = new JsonReader(JSON_STORE);
         jsonWriter = new JsonWriter(JSON_STORE);
 
-        // Create JFrame
-        frame = new JFrame("MiProperties  V2.0.1");
-
-        // Customize JFrame Attributes
-        frame.setSize(WIDTH, HEIGHT);
-        Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
-        int widthDimension = dimension.width / 2 - frame.getSize().width / 2;
-        int heightDimension = dimension.height / 2 - frame.getSize().height / 2;
-        frame.setLocation(widthDimension, heightDimension);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setResizable(false);
-
-        // Creating Main Panel
-        JPanel mainPanel = new JPanel();
-        mainPanel.setPreferredSize(new Dimension((WIDTH * 2 / 3), HEIGHT));
-        mainPanel.setBackground(BACKGROUND_COLOR);
-        mainPanel.setLayout(new BorderLayout());
-
-        frame.add(mainPanel, BorderLayout.WEST);
-
-        // Create Summary Panel (Will display portfolio summary statistics in real-time)
-        summaryPanel = new JPanel();
-        summaryPanel.setPreferredSize(new Dimension((WIDTH * 1 / 3), HEIGHT));
-        summaryPanel.setBackground(Color.GRAY);
-//        JLabel summaryPanelLabel = new JLabel("Your Portfolio Summary:");
-//        summaryPanelLabel.setForeground(Color.WHITE);
-//        summaryPanelLabel.setFont(new Font("Avenir", 10, 20));
-//        summaryPanel.add(summaryPanelLabel);
-
-        // Create Main Panel Borders
-        JPanel mainPanelNorthBorder = new JPanel();
-        mainPanelNorthBorder.setPreferredSize(new Dimension(mainPanel.getWidth(), 100));
-        mainPanelNorthBorder.setBackground(BACKGROUND_COLOR);
-
-        //  Code to add application logo TBD - Need to resize it
-        ImageIcon appLogoImage = new ImageIcon("./data/appLogo.png");
-        JLabel appLogoLabel = new JLabel(appLogoImage);
-        mainPanelNorthBorder.add(appLogoLabel, BorderLayout.WEST);
-        mainPanel.add(mainPanelNorthBorder, BorderLayout.NORTH);
-
-        JPanel mainPanelSouthBorder = new JPanel();
-        mainPanelSouthBorder.setPreferredSize(new Dimension(mainPanel.getWidth(), 100));
-        mainPanelSouthBorder.setBackground(BACKGROUND_COLOR);
-        mainPanel.add(mainPanelSouthBorder, BorderLayout.SOUTH);
-
-        // Create Properties Panel
-        JPanel propertiesPanel = new JPanel();
-        propertiesPanel.setPreferredSize(new Dimension(mainPanel.getWidth(), mainPanel.getHeight() - 200));
-        propertiesPanel.setBackground(BACKGROUND_COLOR);
-        mainPanel.add(propertiesPanel);
+        initializeGraphics();
 
         // Create Properties List
-        listOfPropertyObjects = new DefaultListModel();
-        listOfPropertyAddresses = new DefaultListModel();
-
         loadProperties();
 
         list = new JList(listOfPropertyAddresses);
@@ -126,20 +83,80 @@ public class PropertyManagementAppGUI extends JFrame {
         list.setFont(new Font("Avenir", 1, 18));
         list.setForeground(Color.white);
         JScrollPane listScrollPane = new JScrollPane(list);
+
         listScrollPane.setBorder(BorderFactory.createEmptyBorder());
         propertiesPanel.add(listScrollPane, BorderLayout.WEST);
 
         // Create Menu Bar
         buildMenuBar();
-
         // Create Option Panel
         buildOptionPanel();
 
-        createSummaryPanel();
+        createSummaryTable();
 
         frame.add(summaryPanel, BorderLayout.EAST);
 
         frame.setVisible(true);
+    }
+
+    private void initializeGraphics() {
+        initializeFrame();
+
+        initializePanels();
+    }
+
+    private void initializePanels() {
+        // Creating Main Panel
+        initializeMainPanel();
+
+        // Create Summary Panel (Will display portfolio summary statistics in real-time)
+        summaryPanel = new JPanel();
+        summaryPanel.setPreferredSize(new Dimension((WIDTH * 1 / 3), HEIGHT));
+        summaryPanel.setBackground(new Color(42, 42, 42));
+        JLabel summaryBanner = new JLabel("Portfolio Summary");
+        stylePanel(summaryBanner, 25);
+        summaryPanel.add(summaryBanner);
+
+        // Create Main Panel Border
+        JPanel mainPanelNorthBorder = new JPanel();
+        mainPanelNorthBorder.setPreferredSize(new Dimension(mainPanel.getWidth(), 50));
+        JLabel banner = new JLabel("<html>Welcome to<b>MiProperties!</b>Your portfolio is below:</html>");
+        stylePanel(banner, 25);
+        mainPanelNorthBorder.add(banner);
+        mainPanelNorthBorder.setBackground(BACKGROUND_COLOR);
+        mainPanel.add(mainPanelNorthBorder, BorderLayout.NORTH);
+
+        JPanel mainPanelSouthBorder = new JPanel();
+        mainPanelSouthBorder.setPreferredSize(new Dimension(mainPanel.getWidth(), 100));
+        mainPanelSouthBorder.setBackground(BACKGROUND_COLOR);
+        mainPanel.add(mainPanelSouthBorder, BorderLayout.SOUTH);
+
+        // Create Properties Panel
+        propertiesPanel = new JPanel();
+        propertiesPanel.setPreferredSize(new Dimension(mainPanel.getWidth(), mainPanel.getHeight() - 200));
+        propertiesPanel.setBackground(BACKGROUND_COLOR);
+        mainPanel.add(propertiesPanel);
+    }
+
+    private void initializeMainPanel() {
+        mainPanel = new JPanel();
+        mainPanel.setPreferredSize(new Dimension((WIDTH * 2 / 3), HEIGHT));
+        mainPanel.setBackground(BACKGROUND_COLOR);
+        mainPanel.setLayout(new BorderLayout());
+
+        frame.add(mainPanel, BorderLayout.WEST);
+    }
+
+    private void initializeFrame() {
+        frame = new JFrame("MiProperties  V2.0.1");
+
+        frame.setSize(WIDTH, HEIGHT);
+        Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
+        int widthDimension = dimension.width / 2 - frame.getSize().width / 2;
+        int heightDimension = dimension.height / 2 - frame.getSize().height / 2;
+        frame.setLocation(widthDimension, heightDimension);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setResizable(false);
     }
 
     private void selectProperty() {
@@ -147,17 +164,20 @@ public class PropertyManagementAppGUI extends JFrame {
         selectedIndex = list.getSelectedIndex();
     }
 
-    private void createSummaryPanel() {
+    @SuppressWarnings({"checkstyle:MethodLength", "checkstyle:SuppressWarnings"})
+    private void createSummaryTable() {
 
         summaryTable = new JPanel();
         Box columnOne = new Box(BoxLayout.Y_AXIS);
-        columnOne.add(new JLabel("Total Properties: "));
+        columnOne.setFont(BUTTON_FONT);
+
+        columnOne.add(portfolioSizeHeader = new JLabel("Total Properties: "));
         columnOne.add(Box.createVerticalStrut(10));
-        columnOne.add(new JLabel("Total Portfolio Value: "));
+        columnOne.add(portfolioValueHeader = new JLabel("Total Portfolio Value: "));
         columnOne.add(Box.createVerticalStrut(10));
-        columnOne.add(new JLabel("Occupancy Rate: "));
+        columnOne.add(occupancyRateHeader = new JLabel("Occupancy Rate: "));
         columnOne.add(Box.createVerticalStrut(10));
-        columnOne.add(new JLabel("Total Rental Income: "));
+        columnOne.add(totalRentalIncomeHeader = new JLabel("Total Rental Income: "));
         summaryTable.add(columnOne);
 
         Box columnTwo = new Box(BoxLayout.Y_AXIS);
@@ -165,18 +185,42 @@ public class PropertyManagementAppGUI extends JFrame {
         columnTwo.add(Box.createVerticalStrut(10));
         columnTwo.add(totalPortfolioValue = new JLabel(currencyConverter(portfolio.getTotalPortfolioValue())));
         columnTwo.add(Box.createVerticalStrut(10));
-        columnTwo.add(totalVacancyRate = new JLabel((portfolio.getOccupanyRate()) + "%"));
+        columnTwo.add(totalOccupancyRate = new JLabel((portfolio.getOccupanyRate()) + "%"));
         columnTwo.add(Box.createVerticalStrut(10));
         columnTwo.add(monthlyRentalIncome =  new JLabel(currencyConverter(portfolio.getTotalMonthlyRent())));
         summaryTable.add(columnTwo);
-        summaryPanel.add(summaryTable);
+        summaryTable.setBackground(BACKGROUND_COLOR);
 
+        stylePanel(portfolioSizeHeader);
+        stylePanel(portfolioValueHeader);
+        stylePanel(occupancyRateHeader);
+        stylePanel(totalRentalIncomeHeader);
+
+        stylePanel(totalPortfolioSize);
+        stylePanel(totalPortfolioValue);
+        stylePanel(totalOccupancyRate);
+        stylePanel(monthlyRentalIncome);
+
+        summaryPanel.add(summaryTable);
+    }
+
+    private void stylePanel(JLabel label) {
+        label.setForeground(Color.white);
+        label.setFont(LABEL_FONT);
+    }
+
+    private void stylePanel(JLabel label, int fontSize) {
+        label.setForeground(Color.white);
+        label.setFont(new Font("Avenir", 1, fontSize));
     }
 
     private void loadProperties() {
+
+        listOfPropertyObjects = new DefaultListModel();
+        listOfPropertyAddresses = new DefaultListModel();
+
         loadPropertyList();
         refreshProperties();
-
     }
 
     // MODIFIES: this
@@ -195,7 +239,9 @@ public class PropertyManagementAppGUI extends JFrame {
     public void refreshProperties() {
         listOfPropertyAddresses.clear();
         listOfPropertyObjects.clear();
+
         List<Property> listofProperties = portfolio.getPropertyList();
+
         for (Property property : listofProperties) {
             String civicAddress = property.getCivicAddress();
             listOfPropertyObjects.addElement(property);
@@ -204,7 +250,6 @@ public class PropertyManagementAppGUI extends JFrame {
     }
 
     public void buildMenuBar() {
-
         menuBar = new JMenuBar();
 
         JMenu fileMenu = new JMenu("File");
@@ -251,47 +296,30 @@ public class PropertyManagementAppGUI extends JFrame {
     }
 
     public void buildOptionPanel() {
-
-        optionPanel = new JPanel();
-        optionPanel.setLayout(new FlowLayout(FlowLayout.LEADING));
-        optionPanel.setPreferredSize(new Dimension(WIDTH, 50));
-        optionPanel.setBackground(Color.BLACK);
+        optionPanel = new OptionPanel();
+        initializeOptionButtons();
         frame.add(optionPanel, BorderLayout.SOUTH);
-
-        initializeOptions();
     }
 
-    public void initializeOptions() {
-
-        addCommand = new AppButton("add");
+    public void initializeOptionButtons() {
+        addCommand = new OptionButton("add");
         addCommand.addActionListener(e -> addNewProperty());
-        addCommand.setFont(BUTTON_FONT);
-        addCommand.setForeground(Color.white);
-        addCommand.setVerticalAlignment(SwingConstants.CENTER);
         optionPanel.add(addCommand);
 
-        deleteCommand = new AppButton("delete");
+        deleteCommand = new OptionButton("delete");
         deleteCommand.addActionListener(e -> removeExistingProperty());
-        deleteCommand.setFont(BUTTON_FONT);
-        deleteCommand.setForeground(Color.white);
-        deleteCommand.setVerticalAlignment(SwingConstants.CENTER);
         optionPanel.add(deleteCommand);
 
-        manageCommand = new AppButton("manage");
+        manageCommand = new OptionButton("manage");
         manageCommand.addActionListener(e -> manageExistingProperty());
-        manageCommand.setFont(BUTTON_FONT);
-        manageCommand.setForeground(Color.white);
-        manageCommand.setVerticalAlignment(SwingConstants.CENTER);
         optionPanel.add(manageCommand);
 
-        viewCommand = new AppButton("view");
+        viewCommand = new OptionButton("view");
         viewCommand.addActionListener(e -> viewCurrentProperty());
-        viewCommand.setFont(BUTTON_FONT);
-        viewCommand.setForeground(Color.white);
-        viewCommand.setVerticalAlignment(SwingConstants.CENTER);
         optionPanel.add(viewCommand);
     }
 
+    @SuppressWarnings({"checkstyle:MethodLength", "checkstyle:SuppressWarnings"})
     private void manageExistingProperty() {
         selectedProperty = (Property) listOfPropertyObjects.get(list.getSelectedIndex());
 
@@ -328,12 +356,8 @@ public class PropertyManagementAppGUI extends JFrame {
                 "Manage Selected Property:", JOptionPane.OK_CANCEL_OPTION);
 
         if (result == JOptionPane.OK_OPTION) {
-            updatePropertyDetails(selectedProperty,
-                    civicAddressField,
-                    propertyValueField,
-                    monthlyRentalIncomeField,
-                    currentTenantsField,
-                    clearTenantsCheckBox);
+            updatePropertyDetails(selectedProperty, civicAddressField, propertyValueField, monthlyRentalIncomeField,
+                    currentTenantsField, clearTenantsCheckBox);
         }
     }
 
@@ -357,17 +381,16 @@ public class PropertyManagementAppGUI extends JFrame {
         } else if (clearTenantsCheckBox.isSelected()) {
             clearTenantList(selectedProperty);
         }
+        refresh();
+    }
 
-
+    private void refresh() {
         refreshProperties();
         refreshSummaryStatistics();
-
     }
 
     private void clearTenantList(Property selectedProperty) {
-
         int tenantListLength = selectedProperty.getTenantList().size();
-
         for (int i = 0; i < tenantListLength; i++) {
             String tenantName = selectedProperty.getTenantList().get(0).getTenantName();
             selectedProperty.removeTenant(tenantName);
@@ -414,23 +437,18 @@ public class PropertyManagementAppGUI extends JFrame {
         viewPropertyPanel.add(columnTwo);
 
         JOptionPane viewPropertyPane = new JOptionPane();
-        viewPropertyPane.setIcon(new ImageIcon("./data/appIcon.png"));
         viewPropertyPane.showConfirmDialog(null, viewPropertyPanel,
                 "Selected Property Details:", JOptionPane.OK_CANCEL_OPTION);
     }
 
     private String getTenantString(Property selectedProperty) {
-
         if (selectedProperty.getTenantList().isEmpty()) {
             return "Vacant Property";
         }
-
         String tenantString = "";
-
         for (Tenant t : selectedProperty.getTenantList()) {
             tenantString += t.getTenantName() + ", ";
         }
-
         return tenantString.substring(0, tenantString.length() - 2);
     }
 
@@ -441,25 +459,25 @@ public class PropertyManagementAppGUI extends JFrame {
     private void removeExistingProperty() {
         String propertyToRemove = selectedPropertyFromList.toString();
         portfolio.removeExistingProperty(propertyToRemove);
-        refreshProperties();
-        refreshSummaryStatistics();
+        refresh();
     }
 
     private void refreshSummaryStatistics() {
         totalPortfolioSize.setText(String.valueOf(portfolio.getPropertyList().size()));
         totalPortfolioValue.setText(currencyConverter(portfolio.getTotalPortfolioValue()));
-        totalVacancyRate.setText(portfolio.getOccupanyRate() + "%");
+        totalOccupancyRate.setText(portfolio.getOccupanyRate() + "%");
         monthlyRentalIncome.setText(currencyConverter(portfolio.getTotalMonthlyRent()));
     }
 
+    @SuppressWarnings({"checkstyle:MethodLength", "checkstyle:SuppressWarnings"})
     private void addNewProperty() {
+        JPanel newPropertyPanel = new JPanel();
+        Box columnOne = new Box(BoxLayout.Y_AXIS);
+        Box columnTwo = new Box(BoxLayout.Y_AXIS);
         JTextField civicAddressField = new JTextField(20);
         JTextField propertyValueField = new JTextField(20);
         JTextField monthlyRentalIncomeField = new JTextField(20);
         JTextField currentTenantsField = new JTextField(20);
-        JPanel newPropertyPanel = new JPanel();
-        Box columnOne = new Box(BoxLayout.Y_AXIS);
-        Box columnTwo = new Box(BoxLayout.Y_AXIS);
         columnOne.add(new JLabel("Civic Address:"));
         columnOne.add(Box.createVerticalStrut(10));
         columnOne.add(new JLabel("Property Value:"));
@@ -473,20 +491,21 @@ public class PropertyManagementAppGUI extends JFrame {
         columnTwo.add(currentTenantsField);
         newPropertyPanel.add(columnOne);
         newPropertyPanel.add(columnTwo);
-        newPropertyPanel.add(new JLabel("Note: Tenant Names must be followed by a comma"));
-
         int result = JOptionPane.showConfirmDialog(null, newPropertyPanel,
                 "Enter New Property Information:", JOptionPane.OK_CANCEL_OPTION);
         if (result == JOptionPane.OK_OPTION) {
-            String civicAddress = civicAddressField.getText();
-            int propertyValue = Integer.parseInt(propertyValueField.getText());
-            int monthyRentalIncome = Integer.parseInt(monthlyRentalIncomeField.getText());
-
-            portfolio.addNewProperty(civicAddress, propertyValue, monthyRentalIncome,
-                    initializeTenantList(currentTenantsField.getText()));
-            refreshProperties();
-            refreshSummaryStatistics();
+            processInput(civicAddressField, propertyValueField, monthlyRentalIncomeField, currentTenantsField);
         }
+    }
+
+    private void processInput(JTextField civAdd, JTextField propValue, JTextField monthlyRent, JTextField tenants) {
+        String civicAddress = civAdd.getText();
+        int propertyValue = Integer.parseInt(propValue.getText());
+        int monthyRentalIncome = Integer.parseInt(monthlyRent.getText());
+
+        portfolio.addNewProperty(civicAddress, propertyValue, monthyRentalIncome,
+                initializeTenantList(tenants.getText()));
+        refresh();
     }
 
     private ArrayList<Tenant> initializeTenantList(String tenantString) {
@@ -494,7 +513,7 @@ public class PropertyManagementAppGUI extends JFrame {
         String [] tenantNames = tenantString.split(", ");
         ArrayList<Tenant> tenantList = new ArrayList<>();
 
-        if (tenantNames[0].equals("")) {
+        if (tenantNames[0].equals("") && tenantNames.length == 1) {
             return tenantList;
         }
         for (String name : tenantNames) {

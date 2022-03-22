@@ -1,9 +1,12 @@
 {
     "name": "My Portfolio",
     "properties": [{
-        "tenants": [{"tenant name": "Nick"}],
-        "market value": 100000,
-        "civic address": "Nick's House - O",
-        "desired rent": 1000
+        "tenants": [
+            {"tenant name": "JM"},
+            {"tenant name": "FM"}
+        ],
+        "market value": 1500000,
+        "civic address": "2292 Fairmont Avenue, Vancouver BC, V1V 2V6",
+        "desired rent": 4500
     }]
 }
