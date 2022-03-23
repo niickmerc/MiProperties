@@ -8,22 +8,13 @@ public class Label extends JLabel {
 
     public Label(String text) {
         super(text);
-        stylePanel(this);
+        setForeground(Color.white);
+        setFont(LABEL_FONT);
     }
 
     public Label(String text, int fontSize) {
         super(text);
-        stylePanel(this, fontSize);
-    }
-
-
-    private void stylePanel(Label label) {
-        label.setForeground(Color.white);
-        label.setFont(LABEL_FONT);
-    }
-
-    private void stylePanel(JLabel label, int fontSize) {
-        label.setForeground(Color.white);
-        label.setFont(new Font("Avenir", 1, fontSize));
+        setForeground(Color.white);
+        setFont(new Font("Avenir", 1, fontSize));
     }
 }

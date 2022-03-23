@@ -162,29 +162,29 @@ public class PortfolioTest {
     }
 
     @Test
-    public void testGetVacancyRatesMultipleVacantProperties() {
+    public void testGetOccupancyRatesMultipleVacantProperties() {
         testPortfolio.addNewProperty(p1.getCivicAddress(), p1.getPropertyValue(), p1.getMonthlyRent());
         testPortfolio.addNewProperty(p2.getCivicAddress(), p2.getPropertyValue(), p2.getMonthlyRent());
         testPortfolio.addNewProperty(p3.getCivicAddress(), p3.getPropertyValue(), p3.getMonthlyRent());
 
-        assertEquals(100.0, testPortfolio.getOccupanyRate());
+        assertEquals(0.0, testPortfolio.getOccupanyRate());
     }
 
     @Test
-    public void testGetVacancyRatesMultipleProperties() {
+    public void testGetOccupancyRatesMultipleProperties() {
         testPortfolio.addNewProperty(p1.getCivicAddress(), p1.getPropertyValue(), p1.getMonthlyRent());
         testPortfolio.addNewProperty(p2.getCivicAddress(), p2.getPropertyValue(), p2.getMonthlyRent());
         testPortfolio.addNewProperty(p3.getCivicAddress(), p3.getPropertyValue(), p3.getMonthlyRent());
 
-        assertEquals(100.0, testPortfolio.getOccupanyRate());
+        assertEquals(0.0, testPortfolio.getOccupanyRate());
 
         testPortfolio.getPropertyList().get(0).addNewTenant("John Doe");
-        assertEquals(((2.0/3.0) * 100), testPortfolio.getOccupanyRate());
+        assertEquals(33.0, testPortfolio.getOccupanyRate());
 
         testPortfolio.getPropertyList().get(1).addNewTenant("Jane Doe");
-        assertEquals(1.0/3.0 * 100, testPortfolio.getOccupanyRate());
+        assertEquals(67.0, testPortfolio.getOccupanyRate());
 
         testPortfolio.getPropertyList().get(2).addNewTenant("Jane Doe");
-        assertEquals(0, testPortfolio.getOccupanyRate());
+        assertEquals(100, testPortfolio.getOccupanyRate());
     }
 }
