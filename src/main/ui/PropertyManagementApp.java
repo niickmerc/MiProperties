@@ -366,7 +366,8 @@ public class PropertyManagementApp extends JFrame {
 
         if (isTextFieldFilled(addTenantsField.getText())) {
             addTenantsToList(selectedProperty, initTenants(addTenantsField.getText()));
-        } else if (isTextFieldFilled(removeTenantsField.getText())) {
+        }
+        if (isTextFieldFilled(removeTenantsField.getText())) {
             removeTenantsFromList(selectedProperty, initTenants(removeTenantsField.getText()));
         }
         refreshPortfolio();
@@ -385,6 +386,7 @@ public class PropertyManagementApp extends JFrame {
     private void refreshPortfolio() {
         refreshProperties();
         refreshSummaryStatistics();
+        list.setSelectedIndex(0);
     }
 
     // MODIFIES: selectedProperty

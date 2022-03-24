@@ -13,6 +13,7 @@ public class PropertyList extends JList {
         super(list);
         setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         setFixedCellWidth(780);
+        setVisibleRowCount(15);
         setBackground(BACKGROUND_COLOR);
         setFont(new Font("Avenir", 1, 18));
         setForeground(Color.white);
