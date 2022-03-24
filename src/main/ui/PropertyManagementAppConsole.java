@@ -1,8 +1,8 @@
 package ui;
 
-import model.Portfolio;
-import model.Property;
-import model.Tenant;
+import model.PortfolioOG;
+import model.PropertyOG;
+import model.TenantOG;
 import persistence.JsonReader;
 import persistence.JsonWriter;
 
@@ -14,7 +14,7 @@ import java.util.Scanner;
 // This class represents the user interface for my property management application
 public class PropertyManagementAppConsole {
     private static final String JSON_STORE = "./data/portfolio.json";
-    private Portfolio portfolio;
+    private PortfolioOG portfolio;
     private Scanner input;
     private JsonWriter jsonWriter;
     private JsonReader jsonReader;
@@ -52,7 +52,7 @@ public class PropertyManagementAppConsole {
     // MODIFIES: this
     // EFFECTS: Instantiates required objects and utilities
     private void initializeFields() {
-        portfolio = new Portfolio();
+        portfolio = new PortfolioOG();
         jsonWriter = new JsonWriter(JSON_STORE);
         jsonReader = new JsonReader(JSON_STORE);
         input = new Scanner(System.in);
@@ -96,7 +96,7 @@ public class PropertyManagementAppConsole {
 
     // MODIFIES: this
     // EFFECTS: processes user input according to the seven possible options, otherwise returns an error message
-    private void processCommand(String userInput, Property selectedProperty) {
+    private void processCommand(String userInput, PropertyOG selectedProperty) {
         switch (userInput) {
             case ("civic"): updateCivicAddress(selectedProperty);
                 break;
@@ -147,7 +147,7 @@ public class PropertyManagementAppConsole {
     // EFFECTS: prints the civic address for all properties inside the portfolio out on the console
     public void printAllProperties() {
         int count = 1;
-        for (Property p : portfolio.getPropertyList()) {
+        for (PropertyOG p : portfolio.getPropertyList()) {
             System.out.println("\tProperty #" + count++ + ": " + p.getCivicAddress());
         }
     }
@@ -206,7 +206,7 @@ public class PropertyManagementAppConsole {
         System.out.print("Enter the address of the property you want to manage: ");
         String propName = input.next().trim();
 
-        for (Property p : portfolio.getPropertyList()) {
+        for (PropertyOG p : portfolio.getPropertyList()) {
             if (propName.equals(p.getCivicAddress())) {
                 displayPropertyInfo(p);
                 return;
@@ -219,7 +219,7 @@ public class PropertyManagementAppConsole {
     // MODIFIES: this
     // EFFECTS: prints out the current fields of the specific property requested by user out on the console and
     //          calls managePropertyMenu()
-    private void displayPropertyInfo(Property selectedProperty) {
+    private void displayPropertyInfo(PropertyOG selectedProperty) {
         System.out.println();
         System.out.println("Details for " + selectedProperty.getCivicAddress() +  ": ");
         System.out.println("\tMarket Value: $" + selectedProperty.getPropertyValue());
@@ -234,7 +234,7 @@ public class PropertyManagementAppConsole {
 
     // MODIFIES: this
     // EFFECTS: displays menu of specific property actions to the user
-    private void managePropertyMenu(Property selectedProperty) {
+    private void managePropertyMenu(PropertyOG selectedProperty) {
         System.out.println("\nTo update this property's address, type 'civic'");
         System.out.println("To update this property's market value, type 'value'");
         System.out.println("To update this property's desired rental income, type 'income'");
@@ -248,7 +248,7 @@ public class PropertyManagementAppConsole {
 
     // MODIFIES: this
     // EFFECTS: updates the address of a specific property
-    private void updateCivicAddress(Property selectedProperty) {
+    private void updateCivicAddress(PropertyOG selectedProperty) {
         System.out.print("Enter the new civic address for this property: ");
         String newAddress = input.next().trim();
         selectedProperty.setCivicAddress(newAddress);
@@ -258,7 +258,7 @@ public class PropertyManagementAppConsole {
 
     // MODIFIES: this
     // EFFECTS: updates the market value of a specific property
-    private void updateMarketValue(Property selectedProperty) {
+    private void updateMarketValue(PropertyOG selectedProperty) {
         System.out.println("Enter the new market value for this property: ");
         int newMarketValue = input.nextInt();
         selectedProperty.setPropertyValue(newMarketValue);
@@ -268,7 +268,7 @@ public class PropertyManagementAppConsole {
 
     // MODIFIES: this
     // EFFECTS: updates the desired monthly rental income of a specific property
-    private void updateMonthlyRentalIncome(Property selectedProperty) {
+    private void updateMonthlyRentalIncome(PropertyOG selectedProperty) {
         System.out.println("Enter your desired rental income for this property: ");
         int newRentalIncome = input.nextInt();
         selectedProperty.setMonthlyRent(newRentalIncome);
@@ -278,7 +278,7 @@ public class PropertyManagementAppConsole {
 
     // MODIFIES: this
     // EFFECTS: displays menu of tenant options for user
-    private void manageTenantsMenu(Property selectedProperty) {
+    private void manageTenantsMenu(PropertyOG selectedProperty) {
         System.out.println();
         displayTenantList(selectedProperty);
 
@@ -301,7 +301,7 @@ public class PropertyManagementAppConsole {
     }
 
     // EFFECTS: displays menu of tenant options for user
-    private void displayTenantList(Property selectedProperty) {
+    private void displayTenantList(PropertyOG selectedProperty) {
         if (selectedProperty.getTenantList().isEmpty()) {
             System.out.println(selectedProperty.getCivicAddress() + " is currently vacant.");
         } else {
@@ -312,16 +312,16 @@ public class PropertyManagementAppConsole {
 
     // REQUIRES: selectedProperty.tenantList.size() > 0
     // EFFECTS: prints the names of all tenants corresponding to a specific property out
-    public void viewAllTenants(Property selectedProperty) {
+    public void viewAllTenants(PropertyOG selectedProperty) {
         int count = 1;
-        for (Tenant t : selectedProperty.getTenantList()) {
+        for (TenantOG t : selectedProperty.getTenantList()) {
             System.out.println("\tTenant #" + count++ + ": " + t.getTenantName());
         }
     }
 
     // MODIFIES: this
     // EFFECTS:  asks user to enter the name of a new tenant and passes it to the addNewTenant function
-    private void addTenants(Property selectedProperty) {
+    private void addTenants(PropertyOG selectedProperty) {
         System.out.print("Enter your tenant's name: ");
         String tenantToAdd = input.next().trim();
         System.out.println();
@@ -335,7 +335,7 @@ public class PropertyManagementAppConsole {
 
     // MODIFIES: this
     // EFFECTS:  asks user to enter the name of an existing tenant and passes it to the removeTenant function
-    private void removeTenants(Property selectedProperty) {
+    private void removeTenants(PropertyOG selectedProperty) {
         System.out.print("Enter your tenant's name: ");
         String tenantToRemove = input.next().trim();
         System.out.println();
@@ -354,7 +354,7 @@ public class PropertyManagementAppConsole {
             System.out.println("Summary statistics for your portfolio:");
             System.out.println("Total value: $" + portfolio.getTotalPortfolioValue());
             System.out.println("Total monthly rent: $" + portfolio.getTotalMonthlyRent());
-            System.out.println("Total vacancy rate: " + portfolio.getOccupanyRate() + "%");
+            System.out.println("Total vacancy rate: " + portfolio.getOccupancyRate() + "%");
             System.out.println();
             System.out.print("Press enter to return to the main menu.");
             String dummyInput = input.next();

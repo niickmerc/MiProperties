@@ -9,13 +9,13 @@ import java.util.List;
 
 
 // This class represents a digital portfolio of rental properties
-public class Portfolio implements Writable {
+public class PortfolioOG implements Writable {
 
-    private List<Property> propertyList;  // a list of properties that have been created by a user
+    private List<PropertyOG> propertyList;  // a list of properties that have been created by a user
     private String name;
 
     // EFFECTS: Constructs a new portfolio of properties
-    public Portfolio() {
+    public PortfolioOG() {
 
         propertyList = new ArrayList<>();
         name = "My Portfolio";
@@ -27,10 +27,11 @@ public class Portfolio implements Writable {
     // EFFECTS: Adds a new property with the given address, value, and desired monthly rent into the portfolio.
     //          if successful, return true, else return false
     public boolean addNewProperty(String civicAddress, int propertyValue, int monthlyRent) {
-        Property propertyToAdd = loopAndReturnProperty(civicAddress);
+
+        PropertyOG propertyToAdd = loopAndReturnProperty(civicAddress);
 
         if (propertyToAdd == null) {
-            Property newProp = new Property(civicAddress, propertyValue, monthlyRent);
+            PropertyOG newProp = new PropertyOG(civicAddress, propertyValue, monthlyRent);
             propertyList.add(newProp);
             return true;
         } else {
@@ -43,11 +44,11 @@ public class Portfolio implements Writable {
     // MODIFIES: this
     // EFFECTS: Adds a new property with the given address, value, desired monthly rent, and list of tenants
     //          into the portfolio. if successful, return true, else return false
-    public boolean addNewProperty(String civAddress, int propertyValue, int monthlyRent, ArrayList<Tenant> tenantList) {
-        Property propertyToAdd = loopAndReturnProperty(civAddress);
+    public boolean addNewProperty(String civAddress, int propertyValue, int monthlyRent, ArrayList<TenantOG> tenantList) {
+        PropertyOG propertyToAdd = loopAndReturnProperty(civAddress);
 
         if (propertyToAdd == null) {
-            Property newProp = new Property(civAddress, propertyValue, monthlyRent, tenantList);
+            PropertyOG newProp = new PropertyOG(civAddress, propertyValue, monthlyRent, tenantList);
             propertyList.add(newProp);
             return true;
         } else {
@@ -60,7 +61,7 @@ public class Portfolio implements Writable {
     // MODIFIES: this
     // EFFECTS: Removes the property with the given name from the portfolio. if successful, return true, else false
     public boolean removeExistingProperty(String civilAddress) {
-        Property propertyToRemove = loopAndReturnProperty(civilAddress);
+        PropertyOG propertyToRemove = loopAndReturnProperty(civilAddress);
 
         if (propertyToRemove != null) {
             propertyList.remove(propertyToRemove);
@@ -73,7 +74,7 @@ public class Portfolio implements Writable {
     // EFFECTS: Returns the sum of all market values from properties in a user's portfolio
     public long getTotalPortfolioValue() {
         long totalValue = 0;
-        for (Property p : propertyList) {
+        for (PropertyOG p : propertyList) {
             totalValue += p.getPropertyValue();
         }
         return totalValue;
@@ -82,7 +83,7 @@ public class Portfolio implements Writable {
     // EFFECTS: Returns the sum of all rental cash flows from occupied properties
     public long getTotalMonthlyRent() {
         long totalMonthlyRent = 0;
-        for (Property p : propertyList) {
+        for (PropertyOG p : propertyList) {
             if (p.getIsRented()) {
                 totalMonthlyRent += p.getMonthlyRent();
             }
@@ -91,12 +92,12 @@ public class Portfolio implements Writable {
     }
 
     // EFFECTS: Returns the percentage (out of 100) of properties within a user's portfolio that are occupied
-    public double getOccupanyRate() {
+    public double getOccupancyRate() {
         double vacantProperties = 0.0;
         if (propertyList.isEmpty()) {
             return vacantProperties;
         } else {
-            for (Property p : propertyList) {
+            for (PropertyOG p : propertyList) {
                 if (!p.getIsRented()) {
                     vacantProperties++;
                 }
@@ -106,8 +107,8 @@ public class Portfolio implements Writable {
     }
 
     // EFFECTS: Returns the property with a specific address if it exists in the portfolio, otherwise returns null
-    public Property loopAndReturnProperty(String civicAddress) {
-        for (Property p : propertyList) {
+    public PropertyOG loopAndReturnProperty(String civicAddress) {
+        for (PropertyOG p : propertyList) {
             if (p.getCivicAddress().equals(civicAddress)) {
                 return p;
             }
@@ -116,7 +117,7 @@ public class Portfolio implements Writable {
     }
 
     // getters
-    public List<Property> getPropertyList() {
+    public List<PropertyOG> getPropertyList() {
         return propertyList;
     }
 
@@ -136,7 +137,7 @@ public class Portfolio implements Writable {
     private JSONArray propertiesToJson() {
         JSONArray jsonArray = new JSONArray();
 
-        for (Property p : propertyList) {
+        for (PropertyOG p : propertyList) {
             jsonArray.put(p.toJson());
         }
 

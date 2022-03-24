@@ -1,7 +1,7 @@
 package persistence;
 
 import model.*;
-import model.Tenant;
+import model.TenantOG;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -23,7 +23,7 @@ public class JsonReader {
 
     // EFFECTS: reads workroom from file and returns it;
     // throws an IOException if an error occurs reading data from file
-    public Portfolio read() throws IOException {
+    public PortfolioOG read() throws IOException {
         String jsonData = readFile(source);
         JSONObject jsonObject = new JSONObject(jsonData);
         return parsePortfolio(jsonObject);
@@ -41,15 +41,15 @@ public class JsonReader {
     }
 
     // EFFECTS: parses portfolio from JSON object and returns it
-    private Portfolio parsePortfolio(JSONObject jsonObject) {
-        Portfolio portfolio = new Portfolio();
+    private PortfolioOG parsePortfolio(JSONObject jsonObject) {
+        PortfolioOG portfolio = new PortfolioOG();
         addProperties(portfolio, jsonObject);
         return portfolio;
     }
 
     // MODIFIES: this
     // EFFECTS: parses properties from JSON object and adds them to portfolio
-    private void addProperties(Portfolio portfolio, JSONObject jsonObject) {
+    private void addProperties(PortfolioOG portfolio, JSONObject jsonObject) {
         JSONArray jsonArray = jsonObject.getJSONArray("properties");
         for (Object json : jsonArray) {
             JSONObject nextProperty = (JSONObject) json;
@@ -58,25 +58,25 @@ public class JsonReader {
     }
 
     // EFFECTS: parses property from JSON object and adds it to the portfolio
-    private void addProperty(Portfolio portfolio, JSONObject jsonObject) {
+    private void addProperty(PortfolioOG portfolio, JSONObject jsonObject) {
         String civicAddress = jsonObject.getString("civic address");
         int marketValue = jsonObject.getInt("desired rent");
         int purchasePrice = jsonObject.getInt("market value");
 
-        ArrayList<Tenant> tenantList = addTenants(jsonObject);
+        ArrayList<TenantOG> tenantList = addTenants(jsonObject);
 
         portfolio.addNewProperty(civicAddress, purchasePrice, marketValue, tenantList);
     }
 
     // EFFECTS: parses tenants from JSON object and adds it to tenantList
-    private ArrayList<Tenant> addTenants(JSONObject jsonObject) {
-        ArrayList<Tenant> tenantList = new ArrayList<>();
+    private ArrayList<TenantOG> addTenants(JSONObject jsonObject) {
+        ArrayList<TenantOG> tenantList = new ArrayList<>();
         JSONArray jsonArray = jsonObject.getJSONArray("tenants");
 
         for (Object json : jsonArray) {
             JSONObject nextTenant = (JSONObject) json;
             String name = nextTenant.getString("tenant name");
-            Tenant newTenant = new Tenant(name);
+            TenantOG newTenant = new TenantOG(name);
             tenantList.add(newTenant);
         }
         return tenantList;

@@ -1,6 +1,6 @@
 package persistence;
 
-import model.Portfolio;
+import model.PortfolioOG;
 import org.json.JSONObject;
 
 import java.io.*;
@@ -25,7 +25,7 @@ public class JsonWriter {
 
     // MODIFIES: this
     // EFFECTS: writes JSON representation of workroom to file
-    public void write(Portfolio portfolio) {
+    public void write(PortfolioOG portfolio) {
         JSONObject json = portfolio.toJson();
         saveToFile(json.toString(TAB));
     }

@@ -7,11 +7,11 @@ import org.json.JSONObject;
 import persistence.Writable;
 
 // This class represents a rental tenant with a full name
-public class Tenant implements Writable {
+public class TenantOG implements Writable {
 
     private String tenantName;  // a tenant's full legal name
 
-    public Tenant(String name) {
+    public TenantOG(String name) {
         tenantName = name;
     }
 

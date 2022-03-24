@@ -1,16 +1,13 @@
 package ui;
 
-import model.Portfolio;
-import model.Property;
-import model.Tenant;
+import model.PortfolioOG;
+import model.PropertyOG;
+import model.TenantOG;
 import persistence.JsonReader;
 import persistence.JsonWriter;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.text.NumberFormat;
@@ -26,11 +23,10 @@ public class PropertyManagementApp extends JFrame {
 
     // Swing components needed
     private JFrame frame;
-
     private PropertyList list;
 
     private Object selectedPropertyFromList;
-    private Property selectedProperty;
+    private PropertyOG selectedProperty;
 
     private Label totalPortfolioSize;
     private Label totalPortfolioValue;
@@ -41,62 +37,53 @@ public class PropertyManagementApp extends JFrame {
     private JPanel summaryPanel = new JPanel();
     private JPanel mainPanel = new JPanel();
     private JPanel propertiesPanel = new JPanel();
-    private JPanel manageExistingPropertyPanel;
 
-    private Portfolio portfolio;
-    private DefaultListModel listOfPropertyObjects;
-    private DefaultListModel listOfPropertyAddresses; // Addresses to display within app
+    private PortfolioOG portfolio;
+    private DefaultListModel listOfPropertyObjects = new DefaultListModel();
+    private DefaultListModel listOfPropertyAddresses = new DefaultListModel();
 
     // Fields required for loading and saving the file
     private static final String JSON_STORE = "./data/portfolio.json";
-    private JsonWriter jsonWriter;
-    private JsonReader jsonReader;
+    private JsonWriter jsonWriter = new JsonWriter(JSON_STORE);
+    private JsonReader jsonReader = new JsonReader(JSON_STORE);
 
-    // MODIFIES:
+    // MODIFIES: this
     // EFFECTS: initializes all required elements and adds them to the main frame
     public PropertyManagementApp() {
 
-        jsonReader = new JsonReader(JSON_STORE);
-        jsonWriter = new JsonWriter(JSON_STORE);
-
         initializeGraphics();
-
         loadProperties();
-
-        list = new PropertyList(listOfPropertyAddresses);
-        list.addListSelectionListener(e -> selectProperty());
-        JScrollPane listScrollPane = new JScrollPane(list);
-
-        listScrollPane.setBorder(BorderFactory.createEmptyBorder());
-        propertiesPanel.add(listScrollPane, BorderLayout.WEST);
-
+        displayPropertyList();
         buildMenuBar();
-
         buildOptionPanel();
-
         createSummaryTable();
 
         frame.setVisible(true);
     }
 
-    // MODIFIES:
+    // MODIFIES: this
+    // EFFECTS: constructs list of property addresses and adds it to the properties panel
+    private void displayPropertyList() {
+        list = new PropertyList(listOfPropertyAddresses);
+        list.addListSelectionListener(e -> selectProperty());
+        JScrollPane listScrollPane = new JScrollPane(list);
+        listScrollPane.setBorder(BorderFactory.createEmptyBorder());
+        propertiesPanel.add(listScrollPane, BorderLayout.WEST);
+    }
+
+    // MODIFIES: this
     // EFFECTS: initializes all required elements and adds them to the main frame
     private void initializeGraphics() {
         initializeFrame();
-        initializePanels();
-    }
 
-    // REQUIRES:
-    // MODIFIES:
-    // EFFECTS: initializes all panels and adds them to the main panel
-    private void initializePanels() {
         initializeMainPanel();
+
         initializeSummaryPanel();
+
         initializePropertiesPanel();
     }
 
-    // REQUIRES:
-    // MODIFIES:
+    // MODIFIES: this
     // EFFECTS: initializes the properties panel and adds it to the main panel
     private void initializePropertiesPanel() {
         propertiesPanel.setPreferredSize(new Dimension(WIDTH, HEIGHT));
@@ -104,8 +91,7 @@ public class PropertyManagementApp extends JFrame {
         mainPanel.add(propertiesPanel);
     }
 
-    // REQUIRES:
-    // MODIFIES:
+    // MODIFIES: this
     // EFFECTS: initializes the summary panel and adds it to the frame
     private void initializeSummaryPanel() {
         summaryPanel.setPreferredSize(new Dimension((WIDTH * 1 / 3), HEIGHT));
@@ -115,8 +101,7 @@ public class PropertyManagementApp extends JFrame {
         frame.add(summaryPanel, BorderLayout.EAST);
     }
 
-    // REQUIRES:
-    // MODIFIES:
+    // MODIFIES: this
     // EFFECTS: initializes the main panel and adds it to the frame
     private void initializeMainPanel() {
         mainPanel.setPreferredSize(new Dimension((WIDTH * 2 / 3), HEIGHT));
@@ -133,11 +118,10 @@ public class PropertyManagementApp extends JFrame {
         frame.add(mainPanel, BorderLayout.WEST);
     }
 
-    // REQUIRES:
-    // MODIFIES:
+    // MODIFIES: this
     // EFFECTS: initializes the application frame
     private void initializeFrame() {
-        frame = new JFrame("MiProperties  V2.0.1");
+        frame = new JFrame("MiProperties");
 
         frame.setSize(WIDTH, HEIGHT);
         Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
@@ -159,13 +143,20 @@ public class PropertyManagementApp extends JFrame {
         selectedPropertyFromList = list.getSelectedValue();
     }
 
-    // REQUIRES:
-    // MODIFIES:
+    // MODIFIES: this
     // EFFECTS:  initializes the summary table and adds it to the summary panel
-    @SuppressWarnings({"checkstyle:MethodLength", "checkstyle:SuppressWarnings"})
     private void createSummaryTable() {
         JPanel summaryTable = new JPanel();
 
+        designTableHeaders(summaryTable);
+        designTableValues(summaryTable);
+
+        summaryPanel.add(summaryTable);
+    }
+
+    // MODIFIES: this
+    // EFFECTS: constructs summary panel headers and adds them to the summary panel
+    private void designTableHeaders(JPanel summaryTable) {
         Box summaryTableHeaders = new Box(BoxLayout.Y_AXIS);
         Label portfolioSizeHeader  = new Label("Total Properties: ");
         summaryTableHeaders.add(portfolioSizeHeader);
@@ -179,30 +170,30 @@ public class PropertyManagementApp extends JFrame {
         Label totalRentalIncomeHeader  = new Label("Total Rental Income: ");
         summaryTableHeaders.add(totalRentalIncomeHeader);
         summaryTable.add(summaryTableHeaders);
+    }
 
+    // MODIFIES: this
+    // EFFECTS: constructs summary panel values and adds them to the summary panel
+    private void designTableValues(JPanel summaryTable) {
         Box summaryTableValues = new Box(BoxLayout.Y_AXIS);
         summaryTableValues.add(totalPortfolioSize = new Label(String.valueOf(portfolio.getPropertyList().size())));
         summaryTableValues.add(Box.createVerticalStrut(10));
         summaryTableValues.add(totalPortfolioValue = new Label(currencyConverter(portfolio.getTotalPortfolioValue())));
         summaryTableValues.add(Box.createVerticalStrut(10));
-        summaryTableValues.add(totalOccupancyRate = new Label((portfolio.getOccupanyRate()) + "%"));
+        summaryTableValues.add(totalOccupancyRate = new Label((portfolio.getOccupancyRate()) + "%"));
         summaryTableValues.add(Box.createVerticalStrut(10));
         summaryTableValues.add(monthlyRentalIncome =  new Label(currencyConverter(portfolio.getTotalMonthlyRent())));
         summaryTable.add(summaryTableValues);
         summaryTable.setBackground(BACKGROUND_COLOR);
-
-        summaryPanel.add(summaryTable);
     }
 
-    // REQUIRES:
-    // MODIFIES:
+    // MODIFIES: this
     // EFFECTS: loads a user's portfolio from file
     private void loadProperties() {
-        listOfPropertyObjects = new DefaultListModel();
-        listOfPropertyAddresses = new DefaultListModel();
 
         loadPropertyList();
         refreshProperties();
+
     }
 
     // MODIFIES: this
@@ -222,18 +213,17 @@ public class PropertyManagementApp extends JFrame {
         listOfPropertyAddresses.clear();
         listOfPropertyObjects.clear();
 
-        List<Property> listOfProperties = portfolio.getPropertyList();
+        List<PropertyOG> listOfProperties = portfolio.getPropertyList();
 
-        for (Property property : listOfProperties) {
+        for (PropertyOG property : listOfProperties) {
             String civicAddress = property.getCivicAddress();
             listOfPropertyObjects.addElement(property);
             listOfPropertyAddresses.addElement(civicAddress);
         }
     }
 
-    // REQUIRES:
-    // MODIFIES:
-    // EFFECTS:  initializes the menu bar and adds it to the frame
+    // MODIFIES: this
+    // EFFECTS: initializes the menu bar and adds it to the frame
     public void buildMenuBar() {
         JMenuBar menuBar = new JMenuBar();
 
@@ -278,18 +268,19 @@ public class PropertyManagementApp extends JFrame {
         }
     }
 
-    // REQUIRES:
-    // MODIFIES:
-    // EFFECTS:  initializes the option panel and adds it to the frame
+    // MODIFIES: this
+    // EFFECTS: initializes the option panel and adds it to the frame
     public void buildOptionPanel() {
         optionPanel = new OptionPanel();
+
         initializeOptionButtons();
+
         frame.add(optionPanel, BorderLayout.SOUTH);
     }
 
     // REQUIRES:
-    // MODIFIES:
-    // EFFECTS:  initializes all option buttons and adds them to the option panel
+    // MODIFIES: this
+    // EFFECTS: initializes all option buttons and adds them to the option panel
     public void initializeOptionButtons() {
         OptionButton addCommand = new OptionButton("add");
         addCommand.addActionListener(e -> addNewProperty());
@@ -308,22 +299,18 @@ public class PropertyManagementApp extends JFrame {
         optionPanel.add(viewCommand);
     }
 
-    // REQUIRES:
-    // MODIFIES:
+    // MODIFIES: this
     // EFFECTS: gathers input from user and updates the selected property's fields
-    @SuppressWarnings({"checkstyle:MethodLength", "checkstyle:SuppressWarnings"})
     private void manageExistingProperty() {
-        selectedProperty = (Property) listOfPropertyObjects.get(list.getSelectedIndex());
+        selectedProperty = (PropertyOG) listOfPropertyObjects.get(list.getSelectedIndex());
 
-        manageExistingPropertyPanel = new JPanel();
+        Box manageExistingPropertyHeaders = new Box(BoxLayout.Y_AXIS);
+        JPanel manageExistingPropertyPanel = new JPanel();
         JTextField civicAddressField = new JTextField(20);
         JTextField propertyValueField = new JTextField(20);
         JTextField monthlyRentalIncomeField = new JTextField(20);
         JTextField addTenantsField = new JTextField(20);
         JTextField removeTenantsField = new JTextField(20);
-
-        Box manageExistingPropertyHeaders = new Box(BoxLayout.Y_AXIS);
-        Box manageExistingPropertyFields = new Box(BoxLayout.Y_AXIS);
 
         manageExistingPropertyHeaders.add(new JLabel("Update Civic Address:"));
         manageExistingPropertyHeaders.add(Box.createVerticalStrut(10));
@@ -331,15 +318,17 @@ public class PropertyManagementApp extends JFrame {
         manageExistingPropertyHeaders.add(Box.createVerticalStrut(10));
         manageExistingPropertyHeaders.add(new JLabel("Update Desired Monthly Rent:"));
         manageExistingPropertyHeaders.add(Box.createVerticalStrut(10));
-        manageExistingPropertyHeaders.add(new JLabel("Add Tenant(s):"));
+        manageExistingPropertyHeaders.add(new JLabel("Add New Tenant(s):"));
         manageExistingPropertyHeaders.add(Box.createVerticalStrut(10));
-        manageExistingPropertyHeaders.add(new JLabel("Remove Tenant(s):"));
+        manageExistingPropertyHeaders.add(new JLabel("Remove Existing Tenant(s):"));
 
+        Box manageExistingPropertyFields = new Box(BoxLayout.Y_AXIS);
         manageExistingPropertyFields.add(civicAddressField);
         manageExistingPropertyFields.add(propertyValueField);
         manageExistingPropertyFields.add(monthlyRentalIncomeField);
         manageExistingPropertyFields.add(addTenantsField);
         manageExistingPropertyFields.add(removeTenantsField);
+        manageExistingPropertyPanel.add(manageExistingPropertyFields);
 
         manageExistingPropertyPanel.add(manageExistingPropertyHeaders);
         manageExistingPropertyPanel.add(manageExistingPropertyFields);
@@ -353,54 +342,53 @@ public class PropertyManagementApp extends JFrame {
         }
     }
 
-    // REQUIRES:
-    // MODIFIES:
+    // MODIFIES: this
     // EFFECTS: updates relevant fields for the selected property
-    private void updatePropertyDetails(Property selectedProperty, JTextField civicAddressField,
+    private void updatePropertyDetails(PropertyOG selectedProperty, JTextField civicAddressField,
                                        JTextField propertyValueField, JTextField monthlyRentalIncomeField,
                                        JTextField addTenantsField, JTextField removeTenantsField) {
 
         if (isTextFieldFilled(civicAddressField.getText())) {
             selectedProperty.setCivicAddress(civicAddressField.getText());
         }
+
         if (isTextFieldFilled(propertyValueField.getText())) {
             int newPropertyValue = Integer.parseInt(propertyValueField.getText());
             selectedProperty.setPropertyValue(newPropertyValue);
         }
+
         if (isTextFieldFilled(monthlyRentalIncomeField.getText())) {
             int newMonthlyRentalIncome = Integer.parseInt(monthlyRentalIncomeField.getText());
             selectedProperty.setMonthlyRent(newMonthlyRentalIncome);
         }
+
         if (isTextFieldFilled(addTenantsField.getText())) {
             addTenantsToList(selectedProperty, initTenants(addTenantsField.getText()));
         } else if (isTextFieldFilled(removeTenantsField.getText())) {
             removeTenantsFromList(selectedProperty, initTenants(removeTenantsField.getText()));
         }
-        refresh();
+        refreshPortfolio();
     }
 
-    // REQUIRES:
-    // MODIFIES:
+    // MODIFIES: this
     // EFFECTS: removes all specified tenants from selectedProperty
-    private void removeTenantsFromList(Property selectedProperty, ArrayList<Tenant> tenantsToRemove) {
-        for (Tenant t : tenantsToRemove) {
+    private void removeTenantsFromList(PropertyOG selectedProperty, ArrayList<TenantOG> tenantsToRemove) {
+        for (TenantOG t : tenantsToRemove) {
             selectedProperty.removeTenant(t.getTenantName());
         }
     }
 
-    // REQUIRES:
-    // MODIFIES:
+    // MODIFIES: this
     // EFFECTS: refreshes portfolio information displayed on screen
-    private void refresh() {
+    private void refreshPortfolio() {
         refreshProperties();
         refreshSummaryStatistics();
     }
 
-    // REQUIRES:
-    // MODIFIES:
-    // EFFECTS: adds a arbitrary list of tenants to selectedProperty
-    private void addTenantsToList(Property selectedProperty, ArrayList<Tenant> tenantsToAdd) {
-        for (Tenant t : tenantsToAdd) {
+    // MODIFIES: selectedProperty
+    // EFFECTS: adds all specified tenants to selectedProperty
+    private void addTenantsToList(PropertyOG selectedProperty, ArrayList<TenantOG> tenantsToAdd) {
+        for (TenantOG t : tenantsToAdd) {
             selectedProperty.addNewTenant(t.getTenantName());
         }
     }
@@ -414,12 +402,20 @@ public class PropertyManagementApp extends JFrame {
         }
     }
 
-    // REQUIRES:
-    // MODIFIES:
+    // MODIFIES: this
     // EFFECTS: displays information relating to selectedProperty on a JPanel
     private void viewCurrentProperty() {
-        selectedProperty = (Property) listOfPropertyObjects.get(list.getSelectedIndex());
+        selectedProperty = (PropertyOG) listOfPropertyObjects.get(list.getSelectedIndex());
 
+        JPanel viewPropertyPanel = createPropertyPanel();
+
+        JOptionPane viewPropertyPane = new JOptionPane();
+        viewPropertyPane.showConfirmDialog(null, viewPropertyPanel,
+                "Selected Property Details:", JOptionPane.OK_CANCEL_OPTION);
+    }
+
+    // EFFECTS: creates a panel that displays information on selectedProperty
+    private JPanel createPropertyPanel() {
         JPanel viewPropertyPanel = new JPanel();
         Box columnOne = new Box(BoxLayout.Y_AXIS);
         Box columnTwo = new Box(BoxLayout.Y_AXIS);
@@ -439,54 +435,44 @@ public class PropertyManagementApp extends JFrame {
         columnTwo.add(new JLabel(" " + getTenantString(selectedProperty)));
         viewPropertyPanel.add(columnOne);
         viewPropertyPanel.add(columnTwo);
-
-        JOptionPane viewPropertyPane = new JOptionPane();
-        viewPropertyPane.showConfirmDialog(null, viewPropertyPanel,
-                "Selected Property Details:", JOptionPane.OK_CANCEL_OPTION);
+        return viewPropertyPanel;
     }
 
-    // REQUIRES:
-    // MODIFIES:
     // EFFECTS: returns information about selectedProperty's tenants in string format
-    private String getTenantString(Property selectedProperty) {
+    private String getTenantString(PropertyOG selectedProperty) {
         if (selectedProperty.getTenantList().isEmpty()) {
             return "Vacant Property";
         }
         String tenantString = "";
-        for (Tenant t : selectedProperty.getTenantList()) {
+        for (TenantOG t : selectedProperty.getTenantList()) {
             tenantString += t.getTenantName() + ", ";
         }
         return tenantString.substring(0, tenantString.length() - 2);
     }
 
-    // REQUIRES:
-    // MODIFIES:
     // EFFECTS: converts an integer value to a currency value
     private String currencyConverter(long num) {
         return NumberFormat.getCurrencyInstance().format(num);
     }
 
-    // REQUIRES:
-    // MODIFIES:
-    // EFFECTS: removes the selected property from a user's portfolio
+    // MODIFIES: portfolio
+    // EFFECTS: removes the selected property from a user's portfolio and refreshes visible data
     private void removeExistingProperty() {
         String propertyToRemove = selectedPropertyFromList.toString();
         portfolio.removeExistingProperty(propertyToRemove);
-        refresh();
+        refreshPortfolio();
     }
 
-    // REQUIRES:
-    // MODIFIES:
+    // MODIFIES: this
     // EFFECTS: refreshes the displayed summary statistics displayed on the application homepage
     private void refreshSummaryStatistics() {
         totalPortfolioSize.setText(String.valueOf(portfolio.getPropertyList().size()));
         totalPortfolioValue.setText(currencyConverter(portfolio.getTotalPortfolioValue()));
-        totalOccupancyRate.setText(portfolio.getOccupanyRate() + "%");
+        totalOccupancyRate.setText(portfolio.getOccupancyRate() + "%");
         monthlyRentalIncome.setText(currencyConverter(portfolio.getTotalMonthlyRent()));
     }
 
-    // REQUIRES:
-    // MODIFIES:
+    // MODIFIES: selectedProperty
     // EFFECTS: gathers user input and passes information to the addNewProperty method
     @SuppressWarnings({"checkstyle:MethodLength", "checkstyle:SuppressWarnings"})
     private void addNewProperty() {
@@ -522,31 +508,29 @@ public class PropertyManagementApp extends JFrame {
         }
     }
 
-    // REQUIRES:
-    // MODIFIES:
-    // EFFECTS:
+    // REQUIRES: value and rent must be non-zero integers
+    // MODIFIES: this, portfolio
+    // EFFECTS: creates a new property using information gathered from the user
     private void addNewProperty(JTextField civic, JTextField value, JTextField rent, JTextField tenants) {
         String civicAddress = civic.getText();
         int propertyValue = Integer.parseInt(value.getText());
         int monthyRentalIncome = Integer.parseInt(rent.getText());
 
         portfolio.addNewProperty(civicAddress, propertyValue, monthyRentalIncome, initTenants(tenants.getText()));
-        refresh();
+        refreshPortfolio();
     }
 
-    // REQUIRES:
-    // MODIFIES:
-    // EFFECTS:
-    private ArrayList<Tenant> initTenants(String tenantString) {
+    // EFFECTS: Parses a string of tenant names and returns them in an ArrayList
+    private ArrayList<TenantOG> initTenants(String tenantString) {
 
         String [] tenantNames = tenantString.split(", ");
-        ArrayList<Tenant> tenantList = new ArrayList<>();
+        ArrayList<TenantOG> tenantList = new ArrayList<>();
 
         if (tenantNames[0].equals("") && tenantNames.length == 1) {
             return tenantList;
         }
         for (String name : tenantNames) {
-            tenantList.add(new Tenant(name));
+            tenantList.add(new TenantOG(name));
         }
         return tenantList;
     }

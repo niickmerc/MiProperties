@@ -1,9 +1,9 @@
 package persistence;
 
 
-import model.Portfolio;
-import model.Property;
-import model.Tenant;
+import model.PortfolioOG;
+import model.PropertyOG;
+import model.TenantOG;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -21,7 +21,7 @@ class JsonWriterTest extends JsonTest {
     @Test
     void testWriterInvalidFile() {
         try {
-            Portfolio portfolio = new Portfolio();
+            PortfolioOG portfolio = new PortfolioOG();
             JsonWriter writer = new JsonWriter("./data/my\0illegal:fileName.json");
             writer.open();
             fail("IOException was expected");
@@ -33,7 +33,7 @@ class JsonWriterTest extends JsonTest {
     @Test
     void testWriterEmptyPortfolio() {
         try {
-            Portfolio portfolio = new Portfolio();
+            PortfolioOG portfolio = new PortfolioOG();
             JsonWriter writer = new JsonWriter("./data/testWriterEmptyPortfolio.json");
             writer.open();
             writer.write(portfolio);
@@ -51,7 +51,7 @@ class JsonWriterTest extends JsonTest {
     @Test
     void testWriterGeneralPortfolio() {
         try {
-            Portfolio portfolio = new Portfolio();
+            PortfolioOG portfolio = new PortfolioOG();
             portfolio.addNewProperty("1234 Happy Drive", 2000000, 3000);
             portfolio.addNewProperty("1 University Avenue", 1500000, 2500);
             portfolio.getPropertyList().get(0).addNewTenant("Nick Mercuri");
@@ -65,10 +65,10 @@ class JsonWriterTest extends JsonTest {
             JsonReader reader = new JsonReader("./data/testWriterGeneralPortfolio.json");
             portfolio = reader.read();
             assertEquals("My Portfolio", portfolio.getName());
-            List<Property> properties = portfolio.getPropertyList();
+            List<PropertyOG> properties = portfolio.getPropertyList();
             assertEquals(2, properties.size());
-            ArrayList<Tenant> tenantsForTestProperties = new ArrayList<>();
-            tenantsForTestProperties.add(new Tenant("Nick Mercuri"));
+            ArrayList<TenantOG> tenantsForTestProperties = new ArrayList<>();
+            tenantsForTestProperties.add(new TenantOG("Nick Mercuri"));
 
             checkProperty("1234 Happy Drive", 2000000, 3000,
                     tenantsForTestProperties, properties.get(0)); // !!!
