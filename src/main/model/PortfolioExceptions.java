@@ -39,7 +39,7 @@
 //
 //        for (PropertyExceptions p : propertyList) {
 //            if (p.equals(newProperty)) {
-//                throw new DuplicatePropertyException("A property with this address already exists in your portfolio!");
+//                throw new DuplicatePropertyException("A property with this address exists in your portfolio!");
 //            }
 //        }
 //
@@ -53,7 +53,7 @@
 //    // MODIFIES: this
 //    // EFFECTS: Adds a new property with the given address, value, desired monthly rent, and list of tenants
 //    //          into the portfolio. if successful, return true, else return false
-//    public boolean addNewProperty(String civAddress, int propertyValue, int monthlyRent, ArrayList<TenantOG> tenantList) {
+//    public boolean addNewProperty(String civAddress, int value, int rent, ArrayList<Tenant> tenantList) {
 //        PropertyOG propertyToAdd = loopAndReturnProperty(civAddress);
 //
 //        if (propertyToAdd == null) {

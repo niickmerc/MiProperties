@@ -35,7 +35,7 @@
 //    //           monthlyRent must be a non-zero positive integer
 //    // throws DuplicateCivicAddressException, NegativeValueException
 //    // EFFECTS:  Creates a new instance of type Property
-//    public PropertyExceptions(String civicAddress, int propertyValue, int monthlyRent, ArrayList<TenantOG> tenantList) {
+//    public PropertyExceptions(String civicAddress, int propertyValue, int monthlyRent, ArrayList<Tenant> tenantList) {
 //        this.civicAddress = civicAddress;
 //        this.propertyValue = propertyValue;
 //        this.monthlyRent = monthlyRent;
