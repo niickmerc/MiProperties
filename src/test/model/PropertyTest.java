@@ -8,20 +8,20 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class PropertyTest {
 
-    PropertyOG p1;
-    PropertyOG p2;
-    PropertyOG p3;
-    ArrayList<TenantOG> testTenants = new ArrayList<>();
+    Property p1;
+    Property p2;
+    Property p3;
+    ArrayList<Tenant> testTenants = new ArrayList<>();
 
     @BeforeEach
     public void setup(){
 
-        p1 = new PropertyOG("2133 University Avenue", 1250000, 3600);
-        p2 = new PropertyOG("1234 Testing St", 1000000, 2500, new ArrayList<TenantOG>());
+        p1 = new Property("2133 University Avenue", 1250000, 3600);
+        p2 = new Property("1234 Testing St", 1000000, 2500, new ArrayList<Tenant>());
 
-        testTenants.add(new TenantOG("John Doe"));
+        testTenants.add(new Tenant("John Doe"));
 
-        p3 = new PropertyOG("415 Caledonia Ave", 2300000, 4000, testTenants);
+        p3 = new Property("415 Caledonia Ave", 2300000, 4000, testTenants);
 
 
     }

@@ -9,12 +9,12 @@ import java.util.ArrayList;
 
 // This class represents a property with an address, current market value, desired monthly income, a list of current
 //      tenants, and a boolean value which represents the property's occupancy status
-public class PropertyOG implements Writable {
+public class Property implements Writable {
 
     private String civicAddress;                // a property's civic address
     private int propertyValue;                  // a property's market value in Canadian dollars
     private int monthlyRent;                    // a property's desired monthly rental income in Canadian dollars
-    private ArrayList<TenantOG> tenantList;       // a list of tenants that currently occupy the property (if any)
+    private ArrayList<Tenant> tenantList;       // a list of tenants that currently occupy the property (if any)
     private boolean isRented;                   // current rental status (false = vacant, true = occupied)
 
     // REQUIRES: civilAddress has a non-zero length;
@@ -22,11 +22,11 @@ public class PropertyOG implements Writable {
     //           monthlyRent must be a non-zero positive integer
     // throws DuplicateCivicAddressException, NegativeValueException
     // EFFECTS:  Creates a new instance of type Property
-    public PropertyOG(String civicAddress, int propertyValue, int monthlyRent) {
+    public Property(String civicAddress, int propertyValue, int monthlyRent) {
         this.civicAddress = civicAddress;
         this.propertyValue = propertyValue;
         this.monthlyRent = monthlyRent;
-        tenantList = new ArrayList<TenantOG>();
+        tenantList = new ArrayList<Tenant>();
         isRented = false;
     }
 
@@ -35,7 +35,7 @@ public class PropertyOG implements Writable {
     //           monthlyRent must be a non-zero positive integer
     // throws DuplicateCivicAddressException, NegativeValueException
     // EFFECTS:  Creates a new instance of type Property
-    public PropertyOG(String civicAddress, int propertyValue, int monthlyRent, ArrayList<TenantOG> tenantList) {
+    public Property(String civicAddress, int propertyValue, int monthlyRent, ArrayList<Tenant> tenantList) {
         this.civicAddress = civicAddress;
         this.propertyValue = propertyValue;
         this.monthlyRent = monthlyRent;
@@ -54,12 +54,12 @@ public class PropertyOG implements Writable {
     //          return false.
     //          Also, if addition is successful and tenantList was empty at method call, switch isRented to true
     public boolean addNewTenant(String tenantName) {
-        for (TenantOG t : tenantList) {
+        for (Tenant t : tenantList) {
             if (t.getTenantName().equals(tenantName)) {
                 return false;
             }
         }
-        tenantList.add(new TenantOG(tenantName));
+        tenantList.add(new Tenant(tenantName));
         if (!this.getIsRented()) {
             isRented = true;
         }
@@ -72,7 +72,7 @@ public class PropertyOG implements Writable {
     //           return false
     //           If removal is successful and tenantList is now empty, switch isRented to false.
     public boolean removeTenant(String tenantName) {
-        for (TenantOG t : tenantList) {
+        for (Tenant t : tenantList) {
             if (tenantName.equals(t.getTenantName())) {
                 tenantList.remove(t);
                 if (tenantList.isEmpty()) {
@@ -85,6 +85,7 @@ public class PropertyOG implements Writable {
     }
 
     @Override
+    // EFFECTS: converts a user's property into a JSON object
     public JSONObject toJson() {
         JSONObject json = new JSONObject();
         json.put("civic address", civicAddress);
@@ -97,7 +98,7 @@ public class PropertyOG implements Writable {
     private JSONArray tenantsToJson() {
         JSONArray jsonArray = new JSONArray();
 
-        for (TenantOG t : tenantList) {
+        for (Tenant t : tenantList) {
             jsonArray.put(t.toJson());
         }
 
@@ -117,7 +118,7 @@ public class PropertyOG implements Writable {
         return monthlyRent;
     }
 
-    public ArrayList<TenantOG> getTenantList() {
+    public ArrayList<Tenant> getTenantList() {
         return tenantList;
     }
 
@@ -139,6 +140,6 @@ public class PropertyOG implements Writable {
         this.monthlyRent = newRent;
     }
 
-    }
+}
 
 

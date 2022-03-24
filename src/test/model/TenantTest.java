@@ -5,11 +5,11 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class TenantTest {
 
-    TenantOG testTenant;
+    Tenant testTenant;
 
     @BeforeEach
     public void setup() {
-        testTenant = new TenantOG("John Doe");
+        testTenant = new Tenant("John Doe");
     }
 
     @Test

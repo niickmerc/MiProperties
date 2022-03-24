@@ -1,7 +1,7 @@
 package persistence;
 
-import model.PortfolioOG;
-import model.PropertyOG;
+import model.Portfolio;
+import model.Property;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -16,7 +16,7 @@ public class JsonReaderTest extends JsonTest {
     void testReaderFileDoesntExist() {
         JsonReader reader = new JsonReader("./data/noSuchFile.json");
         try {
-            PortfolioOG portfolio = reader.read();
+            Portfolio portfolio = reader.read();
             fail("Expected IOException");
         } catch (IOException e) {
             // Expected result
@@ -27,7 +27,7 @@ public class JsonReaderTest extends JsonTest {
     void testReaderEmptyPortfolio() {
         JsonReader reader = new JsonReader("./data/testReaderEmptyPortfolio.json");
         try {
-            PortfolioOG emptyPortfolio = reader.read();
+            Portfolio emptyPortfolio = reader.read();
             assertEquals("My Portfolio", emptyPortfolio.getName());
             assertEquals(0, emptyPortfolio.getPropertyList().size());
 
@@ -40,9 +40,9 @@ public class JsonReaderTest extends JsonTest {
     void testReaderWorkingPortfolio() {
         JsonReader reader = new JsonReader("./data/testReaderWorkingPortfolio.json");
         try {
-          PortfolioOG workingPortfolio = reader.read();
+          Portfolio workingPortfolio = reader.read();
           assertEquals("My Portfolio", workingPortfolio.getName());
-          List<PropertyOG> properties = workingPortfolio.getPropertyList();
+          List<Property> properties = workingPortfolio.getPropertyList();
           assertEquals(3, properties.size());
 
           for(int i = 0; i < properties.size(); i++) {
