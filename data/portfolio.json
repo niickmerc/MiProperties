@@ -1,188 +1,24 @@
 {
     "name": "My Portfolio",
-    "properties": [{
-        "tenants": [
-            {"tenant name": "JM"},
-            {"tenant name": "FM"}
-        ],
-        "market value": 1500000,
-        "civic address": "erwerewewrw Fairmont Avenue, Vancouver BC, V1V 2V6",
-        "desired rent": 4500
-    },
-      {
-        "tenants": [
-          {"tenant name": "JM"},
-          {"tenant name": "FM"}
-        ],
-        "market value": 1500000,
-        "civic address": "tw Fairmont Avenue, Vancouver BC, V1V 2V6",
-        "desired rent": 4500
-      },
-      {
-        "tenants": [
-          {"tenant name": "JM"},
-          {"tenant name": "FM"}
-        ],
-        "market value": 1500000,
-        "civic address": "2292 Fairrewrwrtmont Avenue, Vancouver BC, V1V 2V6",
-        "desired rent": 4500
-      },
-      {
-        "tenants": [
-          {"tenant name": "JM"},
-          {"tenant name": "FM"}
-        ],
-        "market value": 1500000,
-        "civic address": "2292 Fairmwetrewont Avenue, Vancouver BC, V1V 2V6",
-        "desired rent": 4500
-      },
-      {
-        "tenants": [
-          {"tenant name": "JM"},
-          {"tenant name": "FM"}
-        ],
-        "market value": 1500000,
-        "civic address": "2292 Fairmonewtwrwt Avenue, Vancouver BC, V1V 2V6",
-        "desired rent": 4500
-      },
-      {
-        "tenants": [
-          {"tenant name": "JM"},
-          {"tenant name": "FM"}
-        ],
-        "market value": 1500000,
-        "civic address": "2292 Fairmont wrwerwrwAvenue, Vancouver BC, V1V 2V6",
-        "desired rent": 4500
-      },
-      {
-        "tenants": [
-          {"tenant name": "JM"},
-          {"tenant name": "FM"}
-        ],
-        "market value": 1500000,
-        "civic address": "2292 Fairmont Avewrewrrnue, Vancouver BC, V1V 2V6",
-        "desired rent": 4500
-      },
-      {
-        "tenants": [
-          {"tenant name": "JM"},
-          {"tenant name": "FM"}
-        ],
-        "market value": 1500000,
-        "civic address": "2292 Fairmont Awerewrwvenue, Vancouver BC, V1V 2V6",
-        "desired rent": 4500
-      },
-      {
-        "tenants": [
-          {"tenant name": "JM"},
-          {"tenant name": "FM"}
-        ],
-        "market value": 1500000,
-        "civic address": "2292 Fairmowrewrent Avenue, Vancouver BC, V1V 2V6",
-        "desired rent": 4500
-      },
-      {
-        "tenants": [
-          {"tenant name": "JM"},
-          {"tenant name": "FM"}
-        ],
-        "market value": 1500000,
-        "civic address": "2292 Fairmontwerewt Avenue, Vancouver BC, V1V 2V6",
-        "desired rent": 4500
-      },
-      {
-        "tenants": [
-          {"tenant name": "JM"},
-          {"tenant name": "FM"}
-        ],
-        "market value": 1500000,
-        "civic address": "2292 Fairmont Aewerwvenue, Vancouver BC, V1V 2V6",
-        "desired rent": 4500
-      },
-      {
-        "tenants": [
-          {"tenant name": "JM"},
-          {"tenant name": "FM"}
-        ],
-        "market value": 1500000,
-        "civic address": "2292 Fairmont Awtervenue, Vancouver BC, V1V 2V6",
-        "desired rent": 4500
-      },
-      {
-        "tenants": [
-          {"tenant name": "JM"},
-          {"tenant name": "FM"}
-        ],
-        "market value": 1500000,
-        "civic address": "2292 Fairmont Avtwetrenue, Vancouver BC, V1V 2V6",
-        "desired rent": 4500
-      },
-      {
-        "tenants": [
-          {"tenant name": "JM"},
-          {"tenant name": "FM"}
-        ],
-        "market value": 1500000,
-        "civic address": "2292 Fairmontwrwet Avenue, Vancouver BC, V1V 2V6",
-        "desired rent": 4500
-      },
-      {
-        "tenants": [
-          {"tenant name": "JM"},
-          {"tenant name": "FM"}
-        ],
-        "market value": 1500000,
-        "civic address": "2292 Fairmont Atewrewrvenue, Vancouver BC, V1V 2V6",
-        "desired rent": 4500
-      },
-      {
-        "tenants": [
-          {"tenant name": "JM"},
-          {"tenant name": "FM"}
-        ],
-        "market value": 1500000,
-        "civic address": "2292 Fairmont Avwrwrenue, Vancouver BC, V1V 2V6",
-        "desired rent": 4500
-      },
-      {
-        "tenants": [
-          {"tenant name": "JM"},
-          {"tenant name": "FM"}
-        ],
-        "market value": 1500000,
-        "civic address": "2292 Fairmont wtwerAvenue, Vancouver BC, V1V 2V6",
-        "desired rent": 4500
-      },
-      {
-        "tenants": [
-          {"tenant name": "JM"},
-          {"tenant name": "FM"}
-        ],
-        "market value": 1500000,
-        "civic address": "2292 Fairmontwetrqe Avenue, Vancouver BC, V1V 2V6",
-        "desired rent": 4500
-      },
-      {
-        "tenants": [
-          {"tenant name": "JM"},
-          {"tenant name": "FM"}
-        ],
-        "market value": 1500000,
-        "civic address": "2292 Faewrwrirmont Avenue, Vancouvtewrer BC, V1V 2V6",
-        "desired rent": 4500
-      },
-      {
-        "tenants": [
-          {"tenant name": "JM"},
-          {"tenant name": "FM"}
-        ],
-        "market value": 1500000,
-        "civic address": "2292 Fairwqt4rmont Avenue, Vancouver BC, V1V 2V6",
-        "desired rent": 4500
-      }
-
-
-
-
+    "properties": [
+        {
+            "tenants": [
+                {"tenant name": "NM"},
+                {"tenant name": "CB"},
+                {"tenant name": "SG"}
+            ],
+            "market value": 1000000,
+            "civic address": "1 University Avenue, Vancouver BC, V2K 3W9",
+            "desired rent": 2200
+        },
+        {
+            "tenants": [
+                {"tenant name": "AG"},
+                {"tenant name": "BD"}
+            ],
+            "market value": 1250000,
+            "civic address": "1234 Happy Drive, Vancouver BC, V9F 4W3",
+            "desired rent": 2000
+        }
     ]
 }

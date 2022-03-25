@@ -125,8 +125,8 @@ public class Portfolio implements Writable {
         return name;
     }
 
-    @Override
     // EFFECTS: Converts a user's portfolio into JSON format
+    @Override
     public JSONObject toJson() {
         JSONObject json = new JSONObject();
         json.put("name", name);

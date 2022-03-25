@@ -6,8 +6,11 @@ import model.Tenant;
 import persistence.JsonReader;
 import persistence.JsonWriter;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.text.NumberFormat;
@@ -108,10 +111,11 @@ public class PropertyManagementApp extends JFrame {
         mainPanel.setBackground(BACKGROUND_COLOR);
         mainPanel.setLayout(new BorderLayout());
 
-        JPanel mainPanelNorthBorder = new JPanel();
-        mainPanelNorthBorder.setPreferredSize(new Dimension(mainPanel.getWidth(), 50));
-        Label banner = new Label("Welcome to MiProperties! Your portfolio is below:", 25);
-        mainPanelNorthBorder.add(banner);
+        JPanel mainPanelNorthBorder = new JPanel(new FlowLayout(FlowLayout.LEADING));
+        mainPanelNorthBorder.setPreferredSize(new Dimension(mainPanel.getWidth(), 75));
+        Label banner = new Label("Welcome to MiProperties! Your portfolio is below:", 22);
+
+        mainPanelNorthBorder.add(banner, BorderLayout.WEST);
         mainPanelNorthBorder.setBackground(BACKGROUND_COLOR);
         mainPanel.add(mainPanelNorthBorder, BorderLayout.NORTH);
 
@@ -133,11 +137,9 @@ public class PropertyManagementApp extends JFrame {
 
         ImageIcon img = new ImageIcon("./data/icon.png");
         frame.setIconImage(img.getImage());
-
-
     }
 
-    // MODIFIES:selectedPropertyFromList
+    // MODIFIES: selectedPropertyFromList
     // EFFECTS: assigns the selected property object to selectedPropertyFromList
     private void selectProperty() {
         selectedPropertyFromList = list.getSelectedValue();
@@ -296,6 +298,7 @@ public class PropertyManagementApp extends JFrame {
 
         OptionButton viewCommand = new OptionButton("view");
         viewCommand.addActionListener(e -> viewCurrentProperty());
+//        viewCommand.addActionListener(e -> new ViewFrame(selectedProperty));
         optionPanel.add(viewCommand);
     }
 

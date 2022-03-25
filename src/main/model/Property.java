@@ -9,6 +9,7 @@ import java.util.ArrayList;
 
 // This class represents a property with an address, current market value, desired monthly income, a list of current
 //      tenants, and a boolean value which represents the property's occupancy status
+
 public class Property implements Writable {
 
     private String civicAddress;                // a property's civic address
@@ -95,6 +96,7 @@ public class Property implements Writable {
         return json;
     }
 
+    // EFFECTS: converts a property's tenant list into a JSON object
     private JSONArray tenantsToJson() {
         JSONArray jsonArray = new JSONArray();
 
