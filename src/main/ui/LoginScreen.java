@@ -9,6 +9,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
+// Represents a login / landing page for my application
 public class LoginScreen extends JFrame {
     private JFrame frame;
     private static final Color BACKGROUND_COLOR = new Color(45, 47, 48);
@@ -43,7 +44,7 @@ public class LoginScreen extends JFrame {
             System.out.println();
         }
 
-        Button enterButton = new Button("Enter");
+        JButton enterButton = new JButton("Enter");
         enterButton.addActionListener(e -> new PropertyManagementApp());
         enterButton.setPreferredSize(new Dimension(100, 50));
         buffer.add(enterButton);

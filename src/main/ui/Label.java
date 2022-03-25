@@ -3,6 +3,7 @@ package ui;
 import javax.swing.*;
 import java.awt.*;
 
+// Represents a label with specific styling attributes applied
 public class Label extends JLabel {
     private static final Font LABEL_FONT = new Font("Avenir", 1, 20);
 
