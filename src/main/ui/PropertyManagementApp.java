@@ -6,11 +6,8 @@ import model.Tenant;
 import persistence.JsonReader;
 import persistence.JsonWriter;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.text.NumberFormat;
@@ -280,7 +277,6 @@ public class PropertyManagementApp extends JFrame {
         frame.add(optionPanel, BorderLayout.SOUTH);
     }
 
-    // REQUIRES:
     // MODIFIES: this
     // EFFECTS: initializes all option buttons and adds them to the option panel
     public void initializeOptionButtons() {
@@ -304,8 +300,6 @@ public class PropertyManagementApp extends JFrame {
 
     // MODIFIES: this
     // EFFECTS: gathers input from user and updates the selected property's fields
-
-    @SuppressWarnings({"checkstyle:MethodLength", "checkstyle:SuppressWarnings"})
     private void manageExistingProperty() {
         selectedProperty = (Property) listOfPropertyObjects.get(list.getSelectedIndex());
 
@@ -317,15 +311,7 @@ public class PropertyManagementApp extends JFrame {
         JTextField addTenantsField = new JTextField(20);
         JTextField removeTenantsField = new JTextField(20);
 
-        manageExistingPropertyHeaders.add(new JLabel("Update Civic Address:"));
-        manageExistingPropertyHeaders.add(Box.createVerticalStrut(10));
-        manageExistingPropertyHeaders.add(new JLabel("Update Property Value:"));
-        manageExistingPropertyHeaders.add(Box.createVerticalStrut(10));
-        manageExistingPropertyHeaders.add(new JLabel("Update Desired Monthly Rent:"));
-        manageExistingPropertyHeaders.add(Box.createVerticalStrut(10));
-        manageExistingPropertyHeaders.add(new JLabel("Add New Tenant(s):"));
-        manageExistingPropertyHeaders.add(Box.createVerticalStrut(10));
-        manageExistingPropertyHeaders.add(new JLabel("Remove Existing Tenant(s):"));
+        createManagePanelHeaders(manageExistingPropertyHeaders);
 
         Box manageExistingPropertyFields = new Box(BoxLayout.Y_AXIS);
         manageExistingPropertyFields.add(civicAddressField);
@@ -338,13 +324,33 @@ public class PropertyManagementApp extends JFrame {
         manageExistingPropertyPanel.add(manageExistingPropertyHeaders);
         manageExistingPropertyPanel.add(manageExistingPropertyFields);
 
-        int result = JOptionPane.showConfirmDialog(null, manageExistingPropertyPanel,
-                "Manage Selected Property:", JOptionPane.OK_CANCEL_OPTION);
+        int result = getResult(manageExistingPropertyPanel);
 
         if (result == JOptionPane.OK_OPTION) {
             updatePropertyDetails(selectedProperty, civicAddressField, propertyValueField, monthlyRentalIncomeField,
                     addTenantsField, removeTenantsField);
         }
+    }
+
+    // EFFECTS: gets user input from JOptionPane and returns value to manageExistingProperty()
+    private int getResult(JPanel manageExistingPropertyPanel) {
+        int result = JOptionPane.showConfirmDialog(null, manageExistingPropertyPanel,
+                "Manage Selected Property:", JOptionPane.OK_CANCEL_OPTION);
+        return result;
+    }
+
+    // MODIFIES: manageExistingPropertyHeaders
+    // EFFECTS: creates JLabel headers and adds them to manageExistingPropertyHeaders
+    private void createManagePanelHeaders(Box manageExistingPropertyHeaders) {
+        manageExistingPropertyHeaders.add(new JLabel("Update Civic Address:"));
+        manageExistingPropertyHeaders.add(Box.createVerticalStrut(10));
+        manageExistingPropertyHeaders.add(new JLabel("Update Property Value:"));
+        manageExistingPropertyHeaders.add(Box.createVerticalStrut(10));
+        manageExistingPropertyHeaders.add(new JLabel("Update Desired Monthly Rent:"));
+        manageExistingPropertyHeaders.add(Box.createVerticalStrut(10));
+        manageExistingPropertyHeaders.add(new JLabel("Add New Tenant(s):"));
+        manageExistingPropertyHeaders.add(Box.createVerticalStrut(10));
+        manageExistingPropertyHeaders.add(new JLabel("Remove Existing Tenant(s):"));
     }
 
     // MODIFIES: this
@@ -481,18 +487,33 @@ public class PropertyManagementApp extends JFrame {
 
     // MODIFIES: selectedProperty
     // EFFECTS: gathers user input and passes information to the addNewProperty method
-    @SuppressWarnings({"checkstyle:MethodLength", "checkstyle:SuppressWarnings"})
     private void addNewProperty() {
         JPanel newPropertyPanel = new JPanel();
 
-        Box columnOne = new Box(BoxLayout.Y_AXIS);
-        Box columnTwo = new Box(BoxLayout.Y_AXIS);
+        getNewPropertyHeaders(newPropertyPanel);
 
+        Box columnTwo = new Box(BoxLayout.Y_AXIS);
         JTextField civicAddressField = new JTextField(20);
         JTextField propertyValueField = new JTextField(20);
         JTextField monthlyRentalIncomeField = new JTextField(20);
         JTextField currentTenantsField = new JTextField(20);
+        columnTwo.add(civicAddressField);
+        columnTwo.add(propertyValueField);
+        columnTwo.add(monthlyRentalIncomeField);
+        columnTwo.add(currentTenantsField);
 
+        newPropertyPanel.add(columnTwo);
+
+        int result = JOptionPane.showConfirmDialog(null, newPropertyPanel,
+                "Enter New Property Information:", JOptionPane.OK_CANCEL_OPTION);
+        if (result == JOptionPane.OK_OPTION) {
+            addNewPropertyObject(civicAddressField, propertyValueField, monthlyRentalIncomeField, currentTenantsField);
+        }
+    }
+
+    // EFFECTS: creates headers for the newPropertyPanel object
+    private void getNewPropertyHeaders(JPanel newPropertyPanel) {
+        Box columnOne = new Box(BoxLayout.Y_AXIS);
         columnOne.add(new JLabel("Civic Address:"));
         columnOne.add(Box.createVerticalStrut(10));
         columnOne.add(new JLabel("Property Value:"));
@@ -500,25 +521,13 @@ public class PropertyManagementApp extends JFrame {
         columnOne.add(new JLabel("Desired Monthly Rent:"));
         columnOne.add(Box.createVerticalStrut(10));
         columnOne.add(new JLabel("Current Tenants:"));
-
-        columnTwo.add(civicAddressField);
-        columnTwo.add(propertyValueField);
-        columnTwo.add(monthlyRentalIncomeField);
-        columnTwo.add(currentTenantsField);
         newPropertyPanel.add(columnOne);
-        newPropertyPanel.add(columnTwo);
-
-        int result = JOptionPane.showConfirmDialog(null, newPropertyPanel,
-                "Enter New Property Information:", JOptionPane.OK_CANCEL_OPTION);
-        if (result == JOptionPane.OK_OPTION) {
-            addNewProperty(civicAddressField, propertyValueField, monthlyRentalIncomeField, currentTenantsField);
-        }
     }
 
     // REQUIRES: value and rent must be non-zero integers
     // MODIFIES: this, portfolio
     // EFFECTS: creates a new property using information gathered from the user
-    private void addNewProperty(JTextField civic, JTextField value, JTextField rent, JTextField tenants) {
+    private void addNewPropertyObject(JTextField civic, JTextField value, JTextField rent, JTextField tenants) {
         String civicAddress = civic.getText();
         int propertyValue = Integer.parseInt(value.getText());
         int monthyRentalIncome = Integer.parseInt(rent.getText());
