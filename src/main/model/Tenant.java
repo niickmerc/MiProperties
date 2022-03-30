@@ -1,8 +1,6 @@
 package model;
 
 
-// future idea: implement two subclasses: ResidentialTenant and CommercialTenant
-
 import org.json.JSONObject;
 import persistence.Writable;
 

@@ -33,6 +33,7 @@ public class Portfolio implements Writable {
         if (propertyToAdd == null) {
             Property newProp = new Property(civicAddress, propertyValue, monthlyRent);
             propertyList.add(newProp);
+            logNewEvent(1, civicAddress);
             return true;
         } else {
             return false;
@@ -50,6 +51,7 @@ public class Portfolio implements Writable {
         if (propertyToAdd == null) {
             Property newProp = new Property(civAddress, propertyValue, monthlyRent, tenantList);
             propertyList.add(newProp);
+            logNewEvent(1, civAddress);
             return true;
         } else {
             return false;
@@ -60,11 +62,12 @@ public class Portfolio implements Writable {
     //           throws EmptyPropertyListException
     // MODIFIES: this
     // EFFECTS: Removes the property with the given name from the portfolio. if successful, return true, else false
-    public boolean removeExistingProperty(String civilAddress) {
-        Property propertyToRemove = loopAndReturnProperty(civilAddress);
+    public boolean removeExistingProperty(String civicAddress) {
+        Property propertyToRemove = loopAndReturnProperty(civicAddress);
 
         if (propertyToRemove != null) {
             propertyList.remove(propertyToRemove);
+            logNewEvent(2, civicAddress);
             return true;
         } else {
             return false;
@@ -143,6 +146,23 @@ public class Portfolio implements Writable {
         }
 
         return jsonArray;
+    }
+
+    // EFFECTS: logs new event to EventLog
+    public void logNewEvent(int caseNum, String civicAddress) {
+
+        String description = "";
+
+        switch (caseNum) {
+            case 1:
+                description = "Added " + civicAddress + " to the portfolio";
+                break;
+            case 2:
+                description = "Removed " + civicAddress + " from the portfolio";
+                break;
+        }
+
+        EventLog.getInstance().logEvent(new Event(description));
     }
 
 

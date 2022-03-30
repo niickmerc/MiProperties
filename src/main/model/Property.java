@@ -64,6 +64,7 @@ public class Property implements Writable {
         if (!this.getIsRented()) {
             isRented = true;
         }
+        logNewEvent(1, tenantName);
         return true;
     }
 
@@ -75,6 +76,7 @@ public class Property implements Writable {
     public boolean removeTenant(String tenantName) {
         for (Tenant t : tenantList) {
             if (tenantName.equals(t.getTenantName())) {
+                logNewEvent(2, tenantName);
                 tenantList.remove(t);
                 if (tenantList.isEmpty()) {
                     this.isRented = false;
@@ -107,6 +109,32 @@ public class Property implements Writable {
         return jsonArray;
     }
 
+    // EFFECTS: logs new event to EventLog
+    public void logNewEvent(int caseNum, String subjectOfEvent) {
+
+        String description = "";
+
+        switch (caseNum) {
+            case 1:
+                description = "Added " + subjectOfEvent + " to " + civicAddress;
+                break;
+            case 2:
+                description = "Removed " + subjectOfEvent + " from " + civicAddress;
+                break;
+            case 3:
+                description = "Updated " + civicAddress + " to " + subjectOfEvent;
+                break;
+            case 4:
+                description = "Updated property value for " + civicAddress;
+                break;
+            case 5:
+                description = "Updated monthly rental amount for " + civicAddress;
+                break;
+        }
+
+        EventLog.getInstance().logEvent(new Event(description));
+    }
+
     // getters
     public String getCivicAddress() {
         return civicAddress;
@@ -130,15 +158,17 @@ public class Property implements Writable {
 
     // setters
     public void setCivicAddress(String newAddress) {
-
+        logNewEvent(3, newAddress);
         this.civicAddress = newAddress;
     }
 
     public void setPropertyValue(int newValue) {
+        logNewEvent(4, null);
         this.propertyValue = newValue;
     }
 
     public void setMonthlyRent(int newRent) {
+        logNewEvent(5, null);
         this.monthlyRent = newRent;
     }
 

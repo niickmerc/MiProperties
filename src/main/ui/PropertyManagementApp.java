@@ -2,6 +2,8 @@ package ui;
 
 import model.Portfolio;
 import model.Property;
+import model.EventLog;
+import model.Event;
 import model.Tenant;
 import persistence.JsonReader;
 import persistence.JsonWriter;
@@ -134,6 +136,15 @@ public class PropertyManagementApp extends JFrame {
 
         ImageIcon img = new ImageIcon("./data/icon.png");
         frame.setIconImage(img.getImage());
+
+        frame.addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosing(java.awt.event.WindowEvent windowEvent) {
+                printLog(EventLog.getInstance());
+                //THEN you can exit the program
+                System.exit(1);
+            }
+        });
     }
 
     // MODIFIES: selectedPropertyFromList
@@ -235,13 +246,26 @@ public class PropertyManagementApp extends JFrame {
         load.addActionListener(e -> loadPortfolio());
 
         JMenuItem exit = new JMenuItem("Exit");
-        exit.addActionListener(e -> System.exit(1));
+        exit.addActionListener(e -> printLogAndExitProgram());
 
         fileMenu.add(save);
         fileMenu.add(load);
         fileMenu.add(exit);
 
         frame.setJMenuBar(menuBar);
+    }
+
+    // EFFECTS: prints the contents of EventLog on console and then exits the program
+    private void printLogAndExitProgram() {
+        printLog(EventLog.getInstance());
+        System.exit(1);
+    }
+
+    // EFFECTS: prints the contents of EventLog on console
+    private void printLog(EventLog el) {
+        for (Event next : el) {
+            System.out.println(next.getDescription());
+        }
     }
 
     // EFFECTS: saves a user's portfolio to file
@@ -551,3 +575,6 @@ public class PropertyManagementApp extends JFrame {
         return tenantList;
     }
 }
+
+// REFERENCE: Some of this code (windowClosing method) is attributed to user9643348 on StackOverflow
+// Link to Reference: https://stackoverflow.com/questions/60516720/java-how-to-print-message-when-a-jframe-is-closed
