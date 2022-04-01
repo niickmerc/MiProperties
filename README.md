@@ -64,5 +64,8 @@ Secondly, I would likely refactor my model design to decrease reliance on the Ar
 modules, I began to realize that much of the guards I developed for my collections could have been mitigated if I just used a collection that didn't 
 allow for duplicate entries.
 
-Overall, this project provided me with an excellent entry point into the software engineering process, and I'm excited to continue building on this 
-skillset in future courses.
+Finally, I would refactor my model and UI classes to integrate exception handling. I've mapped out the exceptions required by my classes, so
+it shouldn't be too much of a hassle to refactor.
+
+Overall, this project provided me with an excellent entry point into the software engineering process, and I'm excited to continue building on these 
+skills in future courses.

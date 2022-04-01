@@ -131,7 +131,6 @@ public class Property implements Writable {
                 description = "Updated monthly rental amount for " + civicAddress;
                 break;
         }
-
         EventLog.getInstance().logEvent(new Event(description));
     }
 
