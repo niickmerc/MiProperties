@@ -29,7 +29,7 @@ public class JsonReader {
         return parsePortfolio(jsonObject);
     }
 
-    // EFFECTS: reads source file as string and returns it
+    // EFFECTS: reads source file as a string and returns it
     private String readFile(String source) throws IOException {
         StringBuilder contentBuilder = new StringBuilder();
 
