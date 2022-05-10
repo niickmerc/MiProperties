@@ -45,11 +45,18 @@ public class LoginScreen extends JFrame {
         }
 
         JButton enterButton = new JButton("Enter");
-        enterButton.addActionListener(e -> new PropertyManagementApp());
+        enterButton.addActionListener(e -> startPropertyManagementApp());
         enterButton.setPreferredSize(new Dimension(100, 50));
         buffer.add(enterButton);
 
         frame.add(loginPanel);
+    }
+
+    // MODIFIES: this
+    // EFFECTS: starts the application and minimizes the login screen :)
+    private void startPropertyManagementApp() {
+        new PropertyManagementApp();
+        frame.setVisible(false);
     }
 
     // MODIFIES: this
@@ -65,7 +72,7 @@ public class LoginScreen extends JFrame {
         int heightDimension = dimension.height / 2 - frame.getSize().height / 2;
 
         frame.setLocation(widthDimension, heightDimension);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.setResizable(false);
 
         ImageIcon img = new ImageIcon("./data/icon.png");

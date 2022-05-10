@@ -6,10 +6,11 @@ import persistence.Writable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Observable;
 
 
 // This class represents a digital portfolio of rental properties
-public class Portfolio implements Writable {
+public class Portfolio extends Observable implements Writable {
 
     private List<Property> propertyList;  // a list of properties that have been created by a user
     private String name;
@@ -28,12 +29,13 @@ public class Portfolio implements Writable {
     //          if successful, return true, else return false
     public boolean addNewProperty(String civicAddress, int propertyValue, int monthlyRent) {
 
-        Property propertyToAdd = loopAndReturnProperty(civicAddress);
+        Property newProp = new Property(civicAddress, propertyValue, monthlyRent);
 
-        if (propertyToAdd == null) {
-            Property newProp = new Property(civicAddress, propertyValue, monthlyRent);
+        if (!propertyList.contains(newProp)) {
             propertyList.add(newProp);
             logNewEvent(1, civicAddress);
+            setChanged();
+            notifyObservers();
             return true;
         } else {
             return false;
@@ -46,12 +48,14 @@ public class Portfolio implements Writable {
     // EFFECTS: Adds a new property with the given address, value, desired monthly rent, and list of tenants
     //          into the portfolio. if successful, return true, else return false
     public boolean addNewProperty(String civAddress, int propertyValue, int monthlyRent, ArrayList<Tenant> tenantList) {
-        Property propertyToAdd = loopAndReturnProperty(civAddress);
 
-        if (propertyToAdd == null) {
-            Property newProp = new Property(civAddress, propertyValue, monthlyRent, tenantList);
+        Property newProp = new Property(civAddress, propertyValue, monthlyRent, tenantList);
+
+        if (!propertyList.contains(newProp)) {
             propertyList.add(newProp);
             logNewEvent(1, civAddress);
+            setChanged();
+            notifyObservers();
             return true;
         } else {
             return false;
@@ -63,11 +67,13 @@ public class Portfolio implements Writable {
     // MODIFIES: this
     // EFFECTS: Removes the property with the given name from the portfolio. if successful, return true, else false
     public boolean removeExistingProperty(String civicAddress) {
-        Property propertyToRemove = loopAndReturnProperty(civicAddress);
+        Property propertyToRemove = new Property(civicAddress, 0, 0);
 
-        if (propertyToRemove != null) {
+        if (propertyList.contains(propertyToRemove)) {
             propertyList.remove(propertyToRemove);
             logNewEvent(2, civicAddress);
+            setChanged();
+            notifyObservers();
             return true;
         } else {
             return false;
@@ -119,6 +125,11 @@ public class Portfolio implements Writable {
         return null;
     }
 
+    // EFFECTS: makes setChanged have public visibility modifier
+    public void setChanged() {
+        super.setChanged();
+    }
+
     // getters
     public List<Property> getPropertyList() {
         return propertyList;
@@ -164,6 +175,4 @@ public class Portfolio implements Writable {
 
         EventLog.getInstance().logEvent(new Event(description));
     }
-
-
 }

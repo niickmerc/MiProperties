@@ -2,23 +2,22 @@
     "name": "My Portfolio",
     "properties": [
         {
-            "tenants": [
-                {"tenant name": "NM"},
-                {"tenant name": "CB"},
-                {"tenant name": "SG"}
-            ],
-            "market value": 1000000,
-            "civic address": "1 University Avenue, Vancouver BC, V2K 3W9",
-            "desired rent": 2200
+            "tenants": [{"tenant name": "NM"}],
+            "market value": 1000,
+            "civic address": "Property #1",
+            "desired rent": 100
         },
         {
-            "tenants": [
-                {"tenant name": "AG"},
-                {"tenant name": "BD"}
-            ],
-            "market value": 1250000,
-            "civic address": "1234 Happy Drive, Vancouver BC, V9F 4W3",
-            "desired rent": 2000
+            "tenants": [{"tenant name": "NM"}],
+            "market value": 1000,
+            "civic address": "Property #2",
+            "desired rent": 100
+        },
+        {
+            "tenants": [{"tenant name": "NM"}],
+            "market value": 1000,
+            "civic address": "Property #3",
+            "desired rent": 100
         }
     ]
 }

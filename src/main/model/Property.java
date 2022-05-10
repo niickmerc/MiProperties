@@ -171,6 +171,20 @@ public class Property implements Writable {
         this.monthlyRent = newRent;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Property property = (Property) o;
+
+        return civicAddress.equals(property.civicAddress);
+    }
+
+    @Override
+    public int hashCode() {
+        return civicAddress.hashCode();
+    }
 }
 
 

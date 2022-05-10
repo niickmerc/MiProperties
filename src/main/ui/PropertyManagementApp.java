@@ -30,10 +30,7 @@ public class PropertyManagementApp extends JFrame {
     private Object selectedPropertyFromList;
     private Property selectedProperty;
 
-    private Label totalPortfolioSize;
-    private Label totalPortfolioValue;
-    private Label totalOccupancyRate;
-    private Label monthlyRentalIncome;
+    private SummaryTable summaryTable;
 
     private JPanel optionPanel = new JPanel();
     private JPanel summaryPanel = new JPanel();
@@ -141,7 +138,6 @@ public class PropertyManagementApp extends JFrame {
             @Override
             public void windowClosing(java.awt.event.WindowEvent windowEvent) {
                 printLog(EventLog.getInstance());
-                //THEN you can exit the program
                 System.exit(1);
             }
         });
@@ -156,45 +152,9 @@ public class PropertyManagementApp extends JFrame {
     // MODIFIES: this
     // EFFECTS:  initializes the summary table and adds it to the summary panel
     private void createSummaryTable() {
-        JPanel summaryTable = new JPanel();
-
-        designTableHeaders(summaryTable);
-        designTableValues(summaryTable);
+        summaryTable = new SummaryTable(portfolio);
 
         summaryPanel.add(summaryTable);
-    }
-
-    // MODIFIES: this
-    // EFFECTS: constructs summary panel headers and adds them to the summary panel
-    private void designTableHeaders(JPanel summaryTable) {
-        Box summaryTableHeaders = new Box(BoxLayout.Y_AXIS);
-        Label portfolioSizeHeader  = new Label("Total Properties: ");
-        summaryTableHeaders.add(portfolioSizeHeader);
-        summaryTableHeaders.add(Box.createVerticalStrut(10));
-        Label portfolioValueHeader  = new Label("Total Portfolio Value: ");
-        summaryTableHeaders.add(portfolioValueHeader);
-        summaryTableHeaders.add(Box.createVerticalStrut(10));
-        Label occupancyRateHeader = new Label("Occupancy Rate: ");
-        summaryTableHeaders.add(occupancyRateHeader);
-        summaryTableHeaders.add(Box.createVerticalStrut(10));
-        Label totalRentalIncomeHeader  = new Label("Total Rental Income: ");
-        summaryTableHeaders.add(totalRentalIncomeHeader);
-        summaryTable.add(summaryTableHeaders);
-    }
-
-    // MODIFIES: this
-    // EFFECTS: constructs summary panel values and adds them to the summary panel
-    private void designTableValues(JPanel summaryTable) {
-        Box summaryTableValues = new Box(BoxLayout.Y_AXIS);
-        summaryTableValues.add(totalPortfolioSize = new Label(String.valueOf(portfolio.getPropertyList().size())));
-        summaryTableValues.add(Box.createVerticalStrut(10));
-        summaryTableValues.add(totalPortfolioValue = new Label(currencyConverter(portfolio.getTotalPortfolioValue())));
-        summaryTableValues.add(Box.createVerticalStrut(10));
-        summaryTableValues.add(totalOccupancyRate = new Label((portfolio.getOccupancyRate()) + "%"));
-        summaryTableValues.add(Box.createVerticalStrut(10));
-        summaryTableValues.add(monthlyRentalIncome =  new Label(currencyConverter(portfolio.getTotalMonthlyRent())));
-        summaryTable.add(summaryTableValues);
-        summaryTable.setBackground(BACKGROUND_COLOR);
     }
 
     // MODIFIES: this
@@ -215,6 +175,9 @@ public class PropertyManagementApp extends JFrame {
         } catch (IOException e) {
             System.out.println("Unable to read from file: " + JSON_STORE);
         }
+
+        portfolio.setChanged();
+        portfolio.notifyObservers();
     }
 
     // MODIFIES: this
@@ -285,7 +248,11 @@ public class PropertyManagementApp extends JFrame {
         try {
             portfolio = jsonReader.read();
             System.out.println("Loaded " + portfolio.getName() + " from " + JSON_STORE + " !");
-            refreshProperties();
+            refreshPortfolio();
+            summaryTable.setPortfolio(portfolio);
+            portfolio.addObserver(summaryTable);
+            portfolio.setChanged();
+            portfolio.notifyObservers();
         } catch (IOException e) {
             System.out.println("Unable to read from file: " + JSON_STORE);
         }
@@ -318,7 +285,6 @@ public class PropertyManagementApp extends JFrame {
 
         OptionButton viewCommand = new OptionButton("view");
         viewCommand.addActionListener(e -> viewCurrentProperty());
-//        viewCommand.addActionListener(e -> new ViewFrame(selectedProperty));
         optionPanel.add(viewCommand);
     }
 
@@ -404,6 +370,8 @@ public class PropertyManagementApp extends JFrame {
             removeTenantsFromList(selectedProperty, initTenants(removeTenantsField.getText()));
         }
         refreshPortfolio();
+        portfolio.setChanged();
+        portfolio.notifyObservers();
     }
 
     // MODIFIES: this
@@ -418,8 +386,6 @@ public class PropertyManagementApp extends JFrame {
     // EFFECTS: refreshes portfolio information displayed on screen
     private void refreshPortfolio() {
         refreshProperties();
-        refreshSummaryStatistics();
-        list.setSelectedIndex(0);
     }
 
     // MODIFIES: selectedProperty
@@ -498,15 +464,6 @@ public class PropertyManagementApp extends JFrame {
         String propertyToRemove = selectedPropertyFromList.toString();
         portfolio.removeExistingProperty(propertyToRemove);
         refreshPortfolio();
-    }
-
-    // MODIFIES: this
-    // EFFECTS: refreshes the displayed summary statistics displayed on the application homepage
-    private void refreshSummaryStatistics() {
-        totalPortfolioSize.setText(String.valueOf(portfolio.getPropertyList().size()));
-        totalPortfolioValue.setText(currencyConverter(portfolio.getTotalPortfolioValue()));
-        totalOccupancyRate.setText(portfolio.getOccupancyRate() + "%");
-        monthlyRentalIncome.setText(currencyConverter(portfolio.getTotalMonthlyRent()));
     }
 
     // MODIFIES: selectedProperty
