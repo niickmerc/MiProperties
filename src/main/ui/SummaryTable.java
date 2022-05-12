@@ -59,7 +59,7 @@ public class SummaryTable extends JPanel implements Observer {
         setBackground(BACKGROUND_COLOR);
     }
 
-    // EFFECTS: updates displayed statistics
+    // EFFECTS: updates displayed statistics on UI
     public void refreshSummaryStatistics() {
         totalPortfolioSize.setText(String.valueOf(portfolio.getPropertyList().size()));
         totalPortfolioValue.setText(currencyConverter(portfolio.getTotalPortfolioValue()));
