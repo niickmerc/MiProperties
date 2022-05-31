@@ -3,9 +3,9 @@
     "properties": [
         {
             "tenants": [],
-            "market value": 250000,
+            "market value": 300000,
             "civic address": "Property #1 (Vacant)",
-            "desired rent": 100
+            "desired rent": 1000
         },
         {
             "tenants": [{"tenant name": "SG"}],
@@ -30,6 +30,12 @@
             "market value": 220000,
             "civic address": "Property #5 (Occupied)",
             "desired rent": 1375
+        },
+        {
+            "tenants": [{"tenant name": "AG"}],
+            "market value": 150000,
+            "civic address": "Property #6 (Occupied)",
+            "desired rent": 1200
         }
     ]
 }
