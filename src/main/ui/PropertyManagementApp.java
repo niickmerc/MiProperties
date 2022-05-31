@@ -56,7 +56,6 @@ public class PropertyManagementApp extends JFrame {
         buildMenuBar();
         buildOptionPanel();
         createSummaryTable();
-
         frame.setVisible(true);
     }
 
@@ -74,11 +73,8 @@ public class PropertyManagementApp extends JFrame {
     // EFFECTS: initializes all required elements and adds them to the main frame
     private void initializeGraphics() {
         initializeFrame();
-
         initializeMainPanel();
-
         initializeSummaryPanel();
-
         initializePropertiesPanel();
     }
 
@@ -334,9 +330,9 @@ public class PropertyManagementApp extends JFrame {
     private void createManagePanelHeaders(Box manageExistingPropertyHeaders) {
         manageExistingPropertyHeaders.add(new JLabel("Update Civic Address:"));
         manageExistingPropertyHeaders.add(Box.createVerticalStrut(10));
-        manageExistingPropertyHeaders.add(new JLabel("Update Property Value:"));
+        manageExistingPropertyHeaders.add(new JLabel("Update Property Value ($):"));
         manageExistingPropertyHeaders.add(Box.createVerticalStrut(10));
-        manageExistingPropertyHeaders.add(new JLabel("Update Desired Monthly Rent:"));
+        manageExistingPropertyHeaders.add(new JLabel("Update Desired Monthly Rent ($):"));
         manageExistingPropertyHeaders.add(Box.createVerticalStrut(10));
         manageExistingPropertyHeaders.add(new JLabel("Add New Tenant(s):"));
         manageExistingPropertyHeaders.add(Box.createVerticalStrut(10));
@@ -410,7 +406,7 @@ public class PropertyManagementApp extends JFrame {
     private void viewCurrentProperty() {
         selectedProperty = (Property) listOfPropertyObjects.get(list.getSelectedIndex());
 
-        JPanel viewPropertyPanel = createPropertyPanel();
+        JPanel viewPropertyPanel = viewPropertyPanel();
 
         JOptionPane viewPropertyPane = new JOptionPane();
         viewPropertyPane.showConfirmDialog(null, viewPropertyPanel,
@@ -418,7 +414,7 @@ public class PropertyManagementApp extends JFrame {
     }
 
     // EFFECTS: creates a panel that displays information on selectedProperty
-    private JPanel createPropertyPanel() {
+    private JPanel viewPropertyPanel() {
         JPanel viewPropertyPanel = new JPanel();
         Box columnOne = new Box(BoxLayout.Y_AXIS);
         Box columnTwo = new Box(BoxLayout.Y_AXIS);
@@ -497,9 +493,9 @@ public class PropertyManagementApp extends JFrame {
         Box columnOne = new Box(BoxLayout.Y_AXIS);
         columnOne.add(new JLabel("Civic Address:"));
         columnOne.add(Box.createVerticalStrut(10));
-        columnOne.add(new JLabel("Property Value:"));
+        columnOne.add(new JLabel("Property Value ($):"));
         columnOne.add(Box.createVerticalStrut(10));
-        columnOne.add(new JLabel("Desired Monthly Rent:"));
+        columnOne.add(new JLabel("Desired Monthly Rent ($):"));
         columnOne.add(Box.createVerticalStrut(10));
         columnOne.add(new JLabel("Current Tenants:"));
         newPropertyPanel.add(columnOne);
@@ -511,9 +507,9 @@ public class PropertyManagementApp extends JFrame {
     private void addNewPropertyObject(JTextField civic, JTextField value, JTextField rent, JTextField tenants) {
         String civicAddress = civic.getText();
         int propertyValue = Integer.parseInt(value.getText());
-        int monthyRentalIncome = Integer.parseInt(rent.getText());
+        int monthlyRentalIncome = Integer.parseInt(rent.getText());
 
-        portfolio.addNewProperty(civicAddress, propertyValue, monthyRentalIncome, initTenants(tenants.getText()));
+        portfolio.addNewProperty(civicAddress, propertyValue, monthlyRentalIncome, initTenants(tenants.getText()));
         refreshPortfolio();
     }
 

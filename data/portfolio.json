@@ -2,22 +2,34 @@
     "name": "My Portfolio",
     "properties": [
         {
-            "tenants": [{"tenant name": "NM"}],
-            "market value": 1000,
-            "civic address": "Property #1",
+            "tenants": [],
+            "market value": 250000,
+            "civic address": "Property #1 (Vacant)",
             "desired rent": 100
         },
         {
-            "tenants": [{"tenant name": "NM"}],
-            "market value": 1000,
-            "civic address": "Property #2",
+            "tenants": [{"tenant name": "SG"}],
+            "market value": 300000,
+            "civic address": "Property #2 (Occupied)",
             "desired rent": 100
         },
         {
-            "tenants": [{"tenant name": "NM"}],
-            "market value": 1000,
-            "civic address": "Property #3",
+            "tenants": [],
+            "market value": 1250000,
+            "civic address": "Property #3 (Vacant)",
             "desired rent": 100
+        },
+        {
+            "tenants": [],
+            "market value": 200000,
+            "civic address": "Property #4 (Vacant)",
+            "desired rent": 1500
+        },
+        {
+            "tenants": [{"tenant name": "NM"}],
+            "market value": 220000,
+            "civic address": "Property #5 (Occupied)",
+            "desired rent": 1375
         }
     ]
 }

@@ -115,16 +115,6 @@ public class Portfolio extends Observable implements Writable {
         return 100 - Math.round((vacantProperties / propertyList.size()) * 100);
     }
 
-    // EFFECTS: Returns the property with a specific address if it exists in the portfolio, otherwise returns null
-    public Property loopAndReturnProperty(String civicAddress) {
-        for (Property p : propertyList) {
-            if (p.getCivicAddress().equals(civicAddress)) {
-                return p;
-            }
-        }
-        return null;
-    }
-
     // EFFECTS: makes setChanged have public visibility modifier
     public void setChanged() {
         super.setChanged();
@@ -134,7 +124,6 @@ public class Portfolio extends Observable implements Writable {
     public List<Property> getPropertyList() {
         return propertyList;
     }
-
     public String getName() {
         return name;
     }
